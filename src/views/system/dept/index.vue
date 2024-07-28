@@ -9,6 +9,16 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
+      <el-form-item label="部门类型" prop="deptType">
+        <el-select v-model="queryParams.deptType" placeholder="部门类型" clearable>
+          <el-option
+            v-for="dict in dict.type.dept_type"
+            :key="dict.value"
+            :label="dict.label"
+            :value="dict.value"
+          />
+        </el-select>
+      </el-form-item>
       <el-form-item label="状态" prop="status">
         <el-select v-model="queryParams.status" placeholder="部门状态" clearable>
           <el-option
@@ -55,6 +65,11 @@
       :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
     >
       <el-table-column prop="deptName" label="部门名称" width="260"></el-table-column>
+      <el-table-column prop="status" label="类型" width="100">
+        <template slot-scope="scope">
+          <dict-tag :options="dict.type.dept_type" :value="scope.row.deptType"/>
+        </template>
+      </el-table-column>
       <el-table-column prop="orderNum" label="排序" width="200"></el-table-column>
       <el-table-column prop="status" label="状态" width="100">
         <template slot-scope="scope">

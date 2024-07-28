@@ -38,7 +38,6 @@
       <el-col :span="1.5">
         <el-button
           type="primary"
-          plain
           icon="el-icon-download"
           size="mini"
           @click="handleGenTable"
@@ -48,7 +47,6 @@
       <el-col :span="1.5">
         <el-button
           type="info"
-          plain
           icon="el-icon-upload"
           size="mini"
           @click="openImportTable"
@@ -58,7 +56,6 @@
       <el-col :span="1.5">
         <el-button
           type="success"
-          plain
           icon="el-icon-edit"
           size="mini"
           :disabled="single"
@@ -69,7 +66,6 @@
       <el-col :span="1.5">
         <el-button
           type="danger"
-          plain
           icon="el-icon-delete"
           size="mini"
           :disabled="multiple"
@@ -80,7 +76,12 @@
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
-    <el-table v-loading="loading" :data="tableList" @selection-change="handleSelectionChange">
+    <el-table
+      v-loading="loading"
+      :data="tableList"
+      @selection-change="handleSelectionChange"
+      v-defaultTable
+    >
       <el-table-column type="selection" align="center" width="55"></el-table-column>
       <el-table-column label="序号" type="index" width="50" align="center">
         <template slot-scope="scope">
@@ -93,14 +94,17 @@
         prop="tableName"
         :show-overflow-tooltip="true"
         width="120"
+        sortable
       />
       <el-table-column
         label="表描述"
         align="center"
-        prop="tableComment"
-        :show-overflow-tooltip="true"
-        width="120"
-      />
+        show-overflow-tooltip
+      >
+        <template slot-scope="scope">
+          <span v-middleEllipsis:120="scope.row.tableComment">{{ scope.row.tableComment }}</span>
+        </template>
+      </el-table-column>
       <el-table-column
         label="实体"
         align="center"
@@ -108,6 +112,11 @@
         :show-overflow-tooltip="true"
         width="120"
       />
+<!--      <el-table-column label="创建时间" align="center" prop="createTime" width="100">-->
+<!--        <template v-slot="scope">-->
+<!--          <span>{{ parseTime(scope.row.createTime, '{m}-{d} {h}:{i}') }}</span>-->
+<!--        </template>-->
+<!--      </el-table-column>-->
       <el-table-column label="创建时间" align="center" prop="createTime" width="160" />
       <el-table-column label="更新时间" align="center" prop="updateTime" width="160" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
@@ -158,7 +167,7 @@
       @pagination="getList"
     />
     <!-- 预览界面 -->
-    <el-dialog :title="preview.title" :visible.sync="preview.open" width="80%" top="5vh" append-to-body class="scrollbar">
+    <el-dialog :title="preview.title" :visible.sync="preview.open" width="80%" top="5vh" append-to-body class="scrollbar" dialogDrag>
       <el-tabs v-model="preview.activeName">
         <el-tab-pane
           v-for="(value, key) in preview.data"
@@ -186,6 +195,8 @@ hljs.registerLanguage("html", require("highlight.js/lib/languages/xml"));
 hljs.registerLanguage("vue", require("highlight.js/lib/languages/xml"));
 hljs.registerLanguage("javascript", require("highlight.js/lib/languages/javascript"));
 hljs.registerLanguage("sql", require("highlight.js/lib/languages/sql"));
+
+
 
 export default {
   name: "Gen",
@@ -333,3 +344,14 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+/* style.css */
+span[v-middle-ellipsis] {
+  display: inline-block;
+  max-width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+</style>
