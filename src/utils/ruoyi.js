@@ -10,7 +10,8 @@ export function parseTime(time, pattern) {
   if (arguments.length === 0 || !time) {
     return null
   }
-  const format = pattern || '{y}-{m}-{d} {h}:{i}:{s}'
+  const format = pattern || '{m}-{d} {h}:{i}'
+  // const format = pattern || '{y}-{m}-{d} {h}:{i}:{s}'
   let date
   if (typeof time === 'object') {
     date = time

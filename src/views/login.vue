@@ -1,7 +1,11 @@
 <template>
   <div class="login">
     <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form">
-      <h3 class="title">CM后台管理系统</h3>
+      <div class="container">
+        <h3 class="title">
+          <img :src="logo" class="sidebar-logo" /> 后台管理系统
+        </h3>
+      </div>
       <el-form-item prop="username">
         <el-input
           v-model="loginForm.username"
@@ -75,12 +79,14 @@
 import { getCodeImg } from "@/api/login";
 import Cookies from "js-cookie";
 import { encrypt, decrypt } from '@/utils/jsencrypt'
+import logoImg from '@/assets/logo/logo.png'
 
 export default {
   name: "Login",
   data() {
     return {
       codeUrl: "",
+      logo: logoImg,
       loginForm: {
         username: "",
         password: "",
@@ -175,11 +181,30 @@ export default {
   background-image: url("../assets/images/login-background.jpg");
   background-size: cover;
 }
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 64px; /* 根据需要调整高度 */
+  text-align: center;
+}
+
 .title {
   margin: 0px auto 30px auto;
   text-align: center;
+  display: inline-block;
+  vertical-align: middle;
   color: #707070;
 }
+
+.sidebar-logo {
+  width: 48px; /* 调整图标的宽度 */
+  height: 48px; /* 调整图标的高度 */
+  vertical-align: middle;
+  margin-right: 16px; /* 调整图标与文字之间的间距 */
+}
+
 
 .login-form {
   border-radius: 6px;

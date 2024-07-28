@@ -3,7 +3,7 @@
 
     <el-row :gutter="20">
       <el-col :sm="24" :lg="12" style="padding-left: 20px">
-        <h2>CMS后台管理系统</h2>
+        <h2>后台管理系统</h2>
         <p>
           <b>当前版本:</b> <span>v{{ version }}</span>
         </p>
@@ -44,7 +44,7 @@
           <el-collapse accordion>
             <el-collapse-item title="v1.0.0 - 25">
               <ol>
-                <li>CMS管理系统正式发布</li>
+                <li>C2C正式发布</li>
               </ol>
             </el-collapse-item>
 
