@@ -10,6 +10,15 @@ export function listUser(query) {
   })
 }
 
+// 查询业务员用户列表
+export function adminList(query) {
+  return request({
+    url: '/system/user/admin/list',
+    method: 'get',
+    params: query
+  })
+}
+
 // 查询用户详细
 export function getUser(userId) {
   return request({

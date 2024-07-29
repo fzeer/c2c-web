@@ -117,26 +117,15 @@
       <el-table-column label="冻结金额" align="center" prop="frozeMoney" min-width="100" sortable />
       <el-table-column label="变动前金额" align="center" prop="beforeMoney" min-width="100" sortable />
       <el-table-column label="变动后金额" align="center" prop="afterMoney" min-width="100" sortable />
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width" min-width="100" fixed="right">
+
+      <el-table-column label="创建时间" align="center" prop="createTime">
         <template v-slot="scope">
-          <el-button
-            size="mini"
-            type="text"
-            icon="el-icon-edit"
-            @click="handleUpdate(scope.row)"
-            v-hasPermi="['agent:agentwalletlog:edit']"
-          >修改</el-button>
-          <el-button
-            size="mini"
-            type="text"
-            icon="el-icon-delete"
-            @click="handleDelete(scope.row)"
-            v-hasPermi="['agent:agentwalletlog:remove']"
-          >删除</el-button>
+          <span>{{ parseTime(scope.row.createTime, '{m}-{d} {h}:{i}') }}</span>
         </template>
       </el-table-column>
+
     </el-table>
-    
+
     <pagination
       v-show="total>0"
       :total="total"

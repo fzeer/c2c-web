@@ -222,6 +222,12 @@
       <el-table-column label="代付订单号" align="center" prop="orderCode" min-width="100" sortable />
       <el-table-column label="提现失败原因" align="center" prop="respDesc" />
       <el-table-column label="部门ID" align="center" prop="deptId" />
+      <el-table-column label="创建时间" align="center" prop="createTime">
+        <template v-slot="scope">
+          <span>{{ parseTime(scope.row.createTime, '{m}-{d} {h}:{i}') }}</span>
+        </template>
+      </el-table-column>
+
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width" min-width="100" fixed="right">
         <template v-slot="scope">
           <el-button
@@ -241,7 +247,7 @@
         </template>
       </el-table-column>
     </el-table>
-    
+
     <pagination
       v-show="total>0"
       :total="total"

@@ -108,35 +108,35 @@
     </el-form>
 
     <el-row :gutter="10" class="mb8">
-      <el-col :span="1.5">
-        <el-button
-          type="primary"
-          icon="el-icon-plus"
-          size="mini"
-          @click="handleAdd"
-          v-hasPermi="['agent:agentwallet:add']"
-        >新增</el-button>
-      </el-col>
-      <el-col :span="1.5">
-        <el-button
-          type="success"
-          icon="el-icon-edit"
-          size="mini"
-          :disabled="single"
-          @click="handleUpdate"
-          v-hasPermi="['agent:agentwallet:edit']"
-        >修改</el-button>
-      </el-col>
-      <el-col :span="1.5">
-        <el-button
-          type="danger"
-          icon="el-icon-delete"
-          size="mini"
-          :disabled="multiple"
-          @click="handleDelete"
-          v-hasPermi="['agent:agentwallet:remove']"
-        >删除</el-button>
-      </el-col>
+<!--      <el-col :span="1.5">-->
+<!--        <el-button-->
+<!--          type="primary"-->
+<!--          icon="el-icon-plus"-->
+<!--          size="mini"-->
+<!--          @click="handleAdd"-->
+<!--          v-hasPermi="['agent:agentwallet:add']"-->
+<!--        >新增</el-button>-->
+<!--      </el-col>-->
+<!--      <el-col :span="1.5">-->
+<!--        <el-button-->
+<!--          type="success"-->
+<!--          icon="el-icon-edit"-->
+<!--          size="mini"-->
+<!--          :disabled="single"-->
+<!--          @click="handleUpdate"-->
+<!--          v-hasPermi="['agent:agentwallet:edit']"-->
+<!--        >修改</el-button>-->
+<!--      </el-col>-->
+<!--      <el-col :span="1.5">-->
+<!--        <el-button-->
+<!--          type="danger"-->
+<!--          icon="el-icon-delete"-->
+<!--          size="mini"-->
+<!--          :disabled="multiple"-->
+<!--          @click="handleDelete"-->
+<!--          v-hasPermi="['agent:agentwallet:remove']"-->
+<!--        >删除</el-button>-->
+<!--      </el-col>-->
       <el-col :span="1.5">
         <el-button
           type="warning"
@@ -157,10 +157,14 @@
       resizable
     >
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="ID" align="center" prop="id" />
-      <el-table-column label="钱包编号" align="center" prop="walletNo" min-width="100" sortable />
+      <el-table-column label="钱包ID" align="center" prop="id" />
+      <el-table-column label="钱包编号" align="center" prop="walletNo" min-width="150" sortable />
       <el-table-column label="代理ID" align="center" prop="agentId" />
-      <el-table-column label="余额" align="center" prop="balance" min-width="100" sortable />
+      <el-table-column label="余额" align="right" prop="balance" min-width="100" sortable>
+        <template v-slot="scope">
+          <span>{{ parseMoney(scope.row.balance) }}</span>
+        </template>
+      </el-table-column>
       <el-table-column label="可用余额" align="center" prop="availBalance" min-width="100" sortable />
       <el-table-column label="冻结金额" align="center" prop="frozeBalance" min-width="100" sortable />
       <el-table-column label="当日进款" align="center" prop="todayMoneyIn" min-width="100" sortable />
@@ -174,24 +178,31 @@
           <dict-tag :options="dict.type.sys_normal_disable" :value="scope.row.status"/>
         </template>
       </el-table-column>
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width" min-width="100" fixed="right">
+
+      <el-table-column label="创建时间" align="center" prop="createTime" min-width="100">
         <template v-slot="scope">
-          <el-button
-            size="mini"
-            type="text"
-            icon="el-icon-edit"
-            @click="handleUpdate(scope.row)"
-            v-hasPermi="['agent:agentwallet:edit']"
-          >修改</el-button>
-          <el-button
-            size="mini"
-            type="text"
-            icon="el-icon-delete"
-            @click="handleDelete(scope.row)"
-            v-hasPermi="['agent:agentwallet:remove']"
-          >删除</el-button>
+          <span>{{ parseTime(scope.row.createTime, '{m}-{d} {h}:{i}') }}</span>
         </template>
       </el-table-column>
+
+<!--      <el-table-column label="操作" align="center" class-name="small-padding fixed-width" min-width="120" fixed="right">-->
+<!--        <template v-slot="scope">-->
+<!--          <el-button-->
+<!--            size="mini"-->
+<!--            type="text"-->
+<!--            icon="el-icon-edit"-->
+<!--            @click="handleUpdate(scope.row)"-->
+<!--            v-hasPermi="['agent:agentwallet:edit']"-->
+<!--          >修改</el-button>-->
+<!--          <el-button-->
+<!--            size="mini"-->
+<!--            type="text"-->
+<!--            icon="el-icon-delete"-->
+<!--            @click="handleDelete(scope.row)"-->
+<!--            v-hasPermi="['agent:agentwallet:remove']"-->
+<!--          >删除</el-button>-->
+<!--        </template>-->
+<!--      </el-table-column>-->
     </el-table>
 
     <pagination
@@ -258,6 +269,7 @@
 
 <script>
 import { listAgentwallet, getAgentwallet, delAgentwallet, addAgentwallet, updateAgentwallet } from "@/api/agent/agentwallet";
+import { parseMoney } from '@/utils/ruoyi'
 
 export default {
   name: "Agentwallet",

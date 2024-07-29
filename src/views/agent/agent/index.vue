@@ -25,16 +25,16 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="代理类型" prop="agentType"  v-if="moreSearch" >
-        <el-select v-model="queryParams.agentType" placeholder="请选择代理类型" clearable>
-          <el-option
-            v-for="dict in dict.type.agent_type"
-            :key="dict.value"
-            :label="dict.label"
-            :value="dict.value"
-          />
-        </el-select>
-      </el-form-item>
+<!--      <el-form-item label="代理类型" prop="agentType"  v-if="moreSearch" >-->
+<!--        <el-select v-model="queryParams.agentType" placeholder="请选择代理类型" clearable>-->
+<!--          <el-option-->
+<!--            v-for="dict in dict.type.agent_type"-->
+<!--            :key="dict.value"-->
+<!--            :label="dict.label"-->
+<!--            :value="dict.value"-->
+<!--          />-->
+<!--        </el-select>-->
+<!--      </el-form-item>-->
       <el-form-item label="上级代理ID" prop="parentId"  v-if="moreSearch" >
         <el-input
           v-model="queryParams.parentId"
@@ -43,26 +43,27 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="授信额度" prop="creditAmount"  v-if="moreSearch" >
-        <el-input
-          v-model="queryParams.creditAmount"
-          placeholder="请输入授信额度"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="部门ID" prop="deptId"  v-if="moreSearch" >
-        <el-input
-          v-model="queryParams.deptId"
-          placeholder="请输入部门ID"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="业务员ID" prop="adminId"  v-if="moreSearch" >
+
+<!--      <el-form-item label="授信额度" prop="creditAmount"  v-if="moreSearch" >-->
+<!--        <el-input-->
+<!--          v-model="queryParams.creditAmount"-->
+<!--          placeholder="请输入授信额度"-->
+<!--          clearable-->
+<!--          @keyup.enter.native="handleQuery"-->
+<!--        />-->
+<!--      </el-form-item>-->
+<!--      <el-form-item label="部门ID" prop="deptId"  v-if="moreSearch" >-->
+<!--        <el-input-->
+<!--          v-model="queryParams.deptId"-->
+<!--          placeholder="请输入部门ID"-->
+<!--          clearable-->
+<!--          @keyup.enter.native="handleQuery"-->
+<!--        />-->
+<!--      </el-form-item>-->
+      <el-form-item label="业务员" prop="adminId"  v-if="moreSearch" >
         <el-input
           v-model="queryParams.adminId"
-          placeholder="请输入业务员ID"
+          placeholder="请输入业务员"
           clearable
           @keyup.enter.native="handleQuery"
         />
@@ -138,18 +139,22 @@
       <el-table-column label="代理编号" align="center" prop="agentNo" min-width="100" sortable />
       <el-table-column label="代理简称" align="center" prop="agentShortName" />
       <el-table-column label="代理全称" align="center" prop="agentName" />
-      <el-table-column label="代理类型" align="center" prop="agentType">
-        <template v-slot="scope">
-          <dict-tag :options="dict.type.agent_type" :value="scope.row.agentType"/>
-        </template>
-      </el-table-column>
-      <el-table-column label="上级代理ID" align="center" prop="parentId" />
-      <el-table-column label="授信额度" align="center" prop="creditAmount" />
-      <el-table-column label="部门ID" align="center" prop="deptId" />
-      <el-table-column label="业务员ID" align="center" prop="adminId" />
+<!--      <el-table-column label="代理类型" align="center" prop="agentType">-->
+<!--        <template v-slot="scope">-->
+<!--          <dict-tag :options="dict.type.agent_type" :value="scope.row.agentType"/>-->
+<!--        </template>-->
+<!--      </el-table-column>-->
+      <el-table-column label="上级代理" align="center" prop="parentName" min-width="100" sortable />
+<!--      <el-table-column label="授信额度" align="center" prop="creditAmount" />-->
+      <el-table-column label="业务员" align="center" prop="adminName"  min-width="100" sortable/>
       <el-table-column label="状态" align="center" prop="status">
         <template v-slot="scope">
           <dict-tag :options="dict.type.sys_normal_disable" :value="scope.row.status"/>
+        </template>
+      </el-table-column>
+      <el-table-column label="创建时间" align="center" prop="createTime">
+        <template v-slot="scope">
+          <span>{{ parseTime(scope.row.createTime, '{m}-{d} {h}:{i}') }}</span>
         </template>
       </el-table-column>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width" min-width="100" fixed="right">
@@ -171,7 +176,7 @@
         </template>
       </el-table-column>
     </el-table>
-    
+
     <pagination
       v-show="total>0"
       :total="total"
@@ -183,6 +188,19 @@
     <!-- 添加或修改代理商列对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
+
+        <el-form-item label="上级代理">
+          <el-select v-model="form.parentId" style="width: 100%" @change="parentSelectChange" placeholder="请选择">
+            <el-option
+              v-for="item in parentAgentOptions"
+              :key="item.agentId"
+              :label="item.agentShortName"
+              :value="item.agentId"
+              :disabled="item.status != '0'"
+            ></el-option>
+          </el-select>
+        </el-form-item>
+
         <el-form-item label="代理编号" prop="agentNo">
           <el-input v-model="form.agentNo" placeholder="请输入代理编号" />
         </el-form-item>
@@ -192,28 +210,32 @@
         <el-form-item label="代理全称" prop="agentName">
           <el-input v-model="form.agentName" placeholder="请输入代理全称" />
         </el-form-item>
-        <el-form-item label="代理类型" prop="agentType">
-          <el-select v-model="form.agentType" placeholder="请选择代理类型">
-            <el-option
-              v-for="dict in dict.type.agent_type"
-              :key="dict.value"
-              :label="dict.label"
-              :value="dict.value"
-            ></el-option>
-          </el-select>
+<!--        <el-form-item label="代理类型" prop="agentType">-->
+<!--          <el-select v-model="form.agentType" placeholder="请选择代理类型">-->
+<!--            <el-option-->
+<!--              v-for="dict in dict.type.agent_type"-->
+<!--              :key="dict.value"-->
+<!--              :label="dict.label"-->
+<!--              :value="dict.value"-->
+<!--            ></el-option>-->
+<!--          </el-select>-->
+<!--        </el-form-item>-->
+
+<!--        <el-form-item label="上级代理" prop="parentId">-->
+<!--          <treeselect v-model="form.parentId" :options="deptOptions" :normalizer="normalizer" placeholder="选择上级部门" />-->
+<!--        </el-form-item>-->
+
+
+<!--        <el-form-item label="授信额度" prop="creditAmount">-->
+<!--          <el-input v-model="form.creditAmount" placeholder="请输入授信额度" />-->
+<!--        </el-form-item>-->
+
+        <el-form-item label="业务员" prop="adminName">
+          <el-input v-model="form.adminName" placeholder="业务员" readonly>
+            <el-button @click="openSelectAdmin" style="padding-right:10px" slot="suffix" type="text" >选择</el-button>
+          </el-input>
         </el-form-item>
-        <el-form-item label="上级代理ID" prop="parentId">
-          <el-input v-model="form.parentId" placeholder="请输入上级代理ID" />
-        </el-form-item>
-        <el-form-item label="授信额度" prop="creditAmount">
-          <el-input v-model="form.creditAmount" placeholder="请输入授信额度" />
-        </el-form-item>
-        <el-form-item label="部门ID" prop="deptId">
-          <el-input v-model="form.deptId" placeholder="请输入部门ID" />
-        </el-form-item>
-        <el-form-item label="业务员ID" prop="adminId">
-          <el-input v-model="form.adminId" placeholder="请输入业务员ID" />
-        </el-form-item>
+
         <el-form-item label="状态">
           <el-radio-group v-model="form.status">
             <el-radio
@@ -229,14 +251,20 @@
         <el-button @click="cancel">取 消</el-button>
       </div>
     </el-dialog>
+    <select-admin ref="select" userType="0" @ok="adminSelectChange" />
   </div>
 </template>
 
 <script>
-import { listAgent, getAgent, delAgent, addAgent, updateAgent } from "@/api/agent/agent";
+import { listAgent, listParentAgent, getAgent, delAgent, addAgent, updateAgent } from "@/api/agent/agent";
+import { listAgentParent } from "@/api/system/dept";
+import Treeselect from '@riophae/vue-treeselect'
+import "@riophae/vue-treeselect/dist/vue-treeselect.css";
+import selectAdmin from "@/views/system/user/selectAdmin";
 
 export default {
   name: "Agent",
+  components: { Treeselect, selectAdmin },
   dicts: ['agent_type', 'sys_normal_disable'],
   data() {
     return {
@@ -256,6 +284,10 @@ export default {
       total: 0,
       // 代理商列表格数据
       agentList: [],
+      // 部门树选项
+      deptOptions: [],
+      // 上级代理
+      parentAgentOptions: [],
       // 弹出层标题
       title: "",
       // 是否显示弹出层
@@ -278,11 +310,17 @@ export default {
       form: {},
       // 表单校验
       rules: {
+        agentNo: [
+          { required: true, message: "代理编号不能为空", trigger: "blur" }
+        ],
         agentShortName: [
           { required: true, message: "代理简称不能为空", trigger: "blur" }
         ],
         agentName: [
           { required: true, message: "代理全称不能为空", trigger: "blur" }
+        ],
+        adminName: [
+          { required: true, message: "业务员不能为空", trigger: "blur" }
         ],
       }
     };
@@ -299,6 +337,17 @@ export default {
         this.total = response.total;
         this.loading = false;
       });
+    },
+    /** 转换部门数据结构 */
+    normalizer(node) {
+      if (node.children && !node.children.length) {
+        delete node.children;
+      }
+      return {
+        id: node.deptId,
+        label: node.deptName,
+        children: node.children
+      };
     },
     // 取消按钮
     cancel() {
@@ -317,6 +366,7 @@ export default {
         creditAmount: null,
         deptId: null,
         adminId: null,
+        adminName: null,
         status: "0",
         remark: null,
         createBy: null,
@@ -346,16 +396,31 @@ export default {
     handleAdd() {
       this.reset();
       this.open = true;
-      this.title = "添加代理商列";
+      this.title = "添加代理商";
+
+      // listAgentParent().then(response => {
+      //   this.deptOptions = this.handleTree(response.data, "deptId");
+      // });
+
+      listParentAgent().then(response => {
+        this.parentAgentOptions = response.data;
+      });
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
+      // listAgentParent().then(response => {
+      //   this.deptOptions = this.handleTree(response.data, "deptId");
+      // });
+      listParentAgent().then(response => {
+        this.parentAgentOptions = response.data;
+      });
+
       this.reset();
       const agentId = row.agentId || this.ids
       getAgent(agentId).then(response => {
         this.form = response.data;
         this.open = true;
-        this.title = "修改代理商列";
+        this.title = "修改代理商";
       });
     },
     /** 提交按钮 */
@@ -393,6 +458,21 @@ export default {
       this.download('agent/agent/export', {
         ...this.queryParams
       }, `agent_${new Date().getTime()}.xlsx`)
+    },
+    /** 选择业务员弹窗 */
+    openSelectAdmin() {
+      this.$refs.select.show();
+    },
+    /** 选择上级代理 */
+    parentSelectChange() {
+
+    },
+    /** 选择业务员 */
+    adminSelectChange() {
+      if(this.$refs.select.users.length > 0) {
+        this.form.adminId = this.$refs.select.users[0].userId;
+        this.form.adminName = this.$refs.select.users[0].nickName;
+      }
     }
   }
 };

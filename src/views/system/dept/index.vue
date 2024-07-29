@@ -65,7 +65,7 @@
       :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
     >
       <el-table-column prop="deptName" label="部门名称" width="260"></el-table-column>
-      <el-table-column prop="status" label="类型" width="100">
+      <el-table-column prop="deptType" label="部门类型" width="100">
         <template slot-scope="scope">
           <dict-tag :options="dict.type.dept_type" :value="scope.row.deptType"/>
         </template>
@@ -177,7 +177,7 @@ import "@riophae/vue-treeselect/dist/vue-treeselect.css";
 
 export default {
   name: "Dept",
-  dicts: ['sys_normal_disable'],
+  dicts: ['sys_normal_disable', 'dept_type'],
   components: { Treeselect },
   data() {
     return {

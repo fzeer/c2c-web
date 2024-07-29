@@ -235,3 +235,22 @@ export async function blobValidate(data) {
     return true;
   }
 }
+
+export function parseDecimal(data) {
+  return data;
+}
+
+export function parseMoney(amount) {
+  // 验证输入是否为有效数字
+  if (amount === null || amount === undefined || isNaN(amount)) {
+    return '0.00'; // 返回默认值
+  }
+
+  // 将输入转换为浮点数并保留两位小数
+  let formattedAmount = parseFloat(amount).toFixed(2);
+
+  // 使用正则表达式在千分位添加逗号
+  formattedAmount = formattedAmount.replace(/\B(?=(\d{4})+(?!\d))/g, ',');
+
+  return formattedAmount;
+}

@@ -8,6 +8,14 @@ export function listAgent(query) {
     params: query
   })
 }
+// 查询代理商列列表
+export function listParentAgent(query) {
+  return request({
+    url: '/agent/agent/parent/list',
+    method: 'get',
+    params: query
+  })
+}
 
 // 查询代理商列详细
 export function getAgent(agentId) {

@@ -9,6 +9,16 @@ export function listDept(query) {
   })
 }
 
+// 查询部门列表
+export function listAgentParent(query) {
+  return request({
+    url: '/system/dept/agent/parent/list',
+    method: 'get',
+    params: query
+  })
+}
+
+
 // 查询部门列表（排除节点）
 export function listDeptExcludeChild(deptId) {
   return request({
