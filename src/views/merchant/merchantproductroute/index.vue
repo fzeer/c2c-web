@@ -101,16 +101,21 @@
     >
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="路由ID" align="center" prop="id" />
-      <el-table-column label="商户ID" align="center" prop="merchantId" />
-      <el-table-column label="支付编码" align="center" prop="wayCode" />
-      <el-table-column label="产品ID" align="center" prop="productId" />
-      <el-table-column label="比重" align="center" prop="weight" />
+      <el-table-column label="商户ID" align="center" prop="merchantId" show-overflow-tooltip />
+      <el-table-column label="支付编码" align="center" prop="wayCode" show-overflow-tooltip />
+      <el-table-column label="产品ID" align="center" prop="productId" show-overflow-tooltip />
+      <el-table-column label="比重" align="center" prop="weight" show-overflow-tooltip />
       <el-table-column label="状态" align="center" prop="status">
         <template v-slot="scope">
           <dict-tag :options="dict.type.sys_normal_disable" :value="scope.row.status"/>
         </template>
       </el-table-column>
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width" min-width="100" fixed="right">
+      <el-table-column label="创建时间" align="center" prop="createTime" min-width="110" sortable show-overflow-tooltip >
+        <template v-slot="scope">
+          <span>{{ parseTime(scope.row.createTime, '{m}-{d} {h}:{i}') }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="操作" align="center" class-name="small-padding fixed-width" min-width="120" fixed="right">
         <template v-slot="scope">
           <el-button
             size="mini"

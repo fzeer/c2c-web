@@ -411,88 +411,113 @@
     >
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="订单ID" align="center" prop="orderId" />
-      <el-table-column label="代付订单号" align="center" prop="orderCode" min-width="100" sortable />
-      <el-table-column label="商户订单号" align="center" prop="mOrderCode" />
-      <el-table-column label="商户ID" align="center" prop="merchantId" />
-      <el-table-column label="代理商ID" align="center" prop="agentId" />
-      <el-table-column label="代理商" align="center" prop="agentName" />
-      <el-table-column label="商户编号" align="center" prop="merchantNo" min-width="100" sortable />
-      <el-table-column label="商户名称" align="center" prop="merchantName" />
-      <el-table-column label="订单金额" align="center" prop="totalMoney" min-width="100" sortable />
-      <el-table-column label="实际金额" align="center" prop="realMoney" min-width="100" sortable />
-      <el-table-column label="钱包ID" align="center" prop="walletId" />
+      <el-table-column label="代付订单号" align="center" prop="orderCode" min-width="100" sortable show-overflow-tooltip/>
+      <el-table-column label="商户订单号" align="center" prop="mOrderCode" show-overflow-tooltip />
+      <el-table-column label="商户ID" align="center" prop="merchantId" show-overflow-tooltip />
+      <el-table-column label="代理商ID" align="center" prop="agentId" show-overflow-tooltip />
+      <el-table-column label="代理商" align="center" prop="agentName" show-overflow-tooltip />
+      <el-table-column label="商户编号" align="center" prop="merchantNo" min-width="100" sortable show-overflow-tooltip/>
+      <el-table-column label="商户名称" align="center" prop="merchantName" show-overflow-tooltip />
+     <el-table-column label="订单金额" align="right" prop="totalMoney" min-width="100" sortable show-overflow-tooltip >
+       <template v-slot="scope">
+         <span class="text-money">{{ parseMoney(scope.row.totalMoney) }}</span>
+       </template>
+     </el-table-column>
+     <el-table-column label="实际金额" align="right" prop="realMoney" min-width="100" sortable show-overflow-tooltip >
+       <template v-slot="scope">
+         <span class="text-money">{{ parseMoney(scope.row.realMoney) }}</span>
+       </template>
+     </el-table-column>
+      <el-table-column label="钱包ID" align="center" prop="walletId" show-overflow-tooltip />
       <el-table-column label="提交方式" align="center" prop="submitType">
         <template v-slot="scope">
           <dict-tag :options="dict.type.payout_submit_type" :value="scope.row.submitType"/>
         </template>
       </el-table-column>
-      <el-table-column label="入账金额" align="center" prop="enteredMoney" min-width="100" sortable />
-      <el-table-column label="货币代码" align="center" prop="currency" />
-      <el-table-column label="汇率" align="center" prop="exchangeRate" />
-      <el-table-column label="原币金额" align="center" prop="originMoney" min-width="100" sortable />
-      <el-table-column label="银行名称" align="center" prop="sourceBankName" />
-      <el-table-column label="银行卡号" align="center" prop="sourceBankCode" />
-      <el-table-column label="银行名称" align="center" prop="targetBankName" />
-      <el-table-column label="银行卡号" align="center" prop="targetBankCode" />
-      <el-table-column label="支行" align="center" prop="targetBankSonName" />
-      <el-table-column label="开户人" align="center" prop="targetAccountName" />
-      <el-table-column label="开户人身份证" align="center" prop="targetIdCard" />
-      <el-table-column label="手机号" align="center" prop="targetMobile" />
-      <el-table-column label="单笔手续费" align="center" prop="single" />
-      <el-table-column label="费率" align="center" prop="rate" min-width="100" sortable />
-      <el-table-column label="手续费" align="center" prop="fee" />
-      <el-table-column label="特定渠道发起额外参数" align="center" prop="channelExtra" />
-      <el-table-column label="渠道用户标识,如微信openId,支付宝账号" align="center" prop="channelUser" />
-      <el-table-column label="渠道订单号" align="center" prop="channelOrderCode" />
+     <el-table-column label="入账金额" align="right" prop="enteredMoney" min-width="100" sortable show-overflow-tooltip >
+       <template v-slot="scope">
+         <span class="text-money">{{ parseMoney(scope.row.enteredMoney) }}</span>
+       </template>
+     </el-table-column>
+      <el-table-column label="货币代码" align="center" prop="currency" show-overflow-tooltip />
+      <el-table-column label="汇率" align="center" prop="exchangeRate" show-overflow-tooltip />
+     <el-table-column label="原币金额" align="right" prop="originMoney" min-width="100" sortable show-overflow-tooltip >
+       <template v-slot="scope">
+         <span class="text-money">{{ parseMoney(scope.row.originMoney) }}</span>
+       </template>
+     </el-table-column>
+      <el-table-column label="银行名称" align="center" prop="sourceBankName" show-overflow-tooltip />
+      <el-table-column label="银行卡号" align="center" prop="sourceBankCode" show-overflow-tooltip />
+      <el-table-column label="银行名称" align="center" prop="targetBankName" show-overflow-tooltip />
+      <el-table-column label="银行卡号" align="center" prop="targetBankCode" show-overflow-tooltip />
+      <el-table-column label="支行" align="center" prop="targetBankSonName" show-overflow-tooltip />
+      <el-table-column label="开户人" align="center" prop="targetAccountName" show-overflow-tooltip />
+      <el-table-column label="开户人身份证" align="center" prop="targetIdCard" show-overflow-tooltip />
+      <el-table-column label="手机号" align="center" prop="targetMobile" show-overflow-tooltip />
+      <el-table-column label="单笔手续费" align="center" prop="single" show-overflow-tooltip />
+     <el-table-column label="费率" align="right" prop="rate" min-width="100" sortable show-overflow-tooltip >
+       <template v-slot="scope">
+         <span class="text-money">{{ parseMoney(scope.row.rate) }}</span>
+       </template>
+     </el-table-column>
+      <el-table-column label="手续费" align="center" prop="fee" show-overflow-tooltip />
+      <el-table-column label="特定渠道发起额外参数" align="center" prop="channelExtra" show-overflow-tooltip />
+      <el-table-column label="渠道用户标识,如微信openId,支付宝账号" align="center" prop="channelUser" show-overflow-tooltip />
+      <el-table-column label="渠道订单号" align="center" prop="channelOrderCode" show-overflow-tooltip />
       <el-table-column label="代付类型" align="center" prop="payoutType">
         <template v-slot="scope">
           <dict-tag :options="dict.type.payout_type" :value="scope.row.payoutType"/>
         </template>
       </el-table-column>
-      <el-table-column label="代付人员" align="center" prop="payoutUser" />
-      <el-table-column label="审核方式" align="center" prop="auditStatus" />
-      <el-table-column label="审核人员" align="center" prop="auditUser" />
-      <el-table-column label="锁定状态" align="center" prop="lockedYn" />
-      <el-table-column label="锁定时间" align="center" prop="lockedTime" sortable>
+      <el-table-column label="代付人员" align="center" prop="payoutUser" show-overflow-tooltip />
+      <el-table-column label="审核方式" align="center" prop="auditStatus" show-overflow-tooltip />
+      <el-table-column label="审核人员" align="center" prop="auditUser" show-overflow-tooltip />
+      <el-table-column label="锁定状态" align="center" prop="lockedYn" show-overflow-tooltip />
+      <el-table-column label="锁定时间" align="center" prop="lockedTime" min-width="110" sortable show-overflow-tooltip >
         <template v-slot="scope">
           <span>{{ parseTime(scope.row.lockedTime, '{m}-{d} {h}:{i}') }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="锁定人员" align="center" prop="lockedUser" />
+      <el-table-column label="锁定人员" align="center" prop="lockedUser" show-overflow-tooltip />
       <el-table-column label="状态" align="center" prop="status">
         <template v-slot="scope">
           <dict-tag :options="dict.type.sys_normal_disable" :value="scope.row.status"/>
         </template>
       </el-table-column>
-      <el-table-column label="失效时间" align="center" prop="expiredTime" sortable>
+      <el-table-column label="失效时间" align="center" prop="expiredTime" min-width="110" sortable show-overflow-tooltip >
         <template v-slot="scope">
           <span>{{ parseTime(scope.row.expiredTime, '{m}-{d} {h}:{i}') }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="成功时间" align="center" prop="successTime" sortable>
+      <el-table-column label="成功时间" align="center" prop="successTime" min-width="110" sortable show-overflow-tooltip >
         <template v-slot="scope">
           <span>{{ parseTime(scope.row.successTime, '{m}-{d} {h}:{i}') }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="渠道ID" align="center" prop="channelId" />
-      <el-table-column label="产品ID" align="center" prop="productId" />
+      <el-table-column label="渠道ID" align="center" prop="channelId" show-overflow-tooltip />
+      <el-table-column label="产品ID" align="center" prop="productId" show-overflow-tooltip />
       <el-table-column label="通知状态" align="center" prop="notifyStatus">
         <template v-slot="scope">
           <dict-tag :options="dict.type.order_notify_status" :value="scope.row.notifyStatus"/>
         </template>
       </el-table-column>
-      <el-table-column label="通知URL" align="center" prop="notifyUrl" />
-      <el-table-column label="是否为补单" align="center" prop="supplementYn" />
-      <el-table-column label="补单时间" align="center" prop="supplementTime" sortable>
+      <el-table-column label="通知URL" align="center" prop="notifyUrl" show-overflow-tooltip />
+      <el-table-column label="是否为补单" align="center" prop="supplementYn" show-overflow-tooltip />
+      <el-table-column label="补单时间" align="center" prop="supplementTime" min-width="110" sortable show-overflow-tooltip >
         <template v-slot="scope">
           <span>{{ parseTime(scope.row.supplementTime, '{m}-{d} {h}:{i}') }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="补单流水号" align="center" prop="supplementRefNo" min-width="100" sortable />
-      <el-table-column label="补单原因" align="center" prop="supplementReason" />
-      <el-table-column label="补单人员" align="center" prop="supplementUser" />
-      <el-table-column label="部门ID" align="center" prop="deptId" />
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width" min-width="100" fixed="right">
+      <el-table-column label="补单流水号" align="center" prop="supplementRefNo" min-width="100" sortable show-overflow-tooltip/>
+      <el-table-column label="补单原因" align="center" prop="supplementReason" show-overflow-tooltip />
+      <el-table-column label="补单人员" align="center" prop="supplementUser" show-overflow-tooltip />
+      <el-table-column label="部门ID" align="center" prop="deptId" show-overflow-tooltip />
+      <el-table-column label="创建时间" align="center" prop="createTime" min-width="110" sortable show-overflow-tooltip >
+        <template v-slot="scope">
+          <span>{{ parseTime(scope.row.createTime, '{m}-{d} {h}:{i}') }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="操作" align="center" class-name="small-padding fixed-width" min-width="120" fixed="right">
         <template v-slot="scope">
           <el-button
             size="mini"

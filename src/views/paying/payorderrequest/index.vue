@@ -99,26 +99,31 @@
     >
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="ID" align="center" prop="orderId" />
-      <el-table-column label="订单编号" align="center" prop="orderCode" min-width="100" sortable />
-      <el-table-column label="请求时间" align="center" prop="requestTime" sortable>
+      <el-table-column label="订单编号" align="center" prop="orderCode" min-width="100" sortable show-overflow-tooltip/>
+      <el-table-column label="请求时间" align="center" prop="requestTime" min-width="110" sortable show-overflow-tooltip >
         <template v-slot="scope">
           <span>{{ parseTime(scope.row.requestTime, '{m}-{d} {h}:{i}') }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="请求地址" align="center" prop="requestUrl" />
-      <el-table-column label="请求方式" align="center" prop="requestMethod" />
-      <el-table-column label="内容类型" align="center" prop="requestContentType" />
-      <el-table-column label="请求载荷" align="center" prop="requestPayload" />
-      <el-table-column label="回调地址" align="center" prop="callbackUrl" />
-      <el-table-column label="回调载荷" align="center" prop="callbackPayload" />
-      <el-table-column label="回调时间" align="center" prop="callbackTime" sortable>
+      <el-table-column label="请求地址" align="center" prop="requestUrl" show-overflow-tooltip />
+      <el-table-column label="请求方式" align="center" prop="requestMethod" show-overflow-tooltip />
+      <el-table-column label="内容类型" align="center" prop="requestContentType" show-overflow-tooltip />
+      <el-table-column label="请求载荷" align="center" prop="requestPayload" show-overflow-tooltip />
+      <el-table-column label="回调地址" align="center" prop="callbackUrl" show-overflow-tooltip />
+      <el-table-column label="回调载荷" align="center" prop="callbackPayload" show-overflow-tooltip />
+      <el-table-column label="回调时间" align="center" prop="callbackTime" min-width="110" sortable show-overflow-tooltip >
         <template v-slot="scope">
           <span>{{ parseTime(scope.row.callbackTime, '{m}-{d} {h}:{i}') }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="已回调次数" align="center" prop="callbackTimes" />
-      <el-table-column label="部门ID" align="center" prop="deptId" />
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width" min-width="100" fixed="right">
+      <el-table-column label="已回调次数" align="center" prop="callbackTimes" show-overflow-tooltip />
+      <el-table-column label="部门ID" align="center" prop="deptId" show-overflow-tooltip />
+      <el-table-column label="创建时间" align="center" prop="createTime" min-width="110" sortable show-overflow-tooltip >
+        <template v-slot="scope">
+          <span>{{ parseTime(scope.row.createTime, '{m}-{d} {h}:{i}') }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="操作" align="center" class-name="small-padding fixed-width" min-width="120" fixed="right">
         <template v-slot="scope">
           <el-button
             size="mini"

@@ -119,33 +119,38 @@
     >
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="ID" align="center" prop="msgId" />
-      <el-table-column label="消息编号" align="center" prop="msgNo" min-width="100" sortable />
-      <el-table-column label="商户ID" align="center" prop="merchantId" />
-      <el-table-column label="商户号" align="center" prop="merchantNo" min-width="100" sortable />
-      <el-table-column label="商户名称" align="center" prop="merchantName" />
+      <el-table-column label="消息编号" align="center" prop="msgNo" min-width="100" sortable show-overflow-tooltip/>
+      <el-table-column label="商户ID" align="center" prop="merchantId" show-overflow-tooltip />
+      <el-table-column label="商户号" align="center" prop="merchantNo" min-width="100" sortable show-overflow-tooltip/>
+      <el-table-column label="商户名称" align="center" prop="merchantName" show-overflow-tooltip />
       <el-table-column label="消息类型" align="center" prop="msgType">
         <template v-slot="scope">
           <dict-tag :options="dict.type.crawl_msg_type" :value="scope.row.msgType"/>
         </template>
       </el-table-column>
-      <el-table-column label="消息内容" align="center" prop="msgContent" />
+      <el-table-column label="消息内容" align="center" prop="msgContent" show-overflow-tooltip />
       <el-table-column label="状态" align="center" prop="status">
         <template v-slot="scope">
           <dict-tag :options="dict.type.sys_normal_disable" :value="scope.row.status"/>
         </template>
       </el-table-column>
-      <el-table-column label="失效时间" align="center" prop="expiredTime" sortable>
+      <el-table-column label="失效时间" align="center" prop="expiredTime" min-width="110" sortable show-overflow-tooltip >
         <template v-slot="scope">
           <span>{{ parseTime(scope.row.expiredTime, '{m}-{d} {h}:{i}') }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="成功时间" align="center" prop="successTime" sortable>
+      <el-table-column label="成功时间" align="center" prop="successTime" min-width="110" sortable show-overflow-tooltip >
         <template v-slot="scope">
           <span>{{ parseTime(scope.row.successTime, '{m}-{d} {h}:{i}') }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="部门ID" align="center" prop="deptId" />
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width" min-width="100" fixed="right">
+      <el-table-column label="部门ID" align="center" prop="deptId" show-overflow-tooltip />
+      <el-table-column label="创建时间" align="center" prop="createTime" min-width="110" sortable show-overflow-tooltip >
+        <template v-slot="scope">
+          <span>{{ parseTime(scope.row.createTime, '{m}-{d} {h}:{i}') }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="操作" align="center" class-name="small-padding fixed-width" min-width="120" fixed="right">
         <template v-slot="scope">
           <el-button
             size="mini"

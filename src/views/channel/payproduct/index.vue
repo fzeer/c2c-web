@@ -183,18 +183,30 @@
     >
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="ID" align="center" prop="productId" />
-      <el-table-column label="产品编号" align="center" prop="productCode" />
-      <el-table-column label="产品名称" align="center" prop="productName" />
-      <el-table-column label="内部产品名称" align="center" prop="productNameInner" />
-      <el-table-column label="银行卡号" align="center" prop="bandCode" />
-      <el-table-column label="支付编码" align="center" prop="wayCode" />
-      <el-table-column label="通道ID" align="center" prop="channelId" />
-      <el-table-column label="费率" align="center" prop="rate" min-width="100" sortable />
-      <el-table-column label="单笔金额" align="center" prop="single" />
-      <el-table-column label="最低手续费" align="center" prop="minFee" />
-      <el-table-column label="最低金额" align="center" prop="minMoney" min-width="100" sortable />
-      <el-table-column label="最高金额" align="center" prop="maxMoney" min-width="100" sortable />
-      <el-table-column label="结算类型" align="center" prop="settleType" />
+      <el-table-column label="产品编号" align="center" prop="productCode" show-overflow-tooltip />
+      <el-table-column label="产品名称" align="center" prop="productName" show-overflow-tooltip />
+      <el-table-column label="内部产品名称" align="center" prop="productNameInner" show-overflow-tooltip />
+      <el-table-column label="银行卡号" align="center" prop="bandCode" show-overflow-tooltip />
+      <el-table-column label="支付编码" align="center" prop="wayCode" show-overflow-tooltip />
+      <el-table-column label="通道ID" align="center" prop="channelId" show-overflow-tooltip />
+     <el-table-column label="费率" align="right" prop="rate" min-width="100" sortable show-overflow-tooltip >
+       <template v-slot="scope">
+         <span class="text-money">{{ parseMoney(scope.row.rate) }}</span>
+       </template>
+     </el-table-column>
+      <el-table-column label="单笔金额" align="center" prop="single" show-overflow-tooltip />
+      <el-table-column label="最低手续费" align="center" prop="minFee" show-overflow-tooltip />
+     <el-table-column label="最低金额" align="right" prop="minMoney" min-width="100" sortable show-overflow-tooltip >
+       <template v-slot="scope">
+         <span class="text-money">{{ parseMoney(scope.row.minMoney) }}</span>
+       </template>
+     </el-table-column>
+     <el-table-column label="最高金额" align="right" prop="maxMoney" min-width="100" sortable show-overflow-tooltip >
+       <template v-slot="scope">
+         <span class="text-money">{{ parseMoney(scope.row.maxMoney) }}</span>
+       </template>
+     </el-table-column>
+      <el-table-column label="结算类型" align="center" prop="settleType" show-overflow-tooltip />
       <el-table-column label="状态" align="center" prop="status">
         <template v-slot="scope">
           <dict-tag :options="dict.type.sys_normal_disable" :value="scope.row.status"/>
@@ -205,9 +217,14 @@
           <dict-tag :options="dict.type.amount_type" :value="scope.row.amountType"/>
         </template>
       </el-table-column>
-      <el-table-column label="固定金额" align="center" prop="amountLst" />
-      <el-table-column label="产品附加参数" align="center" prop="extraParam" />
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width" min-width="100" fixed="right">
+      <el-table-column label="固定金额" align="center" prop="amountLst" show-overflow-tooltip />
+      <el-table-column label="产品附加参数" align="center" prop="extraParam" show-overflow-tooltip />
+      <el-table-column label="创建时间" align="center" prop="createTime" min-width="110" sortable show-overflow-tooltip >
+        <template v-slot="scope">
+          <span>{{ parseTime(scope.row.createTime, '{m}-{d} {h}:{i}') }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="操作" align="center" class-name="small-padding fixed-width" min-width="120" fixed="right">
         <template v-slot="scope">
           <el-button
             size="mini"

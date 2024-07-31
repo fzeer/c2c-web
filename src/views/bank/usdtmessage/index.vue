@@ -243,24 +243,32 @@
     >
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="ID" align="center" prop="msgId" />
-      <el-table-column label="项目编号" align="center" prop="projectCode" />
-      <el-table-column label="项目名称" align="center" prop="projectName" />
-      <el-table-column label="交易ID" align="center" prop="transactionId" />
-      <el-table-column label="应用版本号" align="center" prop="appVersion" />
+      <el-table-column label="项目编号" align="center" prop="projectCode" show-overflow-tooltip />
+      <el-table-column label="项目名称" align="center" prop="projectName" show-overflow-tooltip />
+      <el-table-column label="交易ID" align="center" prop="transactionId" show-overflow-tooltip />
+      <el-table-column label="应用版本号" align="center" prop="appVersion" show-overflow-tooltip />
       <el-table-column label="交易类型" align="center" prop="transactionType">
         <template v-slot="scope">
           <dict-tag :options="dict.type.transaction_type" :value="scope.row.transactionType"/>
         </template>
       </el-table-column>
-      <el-table-column label="系统地址" align="center" prop="hexAddress" />
-      <el-table-column label="系统地址" align="center" prop="viewAddress" />
-      <el-table-column label="对方地址" align="center" prop="otherHexAddress" />
-      <el-table-column label="对方地址" align="center" prop="otherViewAddress" />
-      <el-table-column label="交易金额" align="center" prop="amount" />
-      <el-table-column label="交易金额" align="center" prop="usdtBalance" min-width="100" sortable />
-      <el-table-column label="交易金额" align="center" prop="trxBalance" min-width="100" sortable />
-      <el-table-column label="码商ID" align="center" prop="supplierId" />
-      <el-table-column label="码商名称" align="center" prop="supplierName" />
+      <el-table-column label="系统地址" align="center" prop="hexAddress" show-overflow-tooltip />
+      <el-table-column label="系统地址" align="center" prop="viewAddress" show-overflow-tooltip />
+      <el-table-column label="对方地址" align="center" prop="otherHexAddress" show-overflow-tooltip />
+      <el-table-column label="对方地址" align="center" prop="otherViewAddress" show-overflow-tooltip />
+      <el-table-column label="交易金额" align="center" prop="amount" show-overflow-tooltip />
+     <el-table-column label="交易金额" align="right" prop="usdtBalance" min-width="100" sortable show-overflow-tooltip >
+       <template v-slot="scope">
+         <span class="text-money">{{ parseMoney(scope.row.usdtBalance) }}</span>
+       </template>
+     </el-table-column>
+     <el-table-column label="交易金额" align="right" prop="trxBalance" min-width="100" sortable show-overflow-tooltip >
+       <template v-slot="scope">
+         <span class="text-money">{{ parseMoney(scope.row.trxBalance) }}</span>
+       </template>
+     </el-table-column>
+      <el-table-column label="码商ID" align="center" prop="supplierId" show-overflow-tooltip />
+      <el-table-column label="码商名称" align="center" prop="supplierName" show-overflow-tooltip />
       <el-table-column label="状态" align="center" prop="status">
         <template v-slot="scope">
           <dict-tag :options="dict.type.sys_normal_disable" :value="scope.row.status"/>
@@ -271,9 +279,9 @@
           <dict-tag :options="dict.type.crawl_msg_type" :value="scope.row.msgType"/>
         </template>
       </el-table-column>
-      <el-table-column label="消息内容" align="center" prop="msgContent" />
-      <el-table-column label="匹配状态" align="center" prop="matchYn" />
-      <el-table-column label="解析时间" align="center" prop="matchTime" sortable>
+      <el-table-column label="消息内容" align="center" prop="msgContent" show-overflow-tooltip />
+      <el-table-column label="匹配状态" align="center" prop="matchYn" show-overflow-tooltip />
+      <el-table-column label="解析时间" align="center" prop="matchTime" min-width="110" sortable show-overflow-tooltip >
         <template v-slot="scope">
           <span>{{ parseTime(scope.row.matchTime, '{m}-{d} {h}:{i}') }}</span>
         </template>
@@ -283,11 +291,16 @@
           <dict-tag :options="dict.type.order_type" :value="scope.row.orderType"/>
         </template>
       </el-table-column>
-      <el-table-column label="匹配订单号" align="center" prop="orderCode" min-width="100" sortable />
-      <el-table-column label="商户号" align="center" prop="merchantNo" min-width="100" sortable />
-      <el-table-column label="商户名称" align="center" prop="merchantName" />
-      <el-table-column label="部门ID" align="center" prop="deptId" />
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width" min-width="100" fixed="right">
+      <el-table-column label="匹配订单号" align="center" prop="orderCode" min-width="100" sortable show-overflow-tooltip/>
+      <el-table-column label="商户号" align="center" prop="merchantNo" min-width="100" sortable show-overflow-tooltip/>
+      <el-table-column label="商户名称" align="center" prop="merchantName" show-overflow-tooltip />
+      <el-table-column label="部门ID" align="center" prop="deptId" show-overflow-tooltip />
+      <el-table-column label="创建时间" align="center" prop="createTime" min-width="110" sortable show-overflow-tooltip >
+        <template v-slot="scope">
+          <span>{{ parseTime(scope.row.createTime, '{m}-{d} {h}:{i}') }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="操作" align="center" class-name="small-padding fixed-width" min-width="120" fixed="right">
         <template v-slot="scope">
           <el-button
             size="mini"

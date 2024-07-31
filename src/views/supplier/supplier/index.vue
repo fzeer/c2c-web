@@ -175,29 +175,34 @@
     >
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="码商ID" align="center" prop="supplierId" />
-      <el-table-column label="码商编号" align="center" prop="supplierNo" min-width="100" sortable />
-      <el-table-column label="码商简称" align="center" prop="supplierShortName" />
-      <el-table-column label="码商全称" align="center" prop="supplierName" />
+      <el-table-column label="码商编号" align="center" prop="supplierNo" min-width="100" sortable show-overflow-tooltip/>
+      <el-table-column label="码商简称" align="center" prop="supplierShortName" show-overflow-tooltip />
+      <el-table-column label="码商全称" align="center" prop="supplierName" show-overflow-tooltip />
       <el-table-column label="码商类型" align="center" prop="supplierType">
         <template v-slot="scope">
           <dict-tag :options="dict.type.supplier_type" :value="scope.row.supplierType"/>
         </template>
       </el-table-column>
-      <el-table-column label="联系人" align="center" prop="owner" />
-      <el-table-column label="联系方式" align="center" prop="tel" />
-      <el-table-column label="LOGO" align="center" prop="logo" />
+      <el-table-column label="联系人" align="center" prop="owner" show-overflow-tooltip />
+      <el-table-column label="联系方式" align="center" prop="tel" show-overflow-tooltip />
+      <el-table-column label="LOGO" align="center" prop="logo" show-overflow-tooltip />
       <el-table-column label="状态" align="center" prop="status">
         <template v-slot="scope">
           <dict-tag :options="dict.type.sys_normal_disable" :value="scope.row.status"/>
         </template>
       </el-table-column>
-      <el-table-column label="金额列表" align="center" prop="limitAmountList" />
-      <el-table-column label="最小金额" align="center" prop="limitMin" />
-      <el-table-column label="最大金额" align="center" prop="limitMax" />
-      <el-table-column label="每笔限额" align="center" prop="limitPerPayment" />
-      <el-table-column label="每日限额" align="center" prop="limitPerDay" />
-      <el-table-column label="部门ID" align="center" prop="deptId" />
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width" min-width="100" fixed="right">
+      <el-table-column label="金额列表" align="center" prop="limitAmountList" show-overflow-tooltip />
+      <el-table-column label="最小金额" align="center" prop="limitMin" show-overflow-tooltip />
+      <el-table-column label="最大金额" align="center" prop="limitMax" show-overflow-tooltip />
+      <el-table-column label="每笔限额" align="center" prop="limitPerPayment" show-overflow-tooltip />
+      <el-table-column label="每日限额" align="center" prop="limitPerDay" show-overflow-tooltip />
+      <el-table-column label="部门ID" align="center" prop="deptId" show-overflow-tooltip />
+      <el-table-column label="创建时间" align="center" prop="createTime" min-width="110" sortable show-overflow-tooltip >
+        <template v-slot="scope">
+          <span>{{ parseTime(scope.row.createTime, '{m}-{d} {h}:{i}') }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="操作" align="center" class-name="small-padding fixed-width" min-width="120" fixed="right">
         <template v-slot="scope">
           <el-button
             size="mini"

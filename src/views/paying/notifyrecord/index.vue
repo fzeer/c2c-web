@@ -143,32 +143,37 @@
     >
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="商户通知记录ID" align="center" prop="notifyId" />
-      <el-table-column label="订单ID" align="center" prop="orderCode" min-width="100" sortable />
+      <el-table-column label="订单ID" align="center" prop="orderCode" min-width="100" sortable show-overflow-tooltip/>
       <el-table-column label="订单类型" align="center" prop="orderType">
         <template v-slot="scope">
           <dict-tag :options="dict.type.order_type" :value="scope.row.orderType"/>
         </template>
       </el-table-column>
-      <el-table-column label="商户订单号" align="center" prop="mOrderCode" />
-      <el-table-column label="商户号" align="center" prop="merchantNo" min-width="100" sortable />
-      <el-table-column label="商户名称" align="center" prop="merchantName" />
-      <el-table-column label="应用ID" align="center" prop="appId" />
-      <el-table-column label="通知地址" align="center" prop="notifyUrl" />
-      <el-table-column label="通知响应结果" align="center" prop="resResult" />
-      <el-table-column label="通知次数" align="center" prop="notifyCount" />
-      <el-table-column label="最大通知次数, 默认6次" align="center" prop="notifyCountLimit" />
+      <el-table-column label="商户订单号" align="center" prop="mOrderCode" show-overflow-tooltip />
+      <el-table-column label="商户号" align="center" prop="merchantNo" min-width="100" sortable show-overflow-tooltip/>
+      <el-table-column label="商户名称" align="center" prop="merchantName" show-overflow-tooltip />
+      <el-table-column label="应用ID" align="center" prop="appId" show-overflow-tooltip />
+      <el-table-column label="通知地址" align="center" prop="notifyUrl" show-overflow-tooltip />
+      <el-table-column label="通知响应结果" align="center" prop="resResult" show-overflow-tooltip />
+      <el-table-column label="通知次数" align="center" prop="notifyCount" show-overflow-tooltip />
+      <el-table-column label="最大通知次数, 默认6次" align="center" prop="notifyCountLimit" show-overflow-tooltip />
       <el-table-column label="通知状态" align="center" prop="notifyStatus">
         <template v-slot="scope">
           <dict-tag :options="dict.type.order_notify_status" :value="scope.row.notifyStatus"/>
         </template>
       </el-table-column>
-      <el-table-column label="最后一次通知时间" align="center" prop="lastNotifyTime" sortable>
+      <el-table-column label="最后一次通知时间" align="center" prop="lastNotifyTime" min-width="110" sortable show-overflow-tooltip >
         <template v-slot="scope">
           <span>{{ parseTime(scope.row.lastNotifyTime, '{m}-{d} {h}:{i}') }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="部门ID" align="center" prop="deptId" />
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width" min-width="100" fixed="right">
+      <el-table-column label="部门ID" align="center" prop="deptId" show-overflow-tooltip />
+      <el-table-column label="创建时间" align="center" prop="createTime" min-width="110" sortable show-overflow-tooltip >
+        <template v-slot="scope">
+          <span>{{ parseTime(scope.row.createTime, '{m}-{d} {h}:{i}') }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="操作" align="center" class-name="small-padding fixed-width" min-width="120" fixed="right">
         <template v-slot="scope">
           <el-button
             size="mini"

@@ -139,17 +139,51 @@
     >
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="钱包ID" align="center" prop="walletId" />
-      <el-table-column label="码商ID" align="center" prop="supplierId" />
-      <el-table-column label="钱包编号" align="center" prop="walletNo" min-width="100" sortable />
-      <el-table-column label="余额" align="center" prop="balance" min-width="100" sortable />
-      <el-table-column label="可用余额" align="center" prop="availBalance" min-width="100" sortable />
-      <el-table-column label="冻结金额" align="center" prop="frozeBalance" min-width="100" sortable />
-      <el-table-column label="当日进款" align="center" prop="todayMoneyIn" min-width="100" sortable />
-      <el-table-column label="当日出款" align="center" prop="todayMoneyOut" min-width="100" sortable />
-      <el-table-column label="累计进款" align="center" prop="totalMoneyIn" min-width="100" sortable />
-      <el-table-column label="累计出款" align="center" prop="totalMoneyOut" min-width="100" sortable />
-      <el-table-column label="部门ID" align="center" prop="deptId" />
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width" min-width="100" fixed="right">
+      <el-table-column label="码商ID" align="center" prop="supplierId" show-overflow-tooltip />
+      <el-table-column label="钱包编号" align="center" prop="walletNo" min-width="100" sortable show-overflow-tooltip/>
+      <el-table-column label="动账时间戳" align="center" prop="timestamp" show-overflow-tooltip />
+     <el-table-column label="余额" align="right" prop="balance" min-width="100" sortable show-overflow-tooltip >
+       <template v-slot="scope">
+         <span class="text-money">{{ parseMoney(scope.row.balance) }}</span>
+       </template>
+     </el-table-column>
+     <el-table-column label="可用余额" align="right" prop="availBalance" min-width="100" sortable show-overflow-tooltip >
+       <template v-slot="scope">
+         <span class="text-money">{{ parseMoney(scope.row.availBalance) }}</span>
+       </template>
+     </el-table-column>
+     <el-table-column label="冻结金额" align="right" prop="frozeBalance" min-width="100" sortable show-overflow-tooltip >
+       <template v-slot="scope">
+         <span class="text-money">{{ parseMoney(scope.row.frozeBalance) }}</span>
+       </template>
+     </el-table-column>
+     <el-table-column label="当日进款" align="right" prop="todayMoneyIn" min-width="100" sortable show-overflow-tooltip >
+       <template v-slot="scope">
+         <span class="text-money">{{ parseMoney(scope.row.todayMoneyIn) }}</span>
+       </template>
+     </el-table-column>
+     <el-table-column label="当日出款" align="right" prop="todayMoneyOut" min-width="100" sortable show-overflow-tooltip >
+       <template v-slot="scope">
+         <span class="text-money">{{ parseMoney(scope.row.todayMoneyOut) }}</span>
+       </template>
+     </el-table-column>
+     <el-table-column label="累计进款" align="right" prop="totalMoneyIn" min-width="100" sortable show-overflow-tooltip >
+       <template v-slot="scope">
+         <span class="text-money">{{ parseMoney(scope.row.totalMoneyIn) }}</span>
+       </template>
+     </el-table-column>
+     <el-table-column label="累计出款" align="right" prop="totalMoneyOut" min-width="100" sortable show-overflow-tooltip >
+       <template v-slot="scope">
+         <span class="text-money">{{ parseMoney(scope.row.totalMoneyOut) }}</span>
+       </template>
+     </el-table-column>
+      <el-table-column label="部门ID" align="center" prop="deptId" show-overflow-tooltip />
+      <el-table-column label="创建时间" align="center" prop="createTime" min-width="110" sortable show-overflow-tooltip >
+        <template v-slot="scope">
+          <span>{{ parseTime(scope.row.createTime, '{m}-{d} {h}:{i}') }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="操作" align="center" class-name="small-padding fixed-width" min-width="120" fixed="right">
         <template v-slot="scope">
           <el-button
             size="mini"
@@ -185,6 +219,9 @@
         </el-form-item>
         <el-form-item label="钱包编号" prop="walletNo">
           <el-input v-model="form.walletNo" placeholder="请输入钱包编号" />
+        </el-form-item>
+        <el-form-item label="动账时间戳" prop="timestamp">
+          <el-input v-model="form.timestamp" placeholder="请输入动账时间戳" />
         </el-form-item>
         <el-form-item label="余额" prop="balance">
           <el-input v-model="form.balance" placeholder="请输入余额" />

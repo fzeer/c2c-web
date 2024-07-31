@@ -275,31 +275,43 @@
     >
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="银行卡ID" align="center" prop="bankId" />
-      <el-table-column label="码商ID" align="center" prop="supplierId" />
-      <el-table-column label="银行名称" align="center" prop="bankName" />
-      <el-table-column label="银行卡号" align="center" prop="bankCode" />
-      <el-table-column label="开户人" align="center" prop="bankAccount" />
-      <el-table-column label="支行" align="center" prop="bankSonName" />
+      <el-table-column label="码商ID" align="center" prop="supplierId" show-overflow-tooltip />
+      <el-table-column label="银行名称" align="center" prop="bankName" show-overflow-tooltip />
+      <el-table-column label="银行卡号" align="center" prop="bankCode" show-overflow-tooltip />
+      <el-table-column label="开户人" align="center" prop="bankAccount" show-overflow-tooltip />
+      <el-table-column label="支行" align="center" prop="bankSonName" show-overflow-tooltip />
       <el-table-column label="用途" align="center" prop="useType">
         <template v-slot="scope">
           <dict-tag :options="dict.type.bank_use_type" :value="scope.row.useType"/>
         </template>
       </el-table-column>
-      <el-table-column label="身份证" align="center" prop="idCard" />
-      <el-table-column label="手机号" align="center" prop="mobile" />
-      <el-table-column label="收款链接" align="center" prop="payLink" />
-      <el-table-column label="支付超时时间" align="center" prop="payTimeoutSec" />
-      <el-table-column label="用户名" align="center" prop="userName" />
-      <el-table-column label="银行密码" align="center" prop="password" />
-      <el-table-column label="更新标志" align="center" prop="timestamp" />
-      <el-table-column label="系统余额" align="center" prop="sysBalance" min-width="100" sortable />
-      <el-table-column label="实际余额" align="center" prop="crawlBalance" min-width="100" sortable />
-      <el-table-column label="冻结金额" align="center" prop="frozeBalance" min-width="100" sortable />
-      <el-table-column label="累计收款" align="center" prop="totalReceive" />
-      <el-table-column label="累计付款" align="center" prop="totalPayment" />
-      <el-table-column label="每笔限额" align="center" prop="limitPerPayment" />
-      <el-table-column label="每日限额" align="center" prop="limitPerDay" />
-      <el-table-column label="爬虫版本" align="center" prop="crawlVersion" />
+      <el-table-column label="身份证" align="center" prop="idCard" show-overflow-tooltip />
+      <el-table-column label="手机号" align="center" prop="mobile" show-overflow-tooltip />
+      <el-table-column label="收款链接" align="center" prop="payLink" show-overflow-tooltip />
+      <el-table-column label="支付超时时间" align="center" prop="payTimeoutSec" show-overflow-tooltip />
+      <el-table-column label="用户名" align="center" prop="userName" show-overflow-tooltip />
+      <el-table-column label="银行密码" align="center" prop="password" show-overflow-tooltip />
+      <el-table-column label="更新标志" align="center" prop="timestamp" show-overflow-tooltip />
+     <el-table-column label="系统余额" align="right" prop="sysBalance" min-width="100" sortable show-overflow-tooltip >
+       <template v-slot="scope">
+         <span class="text-money">{{ parseMoney(scope.row.sysBalance) }}</span>
+       </template>
+     </el-table-column>
+     <el-table-column label="实际余额" align="right" prop="crawlBalance" min-width="100" sortable show-overflow-tooltip >
+       <template v-slot="scope">
+         <span class="text-money">{{ parseMoney(scope.row.crawlBalance) }}</span>
+       </template>
+     </el-table-column>
+     <el-table-column label="冻结金额" align="right" prop="frozeBalance" min-width="100" sortable show-overflow-tooltip >
+       <template v-slot="scope">
+         <span class="text-money">{{ parseMoney(scope.row.frozeBalance) }}</span>
+       </template>
+     </el-table-column>
+      <el-table-column label="累计收款" align="center" prop="totalReceive" show-overflow-tooltip />
+      <el-table-column label="累计付款" align="center" prop="totalPayment" show-overflow-tooltip />
+      <el-table-column label="每笔限额" align="center" prop="limitPerPayment" show-overflow-tooltip />
+      <el-table-column label="每日限额" align="center" prop="limitPerDay" show-overflow-tooltip />
+      <el-table-column label="爬虫版本" align="center" prop="crawlVersion" show-overflow-tooltip />
       <el-table-column label="抓取开关" align="center" prop="crawlOpen">
         <template v-slot="scope">
           <dict-tag :options="dict.type.crawl_open" :value="scope.row.crawlOpen"/>
@@ -310,19 +322,24 @@
           <dict-tag :options="dict.type.crawl_status" :value="scope.row.crawlStatus"/>
         </template>
       </el-table-column>
-      <el-table-column label="最后抓取时间" align="center" prop="crawlActiveTime" sortable>
+      <el-table-column label="最后抓取时间" align="center" prop="crawlActiveTime" min-width="110" sortable show-overflow-tooltip >
         <template v-slot="scope">
           <span>{{ parseTime(scope.row.crawlActiveTime, '{m}-{d} {h}:{i}') }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="抓取错误提示" align="center" prop="crawlMsg" />
-      <el-table-column label="部门ID" align="center" prop="deptId" />
+      <el-table-column label="抓取错误提示" align="center" prop="crawlMsg" show-overflow-tooltip />
+      <el-table-column label="部门ID" align="center" prop="deptId" show-overflow-tooltip />
       <el-table-column label="状态" align="center" prop="status">
         <template v-slot="scope">
           <dict-tag :options="dict.type.sys_normal_disable" :value="scope.row.status"/>
         </template>
       </el-table-column>
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width" min-width="100" fixed="right">
+      <el-table-column label="创建时间" align="center" prop="createTime" min-width="110" sortable show-overflow-tooltip >
+        <template v-slot="scope">
+          <span>{{ parseTime(scope.row.createTime, '{m}-{d} {h}:{i}') }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="操作" align="center" class-name="small-padding fixed-width" min-width="120" fixed="right">
         <template v-slot="scope">
           <el-button
             size="mini"

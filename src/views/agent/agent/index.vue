@@ -137,8 +137,8 @@
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="代理ID" align="center" prop="agentId" />
       <el-table-column label="代理编号" align="center" prop="agentNo" min-width="100" sortable />
-      <el-table-column label="代理简称" align="center" prop="agentShortName" />
-      <el-table-column label="代理全称" align="center" prop="agentName" />
+      <el-table-column label="代理简称" align="center" prop="agentShortName" show-overflow-tooltip/>
+      <el-table-column label="代理全称" align="center" prop="agentName" show-overflow-tooltip/>
 <!--      <el-table-column label="代理类型" align="center" prop="agentType">-->
 <!--        <template v-slot="scope">-->
 <!--          <dict-tag :options="dict.type.agent_type" :value="scope.row.agentType"/>-->
@@ -152,12 +152,12 @@
           <dict-tag :options="dict.type.sys_normal_disable" :value="scope.row.status"/>
         </template>
       </el-table-column>
-      <el-table-column label="创建时间" align="center" prop="createTime">
+      <el-table-column label="创建时间" align="center" prop="createTime" min-width="100" show-overflow-tooltip>
         <template v-slot="scope">
           <span>{{ parseTime(scope.row.createTime, '{m}-{d} {h}:{i}') }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width" min-width="100" fixed="right">
+      <el-table-column label="操作" align="center" class-name="small-padding fixed-width" min-width="160" fixed="right">
         <template v-slot="scope">
           <el-button
             size="mini"
@@ -173,6 +173,16 @@
             @click="handleDelete(scope.row)"
             v-hasPermi="['agent:agent:remove']"
           >删除</el-button>
+
+          <el-dropdown size="mini" @command="(command) => handleCommand(command, scope.row)" v-hasPermi="['system:user:resetPwd', 'system:user:edit']">
+                <span class="el-dropdown-link">
+                  <i class="el-icon-d-arrow-right el-icon--right"></i>更多
+                </span>
+            <el-dropdown-menu slot="dropdown">
+              <el-dropdown-item command="handleResetPwd" icon="el-icon-key"
+                                v-hasPermi="['system:user:resetPwd']">重置密码</el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
         </template>
       </el-table-column>
     </el-table>
@@ -261,6 +271,7 @@ import { listAgentParent } from "@/api/system/dept";
 import Treeselect from '@riophae/vue-treeselect'
 import "@riophae/vue-treeselect/dist/vue-treeselect.css";
 import selectAdmin from "@/views/system/user/selectAdmin";
+import { resetUserPwd } from '@/api/system/user'
 
 export default {
   name: "Agent",
@@ -473,7 +484,32 @@ export default {
         this.form.adminId = this.$refs.select.users[0].userId;
         this.form.adminName = this.$refs.select.users[0].nickName;
       }
-    }
+    },
+
+    // 更多操作触发
+    handleCommand(command, row) {
+      switch (command) {
+        case "handleResetPwd":
+          this.handleResetPwd(row);
+          break;
+        default:
+          break;
+      }
+    },
+    /** 重置密码按钮操作 */
+    handleResetPwd(row) {
+      this.$prompt('请输入"' + row.agentNo + '"的新密码', "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        closeOnClickModal: false,
+        inputPattern: /^.{5,20}$/,
+        inputErrorMessage: "用户密码长度必须介于 5 和 20 之间"
+      }).then(({ value }) => {
+        resetUserPwd(row.userId, value).then(response => {
+          this.$modal.msgSuccess("修改成功，新密码是：" + value);
+        });
+      }).catch(() => {});
+    },
   }
 };
 </script>

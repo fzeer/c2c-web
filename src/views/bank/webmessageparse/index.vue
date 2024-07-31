@@ -189,13 +189,21 @@
     >
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="ID" align="center" prop="id" />
-      <el-table-column label="消息ID" align="center" prop="msgId" />
-      <el-table-column label="流水号" align="center" prop="lotNo" min-width="100" sortable />
-      <el-table-column label="流水号" align="center" prop="refNo" min-width="100" sortable />
-      <el-table-column label="金额" align="center" prop="money" min-width="100" sortable />
-      <el-table-column label="余额" align="center" prop="balance" min-width="100" sortable />
-      <el-table-column label="匹配状态" align="center" prop="matchStatus" />
-      <el-table-column label="解析时间" align="center" prop="matchTime" sortable>
+      <el-table-column label="消息ID" align="center" prop="msgId" show-overflow-tooltip />
+      <el-table-column label="流水号" align="center" prop="lotNo" min-width="100" sortable show-overflow-tooltip/>
+      <el-table-column label="流水号" align="center" prop="refNo" min-width="100" sortable show-overflow-tooltip/>
+     <el-table-column label="金额" align="right" prop="money" min-width="100" sortable show-overflow-tooltip >
+       <template v-slot="scope">
+         <span class="text-money">{{ parseMoney(scope.row.money) }}</span>
+       </template>
+     </el-table-column>
+     <el-table-column label="余额" align="right" prop="balance" min-width="100" sortable show-overflow-tooltip >
+       <template v-slot="scope">
+         <span class="text-money">{{ parseMoney(scope.row.balance) }}</span>
+       </template>
+     </el-table-column>
+      <el-table-column label="匹配状态" align="center" prop="matchStatus" show-overflow-tooltip />
+      <el-table-column label="解析时间" align="center" prop="matchTime" min-width="110" sortable show-overflow-tooltip >
         <template v-slot="scope">
           <span>{{ parseTime(scope.row.matchTime, '{m}-{d} {h}:{i}') }}</span>
         </template>
@@ -205,16 +213,21 @@
           <dict-tag :options="dict.type.order_type" :value="scope.row.orderType"/>
         </template>
       </el-table-column>
-      <el-table-column label="卡商号" align="center" prop="supplierNo" min-width="100" sortable />
-      <el-table-column label="卡商号" align="center" prop="supplierName" />
-      <el-table-column label="卡商UPI" align="center" prop="supplierUpi" />
-      <el-table-column label="对方UPI" align="center" prop="userUpi" />
-      <el-table-column label="UTR" align="center" prop="utr" />
-      <el-table-column label="匹配订单号" align="center" prop="orderCode" min-width="100" sortable />
-      <el-table-column label="商户号" align="center" prop="merchantNo" min-width="100" sortable />
-      <el-table-column label="商户名称" align="center" prop="merchantName" />
-      <el-table-column label="部门ID" align="center" prop="deptId" />
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width" min-width="100" fixed="right">
+      <el-table-column label="卡商号" align="center" prop="supplierNo" min-width="100" sortable show-overflow-tooltip/>
+      <el-table-column label="卡商号" align="center" prop="supplierName" show-overflow-tooltip />
+      <el-table-column label="卡商UPI" align="center" prop="supplierUpi" show-overflow-tooltip />
+      <el-table-column label="对方UPI" align="center" prop="userUpi" show-overflow-tooltip />
+      <el-table-column label="UTR" align="center" prop="utr" show-overflow-tooltip />
+      <el-table-column label="匹配订单号" align="center" prop="orderCode" min-width="100" sortable show-overflow-tooltip/>
+      <el-table-column label="商户号" align="center" prop="merchantNo" min-width="100" sortable show-overflow-tooltip/>
+      <el-table-column label="商户名称" align="center" prop="merchantName" show-overflow-tooltip />
+      <el-table-column label="部门ID" align="center" prop="deptId" show-overflow-tooltip />
+      <el-table-column label="创建时间" align="center" prop="createTime" min-width="110" sortable show-overflow-tooltip >
+        <template v-slot="scope">
+          <span>{{ parseTime(scope.row.createTime, '{m}-{d} {h}:{i}') }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="操作" align="center" class-name="small-padding fixed-width" min-width="120" fixed="right">
         <template v-slot="scope">
           <el-button
             size="mini"

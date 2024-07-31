@@ -175,17 +175,17 @@
     >
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="ID" align="center" prop="otpId" />
-      <el-table-column label="唯一标志" align="center" prop="identifyCode" />
-      <el-table-column label="手机号码" align="center" prop="mobile" />
-      <el-table-column label="项目编号" align="center" prop="projectCode" />
-      <el-table-column label="项目名称" align="center" prop="projectName" />
-      <el-table-column label="应用编号" align="center" prop="appCode" />
-      <el-table-column label="应用版本号" align="center" prop="appVersion" />
-      <el-table-column label="银行名称" align="center" prop="bankName" />
-      <el-table-column label="银行卡号" align="center" prop="bankNo" min-width="100" sortable />
-      <el-table-column label="用户名称" align="center" prop="userName" />
-      <el-table-column label="码商ID" align="center" prop="supplierId" />
-      <el-table-column label="码商名称" align="center" prop="supplierName" />
+      <el-table-column label="唯一标志" align="center" prop="identifyCode" show-overflow-tooltip />
+      <el-table-column label="手机号码" align="center" prop="mobile" show-overflow-tooltip />
+      <el-table-column label="项目编号" align="center" prop="projectCode" show-overflow-tooltip />
+      <el-table-column label="项目名称" align="center" prop="projectName" show-overflow-tooltip />
+      <el-table-column label="应用编号" align="center" prop="appCode" show-overflow-tooltip />
+      <el-table-column label="应用版本号" align="center" prop="appVersion" show-overflow-tooltip />
+      <el-table-column label="银行名称" align="center" prop="bankName" show-overflow-tooltip />
+      <el-table-column label="银行卡号" align="center" prop="bankNo" min-width="100" sortable show-overflow-tooltip/>
+      <el-table-column label="用户名称" align="center" prop="userName" show-overflow-tooltip />
+      <el-table-column label="码商ID" align="center" prop="supplierId" show-overflow-tooltip />
+      <el-table-column label="码商名称" align="center" prop="supplierName" show-overflow-tooltip />
       <el-table-column label="状态" align="center" prop="status">
         <template v-slot="scope">
           <dict-tag :options="dict.type.sys_normal_disable" :value="scope.row.status"/>
@@ -196,9 +196,14 @@
           <dict-tag :options="dict.type.otp_type" :value="scope.row.otpType"/>
         </template>
       </el-table-column>
-      <el-table-column label="消息内容" align="center" prop="otpContent" />
-      <el-table-column label="验证码" align="center" prop="captchaText" />
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width" min-width="100" fixed="right">
+      <el-table-column label="消息内容" align="center" prop="otpContent" show-overflow-tooltip />
+      <el-table-column label="验证码" align="center" prop="captchaText" show-overflow-tooltip />
+      <el-table-column label="创建时间" align="center" prop="createTime" min-width="110" sortable show-overflow-tooltip >
+        <template v-slot="scope">
+          <span>{{ parseTime(scope.row.createTime, '{m}-{d} {h}:{i}') }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="操作" align="center" class-name="small-padding fixed-width" min-width="120" fixed="right">
         <template v-slot="scope">
           <el-button
             size="mini"

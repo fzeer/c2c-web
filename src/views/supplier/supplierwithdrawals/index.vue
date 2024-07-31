@@ -195,34 +195,51 @@
     >
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="记录ID" align="center" prop="id" />
-      <el-table-column label="申请单号" align="center" prop="applyOrderCode" />
-      <el-table-column label="码商ID" align="center" prop="supplierId" />
-      <el-table-column label="提现申请金额 " align="center" prop="money" min-width="100" sortable />
-      <el-table-column label="实际提现金额" align="center" prop="realMoney" min-width="100" sortable />
-      <el-table-column label="单笔手续费" align="center" prop="single" />
-      <el-table-column label="费率" align="center" prop="rate" min-width="100" sortable />
-      <el-table-column label="手续费" align="center" prop="fee" />
-      <el-table-column label="银行名称" align="center" prop="bankName" />
-      <el-table-column label="银行卡号" align="center" prop="bankCode" />
-      <el-table-column label="开户人" align="center" prop="name" />
-      <el-table-column label="支行" align="center" prop="bankSonName" />
-      <el-table-column label="提现状态" align="center" prop="status" />
-      <el-table-column label="审核时间" align="center" prop="auditTime" sortable>
+      <el-table-column label="申请单号" align="center" prop="applyOrderCode" show-overflow-tooltip />
+      <el-table-column label="码商ID" align="center" prop="supplierId" show-overflow-tooltip />
+     <el-table-column label="提现申请金额 " align="right" prop="money" min-width="100" sortable show-overflow-tooltip >
+       <template v-slot="scope">
+         <span class="text-money">{{ parseMoney(scope.row.money) }}</span>
+       </template>
+     </el-table-column>
+     <el-table-column label="实际提现金额" align="right" prop="realMoney" min-width="100" sortable show-overflow-tooltip >
+       <template v-slot="scope">
+         <span class="text-money">{{ parseMoney(scope.row.realMoney) }}</span>
+       </template>
+     </el-table-column>
+      <el-table-column label="单笔手续费" align="center" prop="single" show-overflow-tooltip />
+     <el-table-column label="费率" align="right" prop="rate" min-width="100" sortable show-overflow-tooltip >
+       <template v-slot="scope">
+         <span class="text-money">{{ parseMoney(scope.row.rate) }}</span>
+       </template>
+     </el-table-column>
+      <el-table-column label="手续费" align="center" prop="fee" show-overflow-tooltip />
+      <el-table-column label="银行名称" align="center" prop="bankName" show-overflow-tooltip />
+      <el-table-column label="银行卡号" align="center" prop="bankCode" show-overflow-tooltip />
+      <el-table-column label="开户人" align="center" prop="name" show-overflow-tooltip />
+      <el-table-column label="支行" align="center" prop="bankSonName" show-overflow-tooltip />
+      <el-table-column label="提现状态" align="center" prop="status" show-overflow-tooltip />
+      <el-table-column label="审核时间" align="center" prop="auditTime" min-width="110" sortable show-overflow-tooltip >
         <template v-slot="scope">
           <span>{{ parseTime(scope.row.auditTime, '{m}-{d} {h}:{i}') }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="审核人员" align="center" prop="auditUser" />
-      <el-table-column label="代付订单号" align="center" prop="orderCode" min-width="100" sortable />
-      <el-table-column label="操作员" align="center" prop="operator" />
-      <el-table-column label="成功时间" align="center" prop="successTime" sortable>
+      <el-table-column label="审核人员" align="center" prop="auditUser" show-overflow-tooltip />
+      <el-table-column label="代付订单号" align="center" prop="orderCode" min-width="100" sortable show-overflow-tooltip/>
+      <el-table-column label="操作员" align="center" prop="operator" show-overflow-tooltip />
+      <el-table-column label="成功时间" align="center" prop="successTime" min-width="110" sortable show-overflow-tooltip >
         <template v-slot="scope">
           <span>{{ parseTime(scope.row.successTime, '{m}-{d} {h}:{i}') }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="提现失败原因" align="center" prop="respDesc" />
-      <el-table-column label="部门ID" align="center" prop="deptId" />
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width" min-width="100" fixed="right">
+      <el-table-column label="提现失败原因" align="center" prop="respDesc" show-overflow-tooltip />
+      <el-table-column label="部门ID" align="center" prop="deptId" show-overflow-tooltip />
+      <el-table-column label="创建时间" align="center" prop="createTime" min-width="110" sortable show-overflow-tooltip >
+        <template v-slot="scope">
+          <span>{{ parseTime(scope.row.createTime, '{m}-{d} {h}:{i}') }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="操作" align="center" class-name="small-padding fixed-width" min-width="120" fixed="right">
         <template v-slot="scope">
           <el-button
             size="mini"

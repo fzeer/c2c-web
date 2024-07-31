@@ -159,27 +159,32 @@
     >
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="渠道ID" align="center" prop="channelId" />
-      <el-table-column label="渠道名称" align="center" prop="channelName" />
+      <el-table-column label="渠道名称" align="center" prop="channelName" show-overflow-tooltip />
       <el-table-column label="渠道类型" align="center" prop="channelType">
         <template v-slot="scope">
           <dict-tag :options="dict.type.channel_type" :value="scope.row.channelType"/>
         </template>
       </el-table-column>
-      <el-table-column label="接口编码" align="center" prop="interfaceCode" />
-      <el-table-column label="码商ID" align="center" prop="supplierId" />
-      <el-table-column label="接口APPID" align="center" prop="interfaceUrl" />
-      <el-table-column label="接口商户号" align="center" prop="interfaceMchNo" min-width="100" sortable />
-      <el-table-column label="接口密钥" align="center" prop="interfaceMchKey" />
-      <el-table-column label="签名方式" align="center" prop="signType" />
-      <el-table-column label="接口APPID" align="center" prop="appId" />
-      <el-table-column label="接口私钥" align="center" prop="privateKey" />
-      <el-table-column label="接口公钥" align="center" prop="publicKey" />
+      <el-table-column label="接口编码" align="center" prop="interfaceCode" show-overflow-tooltip />
+      <el-table-column label="码商ID" align="center" prop="supplierId" show-overflow-tooltip />
+      <el-table-column label="接口APPID" align="center" prop="interfaceUrl" show-overflow-tooltip />
+      <el-table-column label="接口商户号" align="center" prop="interfaceMchNo" min-width="100" sortable show-overflow-tooltip/>
+      <el-table-column label="接口密钥" align="center" prop="interfaceMchKey" show-overflow-tooltip />
+      <el-table-column label="签名方式" align="center" prop="signType" show-overflow-tooltip />
+      <el-table-column label="接口APPID" align="center" prop="appId" show-overflow-tooltip />
+      <el-table-column label="接口私钥" align="center" prop="privateKey" show-overflow-tooltip />
+      <el-table-column label="接口公钥" align="center" prop="publicKey" show-overflow-tooltip />
       <el-table-column label="状态" align="center" prop="status">
         <template v-slot="scope">
           <dict-tag :options="dict.type.sys_normal_disable" :value="scope.row.status"/>
         </template>
       </el-table-column>
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width" min-width="100" fixed="right">
+      <el-table-column label="创建时间" align="center" prop="createTime" min-width="110" sortable show-overflow-tooltip >
+        <template v-slot="scope">
+          <span>{{ parseTime(scope.row.createTime, '{m}-{d} {h}:{i}') }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="操作" align="center" class-name="small-padding fixed-width" min-width="120" fixed="right">
         <template v-slot="scope">
           <el-button
             size="mini"

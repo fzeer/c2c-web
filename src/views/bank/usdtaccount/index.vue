@@ -219,24 +219,40 @@
     >
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="账户ID" align="center" prop="usdtId" />
-      <el-table-column label="昵称" align="center" prop="nickName" />
-      <el-table-column label="码商ID" align="center" prop="supplierId" />
-      <el-table-column label="USDT地址" align="center" prop="viewAddress" />
+      <el-table-column label="昵称" align="center" prop="nickName" show-overflow-tooltip />
+      <el-table-column label="码商ID" align="center" prop="supplierId" show-overflow-tooltip />
+      <el-table-column label="USDT地址" align="center" prop="viewAddress" show-overflow-tooltip />
       <el-table-column label="用途" align="center" prop="useType">
         <template v-slot="scope">
           <dict-tag :options="dict.type.bank_use_type" :value="scope.row.useType"/>
         </template>
       </el-table-column>
-      <el-table-column label="支付超时时间" align="center" prop="payTimeoutSec" />
-      <el-table-column label="用户名" align="center" prop="userName" />
-      <el-table-column label="银行密码" align="center" prop="password" />
-      <el-table-column label="更新标志" align="center" prop="timestamp" />
-      <el-table-column label="系统TRX余额" align="center" prop="sysBalanceTrx" min-width="100" sortable />
-      <el-table-column label="系统USDT余额" align="center" prop="sysBalanceUsdt" min-width="100" sortable />
-      <el-table-column label="实际TRX余额" align="center" prop="crawlBalanceTrx" min-width="100" sortable />
-      <el-table-column label="实际USDT余额" align="center" prop="crawlBalanceUsdt" min-width="100" sortable />
-      <el-table-column label="汇率" align="center" prop="exchangeRate" />
-      <el-table-column label="爬虫版本" align="center" prop="crawlVersion" />
+      <el-table-column label="支付超时时间" align="center" prop="payTimeoutSec" show-overflow-tooltip />
+      <el-table-column label="用户名" align="center" prop="userName" show-overflow-tooltip />
+      <el-table-column label="银行密码" align="center" prop="password" show-overflow-tooltip />
+      <el-table-column label="更新标志" align="center" prop="timestamp" show-overflow-tooltip />
+     <el-table-column label="系统TRX余额" align="right" prop="sysBalanceTrx" min-width="100" sortable show-overflow-tooltip >
+       <template v-slot="scope">
+         <span class="text-money">{{ parseMoney(scope.row.sysBalanceTrx) }}</span>
+       </template>
+     </el-table-column>
+     <el-table-column label="系统USDT余额" align="right" prop="sysBalanceUsdt" min-width="100" sortable show-overflow-tooltip >
+       <template v-slot="scope">
+         <span class="text-money">{{ parseMoney(scope.row.sysBalanceUsdt) }}</span>
+       </template>
+     </el-table-column>
+     <el-table-column label="实际TRX余额" align="right" prop="crawlBalanceTrx" min-width="100" sortable show-overflow-tooltip >
+       <template v-slot="scope">
+         <span class="text-money">{{ parseMoney(scope.row.crawlBalanceTrx) }}</span>
+       </template>
+     </el-table-column>
+     <el-table-column label="实际USDT余额" align="right" prop="crawlBalanceUsdt" min-width="100" sortable show-overflow-tooltip >
+       <template v-slot="scope">
+         <span class="text-money">{{ parseMoney(scope.row.crawlBalanceUsdt) }}</span>
+       </template>
+     </el-table-column>
+      <el-table-column label="汇率" align="center" prop="exchangeRate" show-overflow-tooltip />
+      <el-table-column label="爬虫版本" align="center" prop="crawlVersion" show-overflow-tooltip />
       <el-table-column label="抓取开关" align="center" prop="crawlOpen">
         <template v-slot="scope">
           <dict-tag :options="dict.type.crawl_open" :value="scope.row.crawlOpen"/>
@@ -247,19 +263,24 @@
           <dict-tag :options="dict.type.crawl_status" :value="scope.row.crawlStatus"/>
         </template>
       </el-table-column>
-      <el-table-column label="最后抓取时间" align="center" prop="crawlActiveTime" sortable>
+      <el-table-column label="最后抓取时间" align="center" prop="crawlActiveTime" min-width="110" sortable show-overflow-tooltip >
         <template v-slot="scope">
           <span>{{ parseTime(scope.row.crawlActiveTime, '{m}-{d} {h}:{i}') }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="抓取错误提示" align="center" prop="crawlMsg" />
-      <el-table-column label="部门ID" align="center" prop="deptId" />
+      <el-table-column label="抓取错误提示" align="center" prop="crawlMsg" show-overflow-tooltip />
+      <el-table-column label="部门ID" align="center" prop="deptId" show-overflow-tooltip />
       <el-table-column label="状态" align="center" prop="status">
         <template v-slot="scope">
           <dict-tag :options="dict.type.sys_normal_disable" :value="scope.row.status"/>
         </template>
       </el-table-column>
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width" min-width="100" fixed="right">
+      <el-table-column label="创建时间" align="center" prop="createTime" min-width="110" sortable show-overflow-tooltip >
+        <template v-slot="scope">
+          <span>{{ parseTime(scope.row.createTime, '{m}-{d} {h}:{i}') }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="操作" align="center" class-name="small-padding fixed-width" min-width="120" fixed="right">
         <template v-slot="scope">
           <el-button
             size="mini"

@@ -95,7 +95,7 @@ export default {
       queryParams: {
         pageNum: 1,
         pageSize: 10,
-        userType: undefined,
+        userType: '0',
         userName: undefined,
         nickName: undefined,
         phonenumber: undefined

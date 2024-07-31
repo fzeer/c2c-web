@@ -128,23 +128,48 @@
     >
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="记录ID" align="center" prop="id" />
-      <el-table-column label="银行ID" align="center" prop="usdtId" />
-      <el-table-column label="昵称" align="center" prop="nickName" />
-      <el-table-column label="码商ID" align="center" prop="supplierId" />
-      <el-table-column label="USDT地址" align="center" prop="viewAddress" />
+      <el-table-column label="银行ID" align="center" prop="usdtId" show-overflow-tooltip />
+      <el-table-column label="昵称" align="center" prop="nickName" show-overflow-tooltip />
+      <el-table-column label="码商ID" align="center" prop="supplierId" show-overflow-tooltip />
+      <el-table-column label="USDT地址" align="center" prop="viewAddress" show-overflow-tooltip />
       <el-table-column label="业务类型" align="center" prop="bizType">
         <template v-slot="scope">
           <dict-tag :options="dict.type.agent_biz_type" :value="scope.row.bizType"/>
         </template>
       </el-table-column>
-      <el-table-column label="业务描述" align="center" prop="bizDesc" />
-      <el-table-column label="业务单号" align="center" prop="orderCode" min-width="100" sortable />
-      <el-table-column label="变动USDT" align="center" prop="moneyUsdt" min-width="100" sortable />
-      <el-table-column label="变动TRX" align="center" prop="moneyTrx" min-width="100" sortable />
-      <el-table-column label="冻结金额" align="center" prop="frozeMoney" min-width="100" sortable />
-      <el-table-column label="变动前金额" align="center" prop="beforeMoney" min-width="100" sortable />
-      <el-table-column label="变动后金额" align="center" prop="afterMoney" min-width="100" sortable />
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width" min-width="100" fixed="right">
+      <el-table-column label="业务描述" align="center" prop="bizDesc" show-overflow-tooltip />
+      <el-table-column label="业务单号" align="center" prop="orderCode" min-width="100" sortable show-overflow-tooltip/>
+     <el-table-column label="变动USDT" align="right" prop="moneyUsdt" min-width="100" sortable show-overflow-tooltip >
+       <template v-slot="scope">
+         <span class="text-money">{{ parseMoney(scope.row.moneyUsdt) }}</span>
+       </template>
+     </el-table-column>
+     <el-table-column label="变动TRX" align="right" prop="moneyTrx" min-width="100" sortable show-overflow-tooltip >
+       <template v-slot="scope">
+         <span class="text-money">{{ parseMoney(scope.row.moneyTrx) }}</span>
+       </template>
+     </el-table-column>
+     <el-table-column label="冻结金额" align="right" prop="frozeMoney" min-width="100" sortable show-overflow-tooltip >
+       <template v-slot="scope">
+         <span class="text-money">{{ parseMoney(scope.row.frozeMoney) }}</span>
+       </template>
+     </el-table-column>
+     <el-table-column label="变动前金额" align="right" prop="beforeMoney" min-width="100" sortable show-overflow-tooltip >
+       <template v-slot="scope">
+         <span class="text-money">{{ parseMoney(scope.row.beforeMoney) }}</span>
+       </template>
+     </el-table-column>
+     <el-table-column label="变动后金额" align="right" prop="afterMoney" min-width="100" sortable show-overflow-tooltip >
+       <template v-slot="scope">
+         <span class="text-money">{{ parseMoney(scope.row.afterMoney) }}</span>
+       </template>
+     </el-table-column>
+      <el-table-column label="创建时间" align="center" prop="createTime" min-width="110" sortable show-overflow-tooltip >
+        <template v-slot="scope">
+          <span>{{ parseTime(scope.row.createTime, '{m}-{d} {h}:{i}') }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="操作" align="center" class-name="small-padding fixed-width" min-width="120" fixed="right">
         <template v-slot="scope">
           <el-button
             size="mini"

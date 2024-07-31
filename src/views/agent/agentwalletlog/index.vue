@@ -75,6 +75,14 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
+      <el-form-item label="部门ID" prop="detpId"  v-if="moreSearch" >
+        <el-input
+          v-model="queryParams.detpId"
+          placeholder="请输入部门ID"
+          clearable
+          @keyup.enter.native="handleQuery"
+        />
+      </el-form-item>
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
         <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
@@ -104,28 +112,61 @@
     >
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="记录ID" align="center" prop="id" />
-      <el-table-column label="码商ID" align="center" prop="agentId" />
-      <el-table-column label="码商名称" align="center" prop="agentName" />
+      <el-table-column label="码商ID" align="center" prop="agentId" show-overflow-tooltip />
+      <el-table-column label="码商名称" align="center" prop="agentName" show-overflow-tooltip />
       <el-table-column label="业务类型" align="center" prop="bizType">
         <template v-slot="scope">
           <dict-tag :options="dict.type.agent_biz_type" :value="scope.row.bizType"/>
         </template>
       </el-table-column>
-      <el-table-column label="业务描述" align="center" prop="bizDesc" />
-      <el-table-column label="业务单号" align="center" prop="orderCode" min-width="100" sortable />
-      <el-table-column label="变动金额" align="center" prop="money" min-width="100" sortable />
-      <el-table-column label="冻结金额" align="center" prop="frozeMoney" min-width="100" sortable />
-      <el-table-column label="变动前金额" align="center" prop="beforeMoney" min-width="100" sortable />
-      <el-table-column label="变动后金额" align="center" prop="afterMoney" min-width="100" sortable />
-
-      <el-table-column label="创建时间" align="center" prop="createTime">
+      <el-table-column label="业务描述" align="center" prop="bizDesc" show-overflow-tooltip />
+      <el-table-column label="业务单号" align="center" prop="orderCode" min-width="100" sortable show-overflow-tooltip/>
+     <el-table-column label="变动金额" align="right" prop="money" min-width="100" sortable show-overflow-tooltip >
+       <template v-slot="scope">
+         <span class="text-money">{{ parseMoney(scope.row.money) }}</span>
+       </template>
+     </el-table-column>
+     <el-table-column label="冻结金额" align="right" prop="frozeMoney" min-width="100" sortable show-overflow-tooltip >
+       <template v-slot="scope">
+         <span class="text-money">{{ parseMoney(scope.row.frozeMoney) }}</span>
+       </template>
+     </el-table-column>
+     <el-table-column label="变动前金额" align="right" prop="beforeMoney" min-width="100" sortable show-overflow-tooltip >
+       <template v-slot="scope">
+         <span class="text-money">{{ parseMoney(scope.row.beforeMoney) }}</span>
+       </template>
+     </el-table-column>
+     <el-table-column label="变动后金额" align="right" prop="afterMoney" min-width="100" sortable show-overflow-tooltip >
+       <template v-slot="scope">
+         <span class="text-money">{{ parseMoney(scope.row.afterMoney) }}</span>
+       </template>
+     </el-table-column>
+      <el-table-column label="部门ID" align="center" prop="detpId" show-overflow-tooltip />
+      <el-table-column label="创建时间" align="center" prop="createTime" min-width="110" sortable show-overflow-tooltip >
         <template v-slot="scope">
           <span>{{ parseTime(scope.row.createTime, '{m}-{d} {h}:{i}') }}</span>
         </template>
       </el-table-column>
-
+      <el-table-column label="操作" align="center" class-name="small-padding fixed-width" min-width="120" fixed="right">
+        <template v-slot="scope">
+          <el-button
+            size="mini"
+            type="text"
+            icon="el-icon-edit"
+            @click="handleUpdate(scope.row)"
+            v-hasPermi="['agent:agentwalletlog:edit']"
+          >修改</el-button>
+          <el-button
+            size="mini"
+            type="text"
+            icon="el-icon-delete"
+            @click="handleDelete(scope.row)"
+            v-hasPermi="['agent:agentwalletlog:remove']"
+          >删除</el-button>
+        </template>
+      </el-table-column>
     </el-table>
-
+    
     <pagination
       v-show="total>0"
       :total="total"
@@ -170,6 +211,9 @@
         </el-form-item>
         <el-form-item label="变动后金额" prop="afterMoney">
           <el-input v-model="form.afterMoney" placeholder="请输入变动后金额" />
+        </el-form-item>
+        <el-form-item label="部门ID" prop="detpId">
+          <el-input v-model="form.detpId" placeholder="请输入部门ID" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -221,6 +265,7 @@ export default {
         frozeMoney: null,
         beforeMoney: null,
         afterMoney: null,
+        detpId: null,
       },
       // 表单参数
       form: {},
@@ -266,6 +311,7 @@ export default {
         frozeMoney: null,
         beforeMoney: null,
         afterMoney: null,
+        detpId: null,
         remark: null,
         createBy: null,
         createTime: null,
