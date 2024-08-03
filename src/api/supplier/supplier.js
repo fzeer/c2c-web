@@ -42,3 +42,12 @@ export function delSupplier(supplierId) {
     method: 'delete'
   })
 }
+
+// 查询码商列表
+export function listSelectSupplier(query) {
+  return request({
+    url: '/supplier/supplier/select',
+    method: 'get',
+    params: query
+  })
+}

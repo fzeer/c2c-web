@@ -17,6 +17,16 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
+      <el-form-item label="状态" prop="status"  v-if="moreSearch" >
+        <el-select v-model="queryParams.status" placeholder="请选择状态" clearable>
+          <el-option
+            v-for="dict in dict.type.sys_normal_disable"
+            :key="dict.value"
+            :label="dict.label"
+            :value="dict.value"
+          />
+        </el-select>
+      </el-form-item>
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
         <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
@@ -77,6 +87,11 @@
       <el-table-column label="ID" align="center" prop="id" />
       <el-table-column label="支付编码" align="center" prop="wayCode" show-overflow-tooltip />
       <el-table-column label="支付名称" align="center" prop="wayName" show-overflow-tooltip />
+      <el-table-column label="状态" align="center" prop="status">
+        <template v-slot="scope">
+          <dict-tag :options="dict.type.sys_normal_disable" :value="scope.row.status"/>
+        </template>
+      </el-table-column>
       <el-table-column label="创建时间" align="center" prop="createTime" min-width="110" sortable show-overflow-tooltip >
         <template v-slot="scope">
           <span>{{ parseTime(scope.row.createTime, '{m}-{d} {h}:{i}') }}</span>
@@ -101,7 +116,7 @@
         </template>
       </el-table-column>
     </el-table>
-    
+
     <pagination
       v-show="total>0"
       :total="total"
@@ -119,6 +134,15 @@
         <el-form-item label="支付名称" prop="wayName">
           <el-input v-model="form.wayName" placeholder="请输入支付名称" />
         </el-form-item>
+        <el-form-item label="状态">
+          <el-radio-group v-model="form.status">
+            <el-radio
+              v-for="dict in dict.type.sys_normal_disable"
+              :key="dict.value"
+              :label="dict.value"
+            >{{dict.label}}</el-radio>
+          </el-radio-group>
+        </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="submitForm">确 定</el-button>
@@ -133,6 +157,7 @@ import { listPayway, getPayway, delPayway, addPayway, updatePayway } from "@/api
 
 export default {
   name: "Payway",
+  dicts: ['sys_normal_disable', 'amount_type'],
   data() {
     return {
       // 遮罩层
@@ -161,6 +186,7 @@ export default {
         pageSize: 10,
         wayCode: null,
         wayName: null,
+        status: null,
       },
       // 表单参数
       form: {},
@@ -196,6 +222,7 @@ export default {
         id: null,
         wayCode: null,
         wayName: null,
+        status: null,
         remark: null,
         createBy: null,
         createTime: null,

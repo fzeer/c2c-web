@@ -411,19 +411,17 @@
     >
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="订单ID" align="center" prop="orderId" />
-      <el-table-column label="代付订单号" align="center" prop="orderCode" min-width="100" sortable show-overflow-tooltip/>
+      <el-table-column label="代付订单号" align="center" prop="orderCode" min-width="130" sortable show-overflow-tooltip/>
       <el-table-column label="商户订单号" align="center" prop="mOrderCode" show-overflow-tooltip />
-      <el-table-column label="商户ID" align="center" prop="merchantId" show-overflow-tooltip />
-      <el-table-column label="代理商ID" align="center" prop="agentId" show-overflow-tooltip />
       <el-table-column label="代理商" align="center" prop="agentName" show-overflow-tooltip />
       <el-table-column label="商户编号" align="center" prop="merchantNo" min-width="100" sortable show-overflow-tooltip/>
-      <el-table-column label="商户名称" align="center" prop="merchantName" show-overflow-tooltip />
-     <el-table-column label="订单金额" align="right" prop="totalMoney" min-width="100" sortable show-overflow-tooltip >
+      <el-table-column label="商户名称" align="center" prop="merchantName" min-width="120"  show-overflow-tooltip />
+     <el-table-column label="订单金额" align="right" prop="totalMoney" min-width="110" sortable show-overflow-tooltip >
        <template v-slot="scope">
          <span class="text-money">{{ parseMoney(scope.row.totalMoney) }}</span>
        </template>
      </el-table-column>
-     <el-table-column label="实际金额" align="right" prop="realMoney" min-width="100" sortable show-overflow-tooltip >
+     <el-table-column label="实际金额" align="right" prop="realMoney" min-width="110" sortable show-overflow-tooltip >
        <template v-slot="scope">
          <span class="text-money">{{ parseMoney(scope.row.realMoney) }}</span>
        </template>
@@ -454,7 +452,7 @@
       <el-table-column label="开户人" align="center" prop="targetAccountName" show-overflow-tooltip />
       <el-table-column label="开户人身份证" align="center" prop="targetIdCard" show-overflow-tooltip />
       <el-table-column label="手机号" align="center" prop="targetMobile" show-overflow-tooltip />
-      <el-table-column label="单笔手续费" align="center" prop="single" show-overflow-tooltip />
+      <el-table-column label="单笔手续费" align="center" min-width="120" prop="single" show-overflow-tooltip />
      <el-table-column label="费率" align="right" prop="rate" min-width="100" sortable show-overflow-tooltip >
        <template v-slot="scope">
          <span class="text-money">{{ parseMoney(scope.row.rate) }}</span>
@@ -536,7 +534,7 @@
         </template>
       </el-table-column>
     </el-table>
-    
+
     <pagination
       v-show="total>0"
       :total="total"

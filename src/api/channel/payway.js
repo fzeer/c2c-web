@@ -42,3 +42,12 @@ export function delPayway(id) {
     method: 'delete'
   })
 }
+
+// 查询支付编码列表
+export function listSelectPayWay(query) {
+  return request({
+    url: '/channel/payway/select',
+    method: 'get',
+    params: query
+  })
+}

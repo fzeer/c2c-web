@@ -19,29 +19,16 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="接口编码" prop="interfaceCode" >
-        <el-input
-          v-model="queryParams.interfaceCode"
-          placeholder="请输入接口编码"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="码商ID" prop="supplierId"  v-if="moreSearch" >
-        <el-input
-          v-model="queryParams.supplierId"
-          placeholder="请输入码商ID"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="接口APPID" prop="interfaceUrl"  v-if="moreSearch" >
-        <el-input
-          v-model="queryParams.interfaceUrl"
-          placeholder="请输入接口APPID"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
+      <el-form-item label="所属码商">
+        <el-select v-model="queryParams.supplierId" style="width: 100%" @change="handleQuery" placeholder="请选择">
+          <el-option
+            v-for="item in supplierOptions"
+            :key="item.supplierId"
+            :label="item.supplierShortName"
+            :value="item.supplierId"
+            :disabled="item.status != '0'"
+          ></el-option>
+        </el-select>
       </el-form-item>
       <el-form-item label="接口商户号" prop="interfaceMchNo"  v-if="moreSearch" >
         <el-input
@@ -51,42 +38,10 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="接口密钥" prop="interfaceMchKey"  v-if="moreSearch" >
+      <el-form-item label="接口代码" prop="interfaceCode"  v-if="moreSearch" >
         <el-input
-          v-model="queryParams.interfaceMchKey"
-          placeholder="请输入接口密钥"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="签名方式" prop="signType"  v-if="moreSearch" >
-        <el-input
-          v-model="queryParams.signType"
-          placeholder="请输入签名方式"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="接口APPID" prop="appId"  v-if="moreSearch" >
-        <el-input
-          v-model="queryParams.appId"
-          placeholder="请输入接口APPID"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="接口私钥" prop="privateKey"  v-if="moreSearch" >
-        <el-input
-          v-model="queryParams.privateKey"
-          placeholder="请输入接口私钥"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="接口公钥" prop="publicKey"  v-if="moreSearch" >
-        <el-input
-          v-model="queryParams.publicKey"
-          placeholder="请输入接口公钥"
+          v-model="queryParams.interfaceCode"
+          placeholder="请输入接口代码"
           clearable
           @keyup.enter.native="handleQuery"
         />
@@ -159,21 +114,18 @@
     >
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="渠道ID" align="center" prop="channelId" />
-      <el-table-column label="渠道名称" align="center" prop="channelName" show-overflow-tooltip />
+      <el-table-column label="渠道名称" align="center" prop="channelName" min-width="120" show-overflow-tooltip />
       <el-table-column label="渠道类型" align="center" prop="channelType">
         <template v-slot="scope">
           <dict-tag :options="dict.type.channel_type" :value="scope.row.channelType"/>
         </template>
       </el-table-column>
-      <el-table-column label="接口编码" align="center" prop="interfaceCode" show-overflow-tooltip />
-      <el-table-column label="码商ID" align="center" prop="supplierId" show-overflow-tooltip />
-      <el-table-column label="接口APPID" align="center" prop="interfaceUrl" show-overflow-tooltip />
-      <el-table-column label="接口商户号" align="center" prop="interfaceMchNo" min-width="100" sortable show-overflow-tooltip/>
-      <el-table-column label="接口密钥" align="center" prop="interfaceMchKey" show-overflow-tooltip />
+      <el-table-column label="接口代码" align="center" prop="interfaceCode" show-overflow-tooltip />
+      <el-table-column label="码商" align="center" prop="supplierName" show-overflow-tooltip />
+      <el-table-column label="网关" align="center" prop="interfaceUrl" show-overflow-tooltip />
+      <el-table-column label="商户号" align="center" prop="interfaceMchNo" min-width="100" sortable show-overflow-tooltip/>
       <el-table-column label="签名方式" align="center" prop="signType" show-overflow-tooltip />
-      <el-table-column label="接口APPID" align="center" prop="appId" show-overflow-tooltip />
-      <el-table-column label="接口私钥" align="center" prop="privateKey" show-overflow-tooltip />
-      <el-table-column label="接口公钥" align="center" prop="publicKey" show-overflow-tooltip />
+      <el-table-column label="APPID" align="center" prop="appId" show-overflow-tooltip />
       <el-table-column label="状态" align="center" prop="status">
         <template v-slot="scope">
           <dict-tag :options="dict.type.sys_normal_disable" :value="scope.row.status"/>
@@ -203,7 +155,7 @@
         </template>
       </el-table-column>
     </el-table>
-    
+
     <pagination
       v-show="total>0"
       :total="total"
@@ -215,55 +167,78 @@
     <!-- 添加或修改支付渠道对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-        <el-form-item label="渠道名称" prop="channelName">
-          <el-input v-model="form.channelName" placeholder="请输入渠道名称" />
-        </el-form-item>
-        <el-form-item label="渠道类型" prop="channelType">
-          <el-select v-model="form.channelType" placeholder="请选择渠道类型">
-            <el-option
-              v-for="dict in dict.type.channel_type"
-              :key="dict.value"
-              :label="dict.label"
-              :value="dict.value"
-            ></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="接口编码" prop="interfaceCode">
-          <el-input v-model="form.interfaceCode" placeholder="请输入接口编码" />
-        </el-form-item>
-        <el-form-item label="码商ID" prop="supplierId">
-          <el-input v-model="form.supplierId" placeholder="请输入码商ID" />
-        </el-form-item>
-        <el-form-item label="接口APPID" prop="interfaceUrl">
-          <el-input v-model="form.interfaceUrl" placeholder="请输入接口APPID" />
-        </el-form-item>
-        <el-form-item label="接口商户号" prop="interfaceMchNo">
-          <el-input v-model="form.interfaceMchNo" placeholder="请输入接口商户号" />
-        </el-form-item>
-        <el-form-item label="接口密钥" prop="interfaceMchKey">
-          <el-input v-model="form.interfaceMchKey" placeholder="请输入接口密钥" />
-        </el-form-item>
-        <el-form-item label="签名方式" prop="signType">
-          <el-input v-model="form.signType" placeholder="请输入签名方式" />
-        </el-form-item>
-        <el-form-item label="接口APPID" prop="appId">
-          <el-input v-model="form.appId" placeholder="请输入接口APPID" />
-        </el-form-item>
-        <el-form-item label="接口私钥" prop="privateKey">
-          <el-input v-model="form.privateKey" placeholder="请输入接口私钥" />
-        </el-form-item>
-        <el-form-item label="接口公钥" prop="publicKey">
-          <el-input v-model="form.publicKey" placeholder="请输入接口公钥" />
-        </el-form-item>
-        <el-form-item label="状态">
-          <el-radio-group v-model="form.status">
-            <el-radio
-              v-for="dict in dict.type.sys_normal_disable"
-              :key="dict.value"
-              :label="dict.value"
-            >{{dict.label}}</el-radio>
-          </el-radio-group>
-        </el-form-item>
+
+        <el-tabs v-model="activeName">
+          <el-tab-pane label="基础信息" name="first">
+
+            <el-form-item label="渠道名称" prop="channelName">
+              <el-input v-model="form.channelName" placeholder="请输入渠道名称" />
+            </el-form-item>
+            <el-form-item label="渠道类型" prop="channelType">
+              <el-select v-model="form.channelType" placeholder="请选择渠道类型" style="width: 100%">
+                <el-option
+                  v-for="dict in dict.type.channel_type"
+                  :key="dict.value"
+                  :label="dict.label"
+                  :value="dict.value"
+                ></el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item label="所属码商">
+              <el-select v-model="form.supplierId" style="width: 100%" placeholder="请选择">
+                <el-option
+                  v-for="item in supplierOptions"
+                  :key="item.supplierId"
+                  :label="item.supplierShortName"
+                  :value="item.supplierId"
+                  :disabled="item.status != '0'"
+                ></el-option>
+              </el-select>
+            </el-form-item>
+
+            <el-form-item label="接口代码" prop="interfaceCode">
+              <el-input v-model="form.interfaceCode" placeholder="请输入接口代码" />
+            </el-form-item>
+
+            <el-form-item label="备注" prop="remark">
+              <el-input v-model="form.remark" placeholder="请输入备注" />
+            </el-form-item>
+
+            <el-form-item label="状态">
+              <el-radio-group v-model="form.status">
+                <el-radio
+                  v-for="dict in dict.type.sys_normal_disable"
+                  :key="dict.value"
+                  :label="dict.value"
+                >{{dict.label}}</el-radio>
+              </el-radio-group>
+            </el-form-item>
+
+          </el-tab-pane>
+          <el-tab-pane label="接口配置" name="second">
+            <el-form-item label="网关地址" prop="interfaceUrl">
+              <el-input v-model="form.interfaceUrl" placeholder="请输入网关地址" />
+            </el-form-item>
+            <el-form-item label="商户号" prop="interfaceMchNo">
+              <el-input v-model="form.interfaceMchNo" placeholder="请输入接口商户号" />
+            </el-form-item>
+            <el-form-item label="接口密钥" prop="interfaceMchKey">
+              <el-input v-model="form.interfaceMchKey" placeholder="请输入接口密钥" />
+            </el-form-item>
+            <el-form-item label="签名方式" prop="signType">
+              <el-input v-model="form.signType" placeholder="请输入签名方式" />
+            </el-form-item>
+            <el-form-item label="APPID" prop="appId">
+              <el-input v-model="form.appId" placeholder="请输入接口APPID" />
+            </el-form-item>
+            <el-form-item label="接口私钥" prop="privateKey">
+              <el-input v-model="form.privateKey" placeholder="请输入接口私钥" />
+            </el-form-item>
+            <el-form-item label="接口公钥" prop="publicKey">
+              <el-input v-model="form.publicKey" placeholder="请输入接口公钥" />
+            </el-form-item>
+          </el-tab-pane>
+        </el-tabs>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="submitForm">确 定</el-button>
@@ -275,6 +250,7 @@
 
 <script>
 import { listPaymentchannel, getPaymentchannel, delPaymentchannel, addPaymentchannel, updatePaymentchannel } from "@/api/channel/paymentchannel";
+import { listSelectSupplier } from '@/api/supplier/supplier'
 
 export default {
   name: "Paymentchannel",
@@ -293,10 +269,14 @@ export default {
       multiple: true,
       // 显示搜索条件
       showSearch: true,
+      // 当前页
+      activeName: 'first',
       // 总条数
       total: 0,
       // 支付渠道表格数据
       paymentchannelList: [],
+      // 码商下拉数据
+      supplierOptions: [],
       // 弹出层标题
       title: "",
       // 是否显示弹出层
@@ -322,9 +302,24 @@ export default {
       form: {},
       // 表单校验
       rules: {
-        interfaceCode: [
-          { required: true, message: "接口编码不能为空", trigger: "blur" }
+        channelName: [
+          { required: true, message: "渠道名称不能为空", trigger: "blur" }
         ],
+        channelType: [
+          { required: true, message: "渠道类型不能为空", trigger: "blur" }
+        ],
+        interfaceCode: [
+          { required: true, message: "接口代码不能为空", trigger: "blur" }
+        ],
+        // interfaceUrl: [
+        //   { required: true, message: "网关地址不能为空", trigger: "blur" }
+        // ],
+        // interfaceMchNo: [
+        //   { required: true, message: "商户号不能为空", trigger: "blur" }
+        // ],
+        // interfaceMchKey: [
+        //   { required: true, message: "商户密钥不能为空", trigger: "blur" }
+        // ],
         supplierId: [
           { required: true, message: "码商ID不能为空", trigger: "blur" }
         ],
@@ -333,6 +328,7 @@ export default {
   },
   created() {
     this.getList();
+    this.getSupplierOptions();
   },
   methods: {
     /** 查询支付渠道列表 */
@@ -354,7 +350,7 @@ export default {
       this.form = {
         channelId: null,
         channelName: null,
-        channelType: null,
+        channelType: '0',
         interfaceCode: null,
         supplierId: null,
         interfaceUrl: null,
@@ -440,6 +436,13 @@ export default {
       this.download('channel/paymentchannel/export', {
         ...this.queryParams
       }, `paymentchannel_${new Date().getTime()}.xlsx`)
+    },
+    getSupplierOptions() {
+      listSelectSupplier().then(response => {
+        this.supplierOptions = response.data;
+      });
+    },
+    supplierSelectChange() {
     }
   }
 };

@@ -66,6 +66,19 @@ export function resetUserPwd(userId, password) {
   })
 }
 
+// 用户密码重置
+export function resetUserPayPwd(userId, password) {
+  const data = {
+    userId,
+    password
+  }
+  return request({
+    url: '/system/user/resetPayPwd',
+    method: 'put',
+    data: data
+  })
+}
+
 // 用户状态修改
 export function changeUserStatus(userId, status) {
   const data = {
@@ -104,6 +117,19 @@ export function updateUserPwd(oldPassword, newPassword) {
   }
   return request({
     url: '/system/user/profile/updatePwd',
+    method: 'put',
+    params: data
+  })
+}
+
+// 用户密码重置
+export function updateUserPayPwd(oldPassword, newPassword) {
+  const data = {
+    oldPassword,
+    newPassword
+  }
+  return request({
+    url: '/system/user/profile/updatePayPwd',
     method: 'put',
     params: data
   })

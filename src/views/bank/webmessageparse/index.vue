@@ -218,7 +218,7 @@
       <el-table-column label="卡商UPI" align="center" prop="supplierUpi" show-overflow-tooltip />
       <el-table-column label="对方UPI" align="center" prop="userUpi" show-overflow-tooltip />
       <el-table-column label="UTR" align="center" prop="utr" show-overflow-tooltip />
-      <el-table-column label="匹配订单号" align="center" prop="orderCode" min-width="100" sortable show-overflow-tooltip/>
+      <el-table-column label="匹配订单号" align="center" prop="orderCode" min-width="130" sortable show-overflow-tooltip/>
       <el-table-column label="商户号" align="center" prop="merchantNo" min-width="100" sortable show-overflow-tooltip/>
       <el-table-column label="商户名称" align="center" prop="merchantName" show-overflow-tooltip />
       <el-table-column label="部门ID" align="center" prop="deptId" show-overflow-tooltip />
@@ -246,7 +246,7 @@
         </template>
       </el-table-column>
     </el-table>
-    
+
     <pagination
       v-show="total>0"
       :total="total"

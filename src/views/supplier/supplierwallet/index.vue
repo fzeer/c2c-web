@@ -17,70 +17,6 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="余额" prop="balance"  v-if="moreSearch" >
-        <el-input
-          v-model="queryParams.balance"
-          placeholder="请输入余额"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="可用余额" prop="availBalance"  v-if="moreSearch" >
-        <el-input
-          v-model="queryParams.availBalance"
-          placeholder="请输入可用余额"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="冻结金额" prop="frozeBalance"  v-if="moreSearch" >
-        <el-input
-          v-model="queryParams.frozeBalance"
-          placeholder="请输入冻结金额"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="当日进款" prop="todayMoneyIn"  v-if="moreSearch" >
-        <el-input
-          v-model="queryParams.todayMoneyIn"
-          placeholder="请输入当日进款"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="当日出款" prop="todayMoneyOut"  v-if="moreSearch" >
-        <el-input
-          v-model="queryParams.todayMoneyOut"
-          placeholder="请输入当日出款"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="累计进款" prop="totalMoneyIn"  v-if="moreSearch" >
-        <el-input
-          v-model="queryParams.totalMoneyIn"
-          placeholder="请输入累计进款"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="累计出款" prop="totalMoneyOut"  v-if="moreSearch" >
-        <el-input
-          v-model="queryParams.totalMoneyOut"
-          placeholder="请输入累计出款"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="部门ID" prop="deptId"  v-if="moreSearch" >
-        <el-input
-          v-model="queryParams.deptId"
-          placeholder="请输入部门ID"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
         <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
@@ -89,35 +25,6 @@
     </el-form>
 
     <el-row :gutter="10" class="mb8">
-      <el-col :span="1.5">
-        <el-button
-          type="primary"
-          icon="el-icon-plus"
-          size="mini"
-          @click="handleAdd"
-          v-hasPermi="['supplier:supplierwallet:add']"
-        >新增</el-button>
-      </el-col>
-      <el-col :span="1.5">
-        <el-button
-          type="success"
-          icon="el-icon-edit"
-          size="mini"
-          :disabled="single"
-          @click="handleUpdate"
-          v-hasPermi="['supplier:supplierwallet:edit']"
-        >修改</el-button>
-      </el-col>
-      <el-col :span="1.5">
-        <el-button
-          type="danger"
-          icon="el-icon-delete"
-          size="mini"
-          :disabled="multiple"
-          @click="handleDelete"
-          v-hasPermi="['supplier:supplierwallet:remove']"
-        >删除</el-button>
-      </el-col>
       <el-col :span="1.5">
         <el-button
           type="warning"
@@ -139,9 +46,8 @@
     >
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="钱包ID" align="center" prop="walletId" />
-      <el-table-column label="码商ID" align="center" prop="supplierId" show-overflow-tooltip />
       <el-table-column label="钱包编号" align="center" prop="walletNo" min-width="100" sortable show-overflow-tooltip/>
-      <el-table-column label="动账时间戳" align="center" prop="timestamp" show-overflow-tooltip />
+      <el-table-column label="码商名称" align="center" prop="supplierName" show-overflow-tooltip />
      <el-table-column label="余额" align="right" prop="balance" min-width="100" sortable show-overflow-tooltip >
        <template v-slot="scope">
          <span class="text-money">{{ parseMoney(scope.row.balance) }}</span>
@@ -177,28 +83,9 @@
          <span class="text-money">{{ parseMoney(scope.row.totalMoneyOut) }}</span>
        </template>
      </el-table-column>
-      <el-table-column label="部门ID" align="center" prop="deptId" show-overflow-tooltip />
       <el-table-column label="创建时间" align="center" prop="createTime" min-width="110" sortable show-overflow-tooltip >
         <template v-slot="scope">
           <span>{{ parseTime(scope.row.createTime, '{m}-{d} {h}:{i}') }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width" min-width="120" fixed="right">
-        <template v-slot="scope">
-          <el-button
-            size="mini"
-            type="text"
-            icon="el-icon-edit"
-            @click="handleUpdate(scope.row)"
-            v-hasPermi="['supplier:supplierwallet:edit']"
-          >修改</el-button>
-          <el-button
-            size="mini"
-            type="text"
-            icon="el-icon-delete"
-            @click="handleDelete(scope.row)"
-            v-hasPermi="['supplier:supplierwallet:remove']"
-          >删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -214,39 +101,7 @@
     <!-- 添加或修改码商钱包对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-        <el-form-item label="码商ID" prop="supplierId">
-          <el-input v-model="form.supplierId" placeholder="请输入码商ID" />
-        </el-form-item>
-        <el-form-item label="钱包编号" prop="walletNo">
-          <el-input v-model="form.walletNo" placeholder="请输入钱包编号" />
-        </el-form-item>
-        <el-form-item label="动账时间戳" prop="timestamp">
-          <el-input v-model="form.timestamp" placeholder="请输入动账时间戳" />
-        </el-form-item>
-        <el-form-item label="余额" prop="balance">
-          <el-input v-model="form.balance" placeholder="请输入余额" />
-        </el-form-item>
-        <el-form-item label="可用余额" prop="availBalance">
-          <el-input v-model="form.availBalance" placeholder="请输入可用余额" />
-        </el-form-item>
-        <el-form-item label="冻结金额" prop="frozeBalance">
-          <el-input v-model="form.frozeBalance" placeholder="请输入冻结金额" />
-        </el-form-item>
-        <el-form-item label="当日进款" prop="todayMoneyIn">
-          <el-input v-model="form.todayMoneyIn" placeholder="请输入当日进款" />
-        </el-form-item>
-        <el-form-item label="当日出款" prop="todayMoneyOut">
-          <el-input v-model="form.todayMoneyOut" placeholder="请输入当日出款" />
-        </el-form-item>
-        <el-form-item label="累计进款" prop="totalMoneyIn">
-          <el-input v-model="form.totalMoneyIn" placeholder="请输入累计进款" />
-        </el-form-item>
-        <el-form-item label="累计出款" prop="totalMoneyOut">
-          <el-input v-model="form.totalMoneyOut" placeholder="请输入累计出款" />
-        </el-form-item>
-        <el-form-item label="部门ID" prop="deptId">
-          <el-input v-model="form.deptId" placeholder="请输入部门ID" />
-        </el-form-item>
+
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="submitForm">确 定</el-button>

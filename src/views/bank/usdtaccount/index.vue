@@ -9,13 +9,16 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="码商ID" prop="supplierId" >
-        <el-input
-          v-model="queryParams.supplierId"
-          placeholder="请输入码商ID"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
+      <el-form-item label="所属码商">
+        <el-select v-model="queryParams.supplierId" style="width: 100%" @change="handleQuery" placeholder="请选择">
+          <el-option
+            v-for="item in supplierOptions"
+            :key="item.supplierId"
+            :label="item.supplierShortName"
+            :value="item.supplierId"
+            :disabled="item.status != '0'"
+          ></el-option>
+        </el-select>
       </el-form-item>
       <el-form-item label="USDT地址" prop="viewAddress" >
         <el-input
@@ -34,78 +37,6 @@
             :value="dict.value"
           />
         </el-select>
-      </el-form-item>
-      <el-form-item label="支付超时时间" prop="payTimeoutSec"  v-if="moreSearch" >
-        <el-input
-          v-model="queryParams.payTimeoutSec"
-          placeholder="请输入支付超时时间"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="用户名" prop="userName"  v-if="moreSearch" >
-        <el-input
-          v-model="queryParams.userName"
-          placeholder="请输入用户名"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="银行密码" prop="password"  v-if="moreSearch" >
-        <el-input
-          v-model="queryParams.password"
-          placeholder="请输入银行密码"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="更新标志" prop="timestamp"  v-if="moreSearch" >
-        <el-input
-          v-model="queryParams.timestamp"
-          placeholder="请输入更新标志"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="系统TRX余额" prop="sysBalanceTrx"  v-if="moreSearch" >
-        <el-input
-          v-model="queryParams.sysBalanceTrx"
-          placeholder="请输入系统TRX余额"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="系统USDT余额" prop="sysBalanceUsdt"  v-if="moreSearch" >
-        <el-input
-          v-model="queryParams.sysBalanceUsdt"
-          placeholder="请输入系统USDT余额"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="实际TRX余额" prop="crawlBalanceTrx"  v-if="moreSearch" >
-        <el-input
-          v-model="queryParams.crawlBalanceTrx"
-          placeholder="请输入实际TRX余额"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="实际USDT余额" prop="crawlBalanceUsdt"  v-if="moreSearch" >
-        <el-input
-          v-model="queryParams.crawlBalanceUsdt"
-          placeholder="请输入实际USDT余额"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="汇率" prop="exchangeRate"  v-if="moreSearch" >
-        <el-input
-          v-model="queryParams.exchangeRate"
-          placeholder="请输入汇率"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
       </el-form-item>
       <el-form-item label="爬虫版本" prop="crawlVersion"  v-if="moreSearch" >
         <el-input
@@ -134,22 +65,6 @@
             :value="dict.value"
           />
         </el-select>
-      </el-form-item>
-      <el-form-item label="抓取错误提示" prop="crawlMsg"  v-if="moreSearch" >
-        <el-input
-          v-model="queryParams.crawlMsg"
-          placeholder="请输入抓取错误提示"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="部门ID" prop="deptId"  v-if="moreSearch" >
-        <el-input
-          v-model="queryParams.deptId"
-          placeholder="请输入部门ID"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
       </el-form-item>
       <el-form-item label="状态" prop="status"  v-if="moreSearch" >
         <el-select v-model="queryParams.status" placeholder="请选择状态" clearable>
@@ -220,33 +135,30 @@
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="账户ID" align="center" prop="usdtId" />
       <el-table-column label="昵称" align="center" prop="nickName" show-overflow-tooltip />
-      <el-table-column label="码商ID" align="center" prop="supplierId" show-overflow-tooltip />
-      <el-table-column label="USDT地址" align="center" prop="viewAddress" show-overflow-tooltip />
+      <el-table-column label="码商" align="center" prop="supplierName" show-overflow-tooltip />
+      <el-table-column label="USDT地址" align="center" prop="viewAddress" min-width="110" show-overflow-tooltip />
       <el-table-column label="用途" align="center" prop="useType">
         <template v-slot="scope">
           <dict-tag :options="dict.type.bank_use_type" :value="scope.row.useType"/>
         </template>
       </el-table-column>
-      <el-table-column label="支付超时时间" align="center" prop="payTimeoutSec" show-overflow-tooltip />
-      <el-table-column label="用户名" align="center" prop="userName" show-overflow-tooltip />
-      <el-table-column label="银行密码" align="center" prop="password" show-overflow-tooltip />
-      <el-table-column label="更新标志" align="center" prop="timestamp" show-overflow-tooltip />
-     <el-table-column label="系统TRX余额" align="right" prop="sysBalanceTrx" min-width="100" sortable show-overflow-tooltip >
+      <el-table-column label="超时设置" align="center" prop="payTimeoutSec" show-overflow-tooltip />
+     <el-table-column label="系统TRX余额" align="right" prop="sysBalanceTrx" min-width="140" sortable show-overflow-tooltip >
        <template v-slot="scope">
          <span class="text-money">{{ parseMoney(scope.row.sysBalanceTrx) }}</span>
        </template>
      </el-table-column>
-     <el-table-column label="系统USDT余额" align="right" prop="sysBalanceUsdt" min-width="100" sortable show-overflow-tooltip >
+     <el-table-column label="系统USDT余额" align="right" prop="sysBalanceUsdt" min-width="140" sortable show-overflow-tooltip >
        <template v-slot="scope">
          <span class="text-money">{{ parseMoney(scope.row.sysBalanceUsdt) }}</span>
        </template>
      </el-table-column>
-     <el-table-column label="实际TRX余额" align="right" prop="crawlBalanceTrx" min-width="100" sortable show-overflow-tooltip >
+     <el-table-column label="实际TRX余额" align="right" prop="crawlBalanceTrx" min-width="140" sortable show-overflow-tooltip >
        <template v-slot="scope">
          <span class="text-money">{{ parseMoney(scope.row.crawlBalanceTrx) }}</span>
        </template>
      </el-table-column>
-     <el-table-column label="实际USDT余额" align="right" prop="crawlBalanceUsdt" min-width="100" sortable show-overflow-tooltip >
+     <el-table-column label="实际USDT余额" align="right" prop="crawlBalanceUsdt" min-width="140" sortable show-overflow-tooltip >
        <template v-slot="scope">
          <span class="text-money">{{ parseMoney(scope.row.crawlBalanceUsdt) }}</span>
        </template>
@@ -263,13 +175,12 @@
           <dict-tag :options="dict.type.crawl_status" :value="scope.row.crawlStatus"/>
         </template>
       </el-table-column>
-      <el-table-column label="最后抓取时间" align="center" prop="crawlActiveTime" min-width="110" sortable show-overflow-tooltip >
+      <el-table-column label="最后抓取时间" align="center" prop="crawlActiveTime" min-width="140" sortable show-overflow-tooltip >
         <template v-slot="scope">
-          <span>{{ parseTime(scope.row.crawlActiveTime, '{m}-{d} {h}:{i}') }}</span>
+          <span>{{ parseTime(scope.row.crawlActiveTime, '{m}-{d} {h}:{i}:{s}') }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="抓取错误提示" align="center" prop="crawlMsg" show-overflow-tooltip />
-      <el-table-column label="部门ID" align="center" prop="deptId" show-overflow-tooltip />
+      <el-table-column label="抓取错误提示" align="center" prop="crawlMsg" min-width="130" show-overflow-tooltip />
       <el-table-column label="状态" align="center" prop="status">
         <template v-slot="scope">
           <dict-tag :options="dict.type.sys_normal_disable" :value="scope.row.status"/>
@@ -299,7 +210,7 @@
         </template>
       </el-table-column>
     </el-table>
-    
+
     <pagination
       v-show="total>0"
       :total="total"
@@ -314,8 +225,16 @@
         <el-form-item label="昵称" prop="nickName">
           <el-input v-model="form.nickName" placeholder="请输入昵称" />
         </el-form-item>
-        <el-form-item label="码商ID" prop="supplierId">
-          <el-input v-model="form.supplierId" placeholder="请输入码商ID" />
+        <el-form-item label="所属码商">
+          <el-select v-model="form.supplierId" style="width: 100%" @change="supplierSelectChange" placeholder="请选择">
+            <el-option
+              v-for="item in supplierOptions"
+              :key="item.supplierId"
+              :label="item.supplierShortName"
+              :value="item.supplierId"
+              :disabled="item.status != '0'"
+            ></el-option>
+          </el-select>
         </el-form-item>
         <el-form-item label="USDT地址" prop="viewAddress">
           <el-input v-model="form.viewAddress" placeholder="请输入USDT地址" />
@@ -330,35 +249,11 @@
             ></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="支付超时时间" prop="payTimeoutSec">
-          <el-input v-model="form.payTimeoutSec" placeholder="请输入支付超时时间" />
-        </el-form-item>
-        <el-form-item label="用户名" prop="userName">
-          <el-input v-model="form.userName" placeholder="请输入用户名" />
-        </el-form-item>
-        <el-form-item label="银行密码" prop="password">
-          <el-input v-model="form.password" placeholder="请输入银行密码" />
-        </el-form-item>
-        <el-form-item label="更新标志" prop="timestamp">
-          <el-input v-model="form.timestamp" placeholder="请输入更新标志" />
-        </el-form-item>
-        <el-form-item label="系统TRX余额" prop="sysBalanceTrx">
-          <el-input v-model="form.sysBalanceTrx" placeholder="请输入系统TRX余额" />
-        </el-form-item>
-        <el-form-item label="系统USDT余额" prop="sysBalanceUsdt">
-          <el-input v-model="form.sysBalanceUsdt" placeholder="请输入系统USDT余额" />
-        </el-form-item>
-        <el-form-item label="实际TRX余额" prop="crawlBalanceTrx">
-          <el-input v-model="form.crawlBalanceTrx" placeholder="请输入实际TRX余额" />
-        </el-form-item>
-        <el-form-item label="实际USDT余额" prop="crawlBalanceUsdt">
-          <el-input v-model="form.crawlBalanceUsdt" placeholder="请输入实际USDT余额" />
+        <el-form-item label="超时设置" prop="payTimeoutSec">
+          <el-input v-model="form.payTimeoutSec" placeholder="请输入超时设置" />
         </el-form-item>
         <el-form-item label="汇率" prop="exchangeRate">
           <el-input v-model="form.exchangeRate" placeholder="请输入汇率" />
-        </el-form-item>
-        <el-form-item label="爬虫版本" prop="crawlVersion">
-          <el-input v-model="form.crawlVersion" placeholder="请输入爬虫版本" />
         </el-form-item>
         <el-form-item label="抓取开关" prop="crawlOpen">
           <el-select v-model="form.crawlOpen" placeholder="请选择抓取开关">
@@ -369,30 +264,6 @@
               :value="dict.value"
             ></el-option>
           </el-select>
-        </el-form-item>
-        <el-form-item label="抓取状态" prop="crawlStatus">
-          <el-select v-model="form.crawlStatus" placeholder="请选择抓取状态">
-            <el-option
-              v-for="dict in dict.type.crawl_status"
-              :key="dict.value"
-              :label="dict.label"
-              :value="dict.value"
-            ></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="最后抓取时间" prop="crawlActiveTime">
-          <el-date-picker clearable
-            v-model="form.crawlActiveTime"
-            type="date"
-            value-format="yyyy-MM-dd"
-            placeholder="请选择最后抓取时间">
-          </el-date-picker>
-        </el-form-item>
-        <el-form-item label="抓取错误提示" prop="crawlMsg">
-          <el-input v-model="form.crawlMsg" placeholder="请输入抓取错误提示" />
-        </el-form-item>
-        <el-form-item label="部门ID" prop="deptId">
-          <el-input v-model="form.deptId" placeholder="请输入部门ID" />
         </el-form-item>
         <el-form-item label="状态">
           <el-radio-group v-model="form.status">
@@ -414,6 +285,7 @@
 
 <script>
 import { listUsdtaccount, getUsdtaccount, delUsdtaccount, addUsdtaccount, updateUsdtaccount } from "@/api/bank/usdtaccount";
+import { listSelectSupplier } from '@/api/supplier/supplier'
 
 export default {
   name: "Usdtaccount",
@@ -436,6 +308,8 @@ export default {
       total: 0,
       // USDT账户表格数据
       usdtaccountList: [],
+      // 码商选项
+      supplierOptions: [],
       // 弹出层标题
       title: "",
       // 是否显示弹出层
@@ -477,6 +351,7 @@ export default {
   },
   created() {
     this.getList();
+    this.getSupplierOptions()
   },
   methods: {
     /** 查询USDT账户列表 */
@@ -592,6 +467,13 @@ export default {
       this.download('bank/usdtaccount/export', {
         ...this.queryParams
       }, `usdtaccount_${new Date().getTime()}.xlsx`)
+    },
+    getSupplierOptions() {
+      listSelectSupplier().then(response => {
+        this.supplierOptions = response.data;
+      });
+    },
+    supplierSelectChange() {
     }
   }
 };

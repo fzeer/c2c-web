@@ -17,10 +17,37 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="内部产品名称" prop="productNameInner" >
+
+      <el-form-item label="渠道" >
+        <el-select v-model="queryParams.channelId" style="width: 100%" placeholder="请选择"
+                   clearable
+                   @change="handleQuery">
+          <el-option
+            v-for="item in channelOptions"
+            :key="item.channelId"
+            :label="item.channelName"
+            :value="item.channelId"
+            :disabled="item.status != '0'"
+          ></el-option>
+        </el-select>
+      </el-form-item>
+
+      <el-form-item label="支付编码" v-if="moreSearch" >
+        <el-select v-model="queryParams.wayCode" style="width: 100%" placeholder="请选择" clearable>
+          <el-option
+            v-for="item in wayOptions"
+            :key="item.wayCode"
+            :label="item.wayCode + ' - ' + item.wayName"
+            :value="item.wayCode"
+            :disabled="item.status != '0'"
+          ></el-option>
+        </el-select>
+      </el-form-item>
+
+      <el-form-item label="内部名称" prop="productNameInner"  v-if="moreSearch" >
         <el-input
           v-model="queryParams.productNameInner"
-          placeholder="请输入内部产品名称"
+          placeholder="请输入内部名称"
           clearable
           @keyup.enter.native="handleQuery"
         />
@@ -33,62 +60,7 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="支付编码" prop="wayCode"  v-if="moreSearch" >
-        <el-input
-          v-model="queryParams.wayCode"
-          placeholder="请输入支付编码"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="通道ID" prop="channelId"  v-if="moreSearch" >
-        <el-input
-          v-model="queryParams.channelId"
-          placeholder="请输入通道ID"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="费率" prop="rate"  v-if="moreSearch" >
-        <el-input
-          v-model="queryParams.rate"
-          placeholder="请输入费率"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="单笔金额" prop="single"  v-if="moreSearch" >
-        <el-input
-          v-model="queryParams.single"
-          placeholder="请输入单笔金额"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="最低手续费" prop="minFee"  v-if="moreSearch" >
-        <el-input
-          v-model="queryParams.minFee"
-          placeholder="请输入最低手续费"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="最低金额" prop="minMoney"  v-if="moreSearch" >
-        <el-input
-          v-model="queryParams.minMoney"
-          placeholder="请输入最低金额"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="最高金额" prop="maxMoney"  v-if="moreSearch" >
-        <el-input
-          v-model="queryParams.maxMoney"
-          placeholder="请输入最高金额"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
+
       <el-form-item label="结算类型" prop="settleType"  v-if="moreSearch" >
         <el-input
           v-model="queryParams.settleType"
@@ -117,10 +89,10 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="产品附加参数" prop="extraParam"  v-if="moreSearch" >
+      <el-form-item label="附加参数" prop="extraParam"  v-if="moreSearch" >
         <el-input
           v-model="queryParams.extraParam"
-          placeholder="请输入产品附加参数"
+          placeholder="请输入附加参数"
           clearable
           @keyup.enter.native="handleQuery"
         />
@@ -183,30 +155,30 @@
     >
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="ID" align="center" prop="productId" />
-      <el-table-column label="产品编号" align="center" prop="productCode" show-overflow-tooltip />
-      <el-table-column label="产品名称" align="center" prop="productName" show-overflow-tooltip />
-      <el-table-column label="内部产品名称" align="center" prop="productNameInner" show-overflow-tooltip />
+      <el-table-column label="产品编号" align="center" prop="productCode" min-width="100" sortable show-overflow-tooltip />
+      <el-table-column label="产品名称" align="center" prop="productName"  min-width="100" show-overflow-tooltip />
+      <el-table-column label="内部名称" align="center" prop="productNameInner"  min-width="100" sortable show-overflow-tooltip />
       <el-table-column label="银行卡号" align="center" prop="bandCode" show-overflow-tooltip />
-      <el-table-column label="支付编码" align="center" prop="wayCode" show-overflow-tooltip />
-      <el-table-column label="通道ID" align="center" prop="channelId" show-overflow-tooltip />
+      <el-table-column label="支付编码" align="center" prop="wayCode" min-width="100" sortable show-overflow-tooltip />
+      <el-table-column label="渠道" align="center" prop="channelName" min-width="100" sortable show-overflow-tooltip />
      <el-table-column label="费率" align="right" prop="rate" min-width="100" sortable show-overflow-tooltip >
        <template v-slot="scope">
          <span class="text-money">{{ parseMoney(scope.row.rate) }}</span>
        </template>
      </el-table-column>
       <el-table-column label="单笔金额" align="center" prop="single" show-overflow-tooltip />
-      <el-table-column label="最低手续费" align="center" prop="minFee" show-overflow-tooltip />
-     <el-table-column label="最低金额" align="right" prop="minMoney" min-width="100" sortable show-overflow-tooltip >
+      <el-table-column label="最低手续费" align="center" prop="minFee" min-width="100" show-overflow-tooltip />
+     <el-table-column label="最低金额" align="right" prop="minMoney" min-width="100" show-overflow-tooltip >
        <template v-slot="scope">
          <span class="text-money">{{ parseMoney(scope.row.minMoney) }}</span>
        </template>
      </el-table-column>
-     <el-table-column label="最高金额" align="right" prop="maxMoney" min-width="100" sortable show-overflow-tooltip >
+     <el-table-column label="最高金额" align="right" prop="maxMoney" min-width="100" show-overflow-tooltip >
        <template v-slot="scope">
          <span class="text-money">{{ parseMoney(scope.row.maxMoney) }}</span>
        </template>
      </el-table-column>
-      <el-table-column label="结算类型" align="center" prop="settleType" show-overflow-tooltip />
+<!--      <el-table-column label="结算类型" align="center" prop="settleType" show-overflow-tooltip />-->
       <el-table-column label="状态" align="center" prop="status">
         <template v-slot="scope">
           <dict-tag :options="dict.type.sys_normal_disable" :value="scope.row.status"/>
@@ -218,7 +190,7 @@
         </template>
       </el-table-column>
       <el-table-column label="固定金额" align="center" prop="amountLst" show-overflow-tooltip />
-      <el-table-column label="产品附加参数" align="center" prop="extraParam" show-overflow-tooltip />
+      <el-table-column label="附加参数" align="center" prop="extraParam" show-overflow-tooltip />
       <el-table-column label="创建时间" align="center" prop="createTime" min-width="110" sortable show-overflow-tooltip >
         <template v-slot="scope">
           <span>{{ parseTime(scope.row.createTime, '{m}-{d} {h}:{i}') }}</span>
@@ -243,7 +215,7 @@
         </template>
       </el-table-column>
     </el-table>
-    
+
     <pagination
       v-show="total>0"
       :total="total"
@@ -254,68 +226,95 @@
 
     <!-- 添加或修改支付产品对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
-      <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-        <el-form-item label="产品编号" prop="productCode">
-          <el-input v-model="form.productCode" placeholder="请输入产品编号" />
-        </el-form-item>
-        <el-form-item label="产品名称" prop="productName">
-          <el-input v-model="form.productName" placeholder="请输入产品名称" />
-        </el-form-item>
-        <el-form-item label="内部产品名称" prop="productNameInner">
-          <el-input v-model="form.productNameInner" placeholder="请输入内部产品名称" />
-        </el-form-item>
-        <el-form-item label="银行卡号" prop="bandCode">
-          <el-input v-model="form.bandCode" placeholder="请输入银行卡号" />
-        </el-form-item>
-        <el-form-item label="支付编码" prop="wayCode">
-          <el-input v-model="form.wayCode" placeholder="请输入支付编码" />
-        </el-form-item>
-        <el-form-item label="通道ID" prop="channelId">
-          <el-input v-model="form.channelId" placeholder="请输入通道ID" />
-        </el-form-item>
-        <el-form-item label="费率" prop="rate">
-          <el-input v-model="form.rate" placeholder="请输入费率" />
-        </el-form-item>
-        <el-form-item label="单笔金额" prop="single">
-          <el-input v-model="form.single" placeholder="请输入单笔金额" />
-        </el-form-item>
-        <el-form-item label="最低手续费" prop="minFee">
-          <el-input v-model="form.minFee" placeholder="请输入最低手续费" />
-        </el-form-item>
-        <el-form-item label="最低金额" prop="minMoney">
-          <el-input v-model="form.minMoney" placeholder="请输入最低金额" />
-        </el-form-item>
-        <el-form-item label="最高金额" prop="maxMoney">
-          <el-input v-model="form.maxMoney" placeholder="请输入最高金额" />
-        </el-form-item>
-        <el-form-item label="结算类型" prop="settleType">
-          <el-input v-model="form.settleType" placeholder="请输入结算类型" />
-        </el-form-item>
-        <el-form-item label="状态">
-          <el-radio-group v-model="form.status">
-            <el-radio
-              v-for="dict in dict.type.sys_normal_disable"
-              :key="dict.value"
-              :label="dict.value"
-            >{{dict.label}}</el-radio>
-          </el-radio-group>
-        </el-form-item>
-        <el-form-item label="金额限制" prop="amountType">
-          <el-select v-model="form.amountType" placeholder="请选择金额限制">
-            <el-option
-              v-for="dict in dict.type.amount_type"
-              :key="dict.value"
-              :label="dict.label"
-              :value="dict.value"
-            ></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="固定金额" prop="amountLst">
-          <el-input v-model="form.amountLst" type="textarea" placeholder="请输入内容" />
-        </el-form-item>
-        <el-form-item label="产品附加参数" prop="extraParam">
-          <el-input v-model="form.extraParam" placeholder="请输入产品附加参数" />
-        </el-form-item>
+      <el-form ref="form" :model="form" :rules="rules" label-width="auto">
+        <el-tabs v-model="activeName">
+          <el-tab-pane label="基础信息" name="first">
+              <el-form-item label="渠道">
+                <el-select v-model="form.channelId" style="width: 100%" placeholder="请选择">
+                  <el-option
+                    v-for="item in channelOptions"
+                    :key="item.channelId"
+                    :label="item.channelName"
+                    :value="item.channelId"
+                    :disabled="item.status != '0'"
+                  ></el-option>
+                </el-select>
+              </el-form-item>
+              <el-form-item label="产品编号" prop="productCode">
+                <el-input v-model="form.productCode" placeholder="请输入产品编号" />
+              </el-form-item>
+              <el-form-item label="产品名称" prop="productName">
+                <el-input v-model="form.productName" placeholder="请输入产品名称" />
+              </el-form-item>
+              <el-form-item label="内部名称" prop="productNameInner">
+                <el-input v-model="form.productNameInner" placeholder="请输入内部名称" />
+              </el-form-item>
+              <el-form-item label="银行卡号" prop="bandCode">
+                <el-input v-model="form.bandCode" placeholder="请输入银行卡号" />
+              </el-form-item>
+
+              <el-form-item label="支付编码">
+                <el-select v-model="form.wayCode" style="width: 100%" placeholder="请选择">
+                  <el-option
+                    v-for="item in wayOptions"
+                    :key="item.wayCode"
+                    :label="item.wayCode + ' - ' + item.wayName"
+                    :value="item.wayCode"
+                    :disabled="item.status != '0'"
+                  ></el-option>
+                </el-select>
+              </el-form-item>
+
+<!--              <el-form-item label="结算类型" prop="settleType">-->
+<!--                <el-input v-model="form.settleType" placeholder="请输入结算类型" />-->
+<!--              </el-form-item>-->
+
+              <el-form-item label="状态">
+                <el-radio-group v-model="form.status">
+                  <el-radio
+                    v-for="dict in dict.type.sys_normal_disable"
+                    :key="dict.value"
+                    :label="dict.value"
+                  >{{dict.label}}</el-radio>
+                </el-radio-group>
+              </el-form-item>
+          </el-tab-pane>
+          <el-tab-pane label="金额设置" name="second">
+            <el-form-item label="最低金额" prop="minMoney">
+              <el-input v-model="form.minMoney" placeholder="请输入最低金额" />
+            </el-form-item>
+            <el-form-item label="最高金额" prop="maxMoney">
+              <el-input v-model="form.maxMoney" placeholder="请输入最高金额" />
+            </el-form-item>
+            <el-form-item label="金额限制" prop="amountType">
+              <el-select v-model="form.amountType" placeholder="请选择金额限制">
+                <el-option
+                  v-for="dict in dict.type.amount_type"
+                  :key="dict.value"
+                  :label="dict.label"
+                  :value="dict.value"
+                ></el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item label="固定金额" prop="amountLst">
+              <el-input v-model="form.amountLst" type="textarea" placeholder="请输入内容" />
+            </el-form-item>
+            <el-form-item label="附加参数" prop="extraParam">
+              <el-input v-model="form.extraParam" placeholder="请输入附加参数" />
+            </el-form-item>
+          </el-tab-pane>
+          <el-tab-pane label="渠道费率" name="third">
+            <el-form-item label="费率" prop="rate">
+              <el-input-number :disabled="false" v-model="form.rate" :min="0.01" :step="0.01" :max="0.99" placeholder="请输入费率"/>
+            </el-form-item>
+            <el-form-item label="单笔金额" prop="single">
+              <el-input v-model="form.single" placeholder="请输入单笔金额" />
+            </el-form-item>
+            <el-form-item label="最低手续费" prop="minFee">
+              <el-input v-model="form.minFee" placeholder="请输入最低手续费" />
+            </el-form-item>
+          </el-tab-pane>
+        </el-tabs>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="submitForm">确 定</el-button>
@@ -327,6 +326,8 @@
 
 <script>
 import { listPayproduct, getPayproduct, delPayproduct, addPayproduct, updatePayproduct } from "@/api/channel/payproduct";
+import { listSelectChannel } from '@/api/channel/paymentchannel'
+import { listSelectPayWay } from '@/api/channel/payway'
 
 export default {
   name: "Payproduct",
@@ -349,10 +350,16 @@ export default {
       total: 0,
       // 支付产品表格数据
       payproductList: [],
+      // 渠道下拉框数据
+      channelOptions: [],
+      // 支付编码下拉框数据
+      wayOptions: [],
       // 弹出层标题
       title: "",
       // 是否显示弹出层
       open: false,
+      // 当前页
+      activeName: 'first',
       // 查询参数
       queryParams: {
         pageNum: 1,
@@ -381,8 +388,11 @@ export default {
         productCode: [
           { required: true, message: "产品编号不能为空", trigger: "blur" }
         ],
+        productName: [
+          { required: true, message: "产品名称不能为空", trigger: "blur" }
+        ],
         productNameInner: [
-          { required: true, message: "内部产品名称不能为空", trigger: "blur" }
+          { required: true, message: "内部名称不能为空", trigger: "blur" }
         ],
         bandCode: [
           { required: true, message: "银行卡号不能为空", trigger: "blur" }
@@ -391,7 +401,7 @@ export default {
           { required: true, message: "支付编码不能为空", trigger: "blur" }
         ],
         channelId: [
-          { required: true, message: "通道ID不能为空", trigger: "blur" }
+          { required: true, message: "渠道不能为空", trigger: "blur" }
         ],
         rate: [
           { required: true, message: "费率不能为空", trigger: "blur" }
@@ -422,6 +432,8 @@ export default {
   },
   created() {
     this.getList();
+    this.getChannelOptions();
+    this.getWayOptions();
   },
   methods: {
     /** 查询支付产品列表 */
@@ -431,6 +443,18 @@ export default {
         this.payproductList = response.rows;
         this.total = response.total;
         this.loading = false;
+      });
+    },
+    /** 查询渠道下拉框数据 */
+    getChannelOptions() {
+      listSelectChannel().then(response => {
+        this.channelOptions = response.data;
+      });
+    },
+    /** 查询支付编码下拉框数据 */
+    getWayOptions() {
+      listSelectPayWay().then(response => {
+        this.wayOptions = response.data;
       });
     },
     // 取消按钮
@@ -449,13 +473,13 @@ export default {
         wayCode: null,
         channelId: null,
         rate: null,
-        single: null,
-        minFee: null,
-        minMoney: null,
-        maxMoney: null,
-        settleType: null,
+        single: 0,
+        minFee: 0,
+        minMoney: 0,
+        maxMoney: 0,
+        settleType: '0',
         status: "0",
-        amountType: null,
+        amountType: '0',
         amountLst: null,
         extraParam: null,
         remark: null,

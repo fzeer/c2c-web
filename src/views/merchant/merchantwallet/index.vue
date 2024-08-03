@@ -58,7 +58,7 @@
       <el-table-column label="ID" align="center" prop="id" />
       <el-table-column label="钱包编号" align="center" prop="walletNo" min-width="100" sortable show-overflow-tooltip/>
       <el-table-column label="商户ID" align="center" prop="merchantId" show-overflow-tooltip />
-      <el-table-column label="商户简称" align="center" prop="merchantShortName" show-overflow-tooltip />
+      <el-table-column label="商户名称" align="center" prop="merchantName" show-overflow-tooltip />
      <el-table-column label="余额" align="right" prop="balance" min-width="100" sortable show-overflow-tooltip >
        <template v-slot="scope">
          <span class="text-money">{{ parseMoney(scope.row.balance) }}</span>

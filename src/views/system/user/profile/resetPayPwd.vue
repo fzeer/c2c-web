@@ -1,12 +1,12 @@
 <template>
   <el-form ref="form" :model="user" :rules="rules" label-width="auto">
-    <el-form-item label="旧登录密码" prop="oldPassword">
+    <el-form-item label="旧支付密码" prop="oldPassword">
       <el-input v-model="user.oldPassword" placeholder="请输入旧密码" type="password" show-password/>
     </el-form-item>
-    <el-form-item label="新登录密码" prop="newPassword">
+    <el-form-item label="新支付密码" prop="newPassword">
       <el-input v-model="user.newPassword" placeholder="请输入新密码" type="password" show-password/>
     </el-form-item>
-    <el-form-item label="确认登录密码" prop="confirmPassword">
+    <el-form-item label="确认支付密码" prop="confirmPassword">
       <el-input v-model="user.confirmPassword" placeholder="请确认密码" type="password" show-password/>
     </el-form-item>
     <el-form-item>
@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import { updateUserPwd } from "@/api/system/user";
+import { updateUserPayPwd } from "@/api/system/user";
 
 export default {
   data() {
@@ -54,7 +54,7 @@ export default {
     submit() {
       this.$refs["form"].validate(valid => {
         if (valid) {
-          updateUserPwd(this.user.oldPassword, this.user.newPassword).then(response => {
+          updateUserPayPwd(this.user.oldPassword, this.user.newPassword).then(response => {
             this.$modal.msgSuccess("修改成功");
           });
         }

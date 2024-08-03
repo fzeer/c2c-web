@@ -51,14 +51,6 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="LOGO" prop="logo"  v-if="moreSearch" >
-        <el-input
-          v-model="queryParams.logo"
-          placeholder="请输入LOGO"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
       <el-form-item label="状态" prop="status"  v-if="moreSearch" >
         <el-select v-model="queryParams.status" placeholder="请选择状态" clearable>
           <el-option
@@ -68,54 +60,6 @@
             :value="dict.value"
           />
         </el-select>
-      </el-form-item>
-      <el-form-item label="金额列表" prop="limitAmountList"  v-if="moreSearch" >
-        <el-input
-          v-model="queryParams.limitAmountList"
-          placeholder="请输入金额列表"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="最小金额" prop="limitMin"  v-if="moreSearch" >
-        <el-input
-          v-model="queryParams.limitMin"
-          placeholder="请输入最小金额"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="最大金额" prop="limitMax"  v-if="moreSearch" >
-        <el-input
-          v-model="queryParams.limitMax"
-          placeholder="请输入最大金额"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="每笔限额" prop="limitPerPayment"  v-if="moreSearch" >
-        <el-input
-          v-model="queryParams.limitPerPayment"
-          placeholder="请输入每笔限额"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="每日限额" prop="limitPerDay"  v-if="moreSearch" >
-        <el-input
-          v-model="queryParams.limitPerDay"
-          placeholder="请输入每日限额"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="部门ID" prop="deptId"  v-if="moreSearch" >
-        <el-input
-          v-model="queryParams.deptId"
-          placeholder="请输入部门ID"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
       </el-form-item>
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
@@ -191,12 +135,11 @@
           <dict-tag :options="dict.type.sys_normal_disable" :value="scope.row.status"/>
         </template>
       </el-table-column>
-      <el-table-column label="金额列表" align="center" prop="limitAmountList" show-overflow-tooltip />
-      <el-table-column label="最小金额" align="center" prop="limitMin" show-overflow-tooltip />
-      <el-table-column label="最大金额" align="center" prop="limitMax" show-overflow-tooltip />
-      <el-table-column label="每笔限额" align="center" prop="limitPerPayment" show-overflow-tooltip />
-      <el-table-column label="每日限额" align="center" prop="limitPerDay" show-overflow-tooltip />
-      <el-table-column label="部门ID" align="center" prop="deptId" show-overflow-tooltip />
+<!--      <el-table-column label="金额列表" align="center" prop="limitAmountList" show-overflow-tooltip />-->
+<!--      <el-table-column label="最小金额" align="center" prop="limitMin" show-overflow-tooltip />-->
+<!--      <el-table-column label="最大金额" align="center" prop="limitMax" show-overflow-tooltip />-->
+<!--      <el-table-column label="每笔限额" align="center" prop="limitPerPayment" show-overflow-tooltip />-->
+<!--      <el-table-column label="每日限额" align="center" prop="limitPerDay" show-overflow-tooltip />-->
       <el-table-column label="创建时间" align="center" prop="createTime" min-width="110" sortable show-overflow-tooltip >
         <template v-slot="scope">
           <span>{{ parseTime(scope.row.createTime, '{m}-{d} {h}:{i}') }}</span>
@@ -221,7 +164,7 @@
         </template>
       </el-table-column>
     </el-table>
-    
+
     <pagination
       v-show="total>0"
       :total="total"
@@ -232,63 +175,65 @@
 
     <!-- 添加或修改码商对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
+
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-        <el-form-item label="码商编号" prop="supplierNo">
-          <el-input v-model="form.supplierNo" placeholder="请输入码商编号" />
-        </el-form-item>
-        <el-form-item label="码商简称" prop="supplierShortName">
-          <el-input v-model="form.supplierShortName" placeholder="请输入码商简称" />
-        </el-form-item>
-        <el-form-item label="码商全称" prop="supplierName">
-          <el-input v-model="form.supplierName" placeholder="请输入码商全称" />
-        </el-form-item>
-        <el-form-item label="码商类型" prop="supplierType">
-          <el-select v-model="form.supplierType" placeholder="请选择码商类型">
-            <el-option
-              v-for="dict in dict.type.supplier_type"
-              :key="dict.value"
-              :label="dict.label"
-              :value="dict.value"
-            ></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="联系人" prop="owner">
-          <el-input v-model="form.owner" placeholder="请输入联系人" />
-        </el-form-item>
-        <el-form-item label="联系方式" prop="tel">
-          <el-input v-model="form.tel" placeholder="请输入联系方式" />
-        </el-form-item>
-        <el-form-item label="LOGO" prop="logo">
-          <el-input v-model="form.logo" placeholder="请输入LOGO" />
-        </el-form-item>
-        <el-form-item label="状态">
-          <el-radio-group v-model="form.status">
-            <el-radio
-              v-for="dict in dict.type.sys_normal_disable"
-              :key="dict.value"
-              :label="dict.value"
-            >{{dict.label}}</el-radio>
-          </el-radio-group>
-        </el-form-item>
-        <el-form-item label="金额列表" prop="limitAmountList">
-          <el-input v-model="form.limitAmountList" placeholder="请输入金额列表" />
-        </el-form-item>
-        <el-form-item label="最小金额" prop="limitMin">
-          <el-input v-model="form.limitMin" placeholder="请输入最小金额" />
-        </el-form-item>
-        <el-form-item label="最大金额" prop="limitMax">
-          <el-input v-model="form.limitMax" placeholder="请输入最大金额" />
-        </el-form-item>
-        <el-form-item label="每笔限额" prop="limitPerPayment">
-          <el-input v-model="form.limitPerPayment" placeholder="请输入每笔限额" />
-        </el-form-item>
-        <el-form-item label="每日限额" prop="limitPerDay">
-          <el-input v-model="form.limitPerDay" placeholder="请输入每日限额" />
-        </el-form-item>
-        <el-form-item label="部门ID" prop="deptId">
-          <el-input v-model="form.deptId" placeholder="请输入部门ID" />
-        </el-form-item>
+        <el-tabs v-model="activeName">
+          <el-tab-pane label="基础信息" name="first">
+            <el-form-item label="码商编号" prop="supplierNo">
+              <el-input v-model="form.supplierNo" placeholder="请输入码商编号" />
+            </el-form-item>
+            <el-form-item label="码商简称" prop="supplierShortName">
+              <el-input v-model="form.supplierShortName" placeholder="请输入码商简称" />
+            </el-form-item>
+            <el-form-item label="码商全称" prop="supplierName">
+              <el-input v-model="form.supplierName" placeholder="请输入码商全称" />
+            </el-form-item>
+            <el-form-item label="码商类型" prop="supplierType">
+              <el-select v-model="form.supplierType" placeholder="请选择码商类型">
+                <el-option
+                  v-for="dict in dict.type.supplier_type"
+                  :key="dict.value"
+                  :label="dict.label"
+                  :value="dict.value"
+                ></el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item label="联系人" prop="owner">
+              <el-input v-model="form.owner" placeholder="请输入联系人" />
+            </el-form-item>
+            <el-form-item label="联系方式" prop="tel">
+              <el-input v-model="form.tel" placeholder="请输入联系方式" />
+            </el-form-item>
+            <el-form-item label="状态">
+              <el-radio-group v-model="form.status">
+                <el-radio
+                  v-for="dict in dict.type.sys_normal_disable"
+                  :key="dict.value"
+                  :label="dict.value"
+                >{{dict.label}}</el-radio>
+              </el-radio-group>
+            </el-form-item>
+          </el-tab-pane>
+          <el-tab-pane label="参数设置" name="second">
+            <el-form-item label="金额列表" prop="limitAmountList">
+              <el-input v-model="form.limitAmountList" placeholder="请输入金额列表" />
+            </el-form-item>
+            <el-form-item label="最小金额" prop="limitMin">
+              <el-input v-model="form.limitMin" placeholder="请输入最小金额" />
+            </el-form-item>
+            <el-form-item label="最大金额" prop="limitMax">
+              <el-input v-model="form.limitMax" placeholder="请输入最大金额" />
+            </el-form-item>
+            <el-form-item label="每笔限额" prop="limitPerPayment">
+              <el-input v-model="form.limitPerPayment" placeholder="请输入每笔限额" />
+            </el-form-item>
+            <el-form-item label="每日限额" prop="limitPerDay">
+              <el-input v-model="form.limitPerDay" placeholder="请输入每日限额" />
+            </el-form-item>
+          </el-tab-pane>
+        </el-tabs>
       </el-form>
+
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="submitForm">确 定</el-button>
         <el-button @click="cancel">取 消</el-button>
@@ -309,6 +254,8 @@ export default {
       loading: true,
       // 显示更多筛选项
       moreSearch: false,
+      // 当前激活的标签页
+      activeName: 'first',
       // 选中数组
       ids: [],
       // 非单个禁用
@@ -348,14 +295,17 @@ export default {
       form: {},
       // 表单校验
       rules: {
+        supplierNo: [
+          { required: true, message: "码商编号不能为空", trigger: "blur" }
+        ],
         supplierShortName: [
           { required: true, message: "码商简称不能为空", trigger: "blur" }
         ],
         supplierName: [
           { required: true, message: "码商全称不能为空", trigger: "blur" }
         ],
-        deptId: [
-          { required: true, message: "部门ID不能为空", trigger: "blur" }
+        supplierType: [
+          { required: true, message: "码商类型不能为空", trigger: "blur" }
         ],
       }
     };

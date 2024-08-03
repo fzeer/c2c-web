@@ -1,30 +1,43 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="auto">
-      <el-form-item label="商户ID" prop="merchantId" >
-        <el-input
-          v-model="queryParams.merchantId"
-          placeholder="请输入商户ID"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
+
+      <el-form-item label="商户名称" prop="merchantId">
+        <el-select v-model="queryParams.merchantId" style="width: 100%" placeholder="请选择" clearable>
+          <el-option
+            v-for="item in merchantOptions"
+            :key="item.merchantId"
+            :label="item.merchantShortName"
+            :value="item.merchantId"
+            :disabled="item.status != '0'"
+          ></el-option>
+        </el-select>
       </el-form-item>
-      <el-form-item label="支付编码" prop="wayCode" >
-        <el-input
-          v-model="queryParams.wayCode"
-          placeholder="请输入支付编码"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
+
+      <el-form-item label="支付编码">
+        <el-select v-model="queryParams.wayCode" style="width: 100%" placeholder="请选择" clearable>
+          <el-option
+            v-for="item in wayOptions"
+            :key="item.wayCode"
+            :label="item.wayCode + ' - ' + item.wayName"
+            :value="item.wayCode"
+            :disabled="item.status != '0'"
+          ></el-option>
+        </el-select>
       </el-form-item>
-      <el-form-item label="产品ID" prop="productId" >
-        <el-input
-          v-model="queryParams.productId"
-          placeholder="请输入产品ID"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
+
+      <el-form-item label="产品名称" prop="productId">
+        <el-select v-model="queryParams.productId" style="width: 100%" placeholder="请选择" clearable>
+          <el-option
+            v-for="item in productOptions"
+            :key="item.productId"
+            :label="item.productCode + ' - ' + item.productName"
+            :value="item.productId"
+            :disabled="item.status != '0'"
+          ></el-option>
+        </el-select>
       </el-form-item>
+
       <el-form-item label="比重" prop="weight"  v-if="moreSearch" >
         <el-input
           v-model="queryParams.weight"
@@ -53,15 +66,6 @@
     <el-row :gutter="10" class="mb8">
       <el-col :span="1.5">
         <el-button
-          type="primary"
-          icon="el-icon-plus"
-          size="mini"
-          @click="handleAdd"
-          v-hasPermi="['merchant:merchantproductroute:add']"
-        >新增</el-button>
-      </el-col>
-      <el-col :span="1.5">
-        <el-button
           type="success"
           icon="el-icon-edit"
           size="mini"
@@ -69,16 +73,6 @@
           @click="handleUpdate"
           v-hasPermi="['merchant:merchantproductroute:edit']"
         >修改</el-button>
-      </el-col>
-      <el-col :span="1.5">
-        <el-button
-          type="danger"
-          icon="el-icon-delete"
-          size="mini"
-          :disabled="multiple"
-          @click="handleDelete"
-          v-hasPermi="['merchant:merchantproductroute:remove']"
-        >删除</el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
@@ -100,22 +94,23 @@
       resizable
     >
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="路由ID" align="center" prop="id" />
-      <el-table-column label="商户ID" align="center" prop="merchantId" show-overflow-tooltip />
-      <el-table-column label="支付编码" align="center" prop="wayCode" show-overflow-tooltip />
-      <el-table-column label="产品ID" align="center" prop="productId" show-overflow-tooltip />
-      <el-table-column label="比重" align="center" prop="weight" show-overflow-tooltip />
-      <el-table-column label="状态" align="center" prop="status">
+      <el-table-column label="路由ID" align="center" prop="id" min-width="100" sortable  />
+      <el-table-column label="商户名称" align="center" prop="merchantName" min-width="100" sortable show-overflow-tooltip />
+      <el-table-column label="支付编码" align="center" prop="wayCode" min-width="100"  sortableshow-overflow-tooltip />
+      <el-table-column label="产品名称" align="center" prop="productName" min-width="100" sortable show-overflow-tooltip />
+      <el-table-column label="产品编号" align="center" prop="productCode" min-width="100" sortable show-overflow-tooltip />
+      <el-table-column label="比重" align="center" prop="weight" min-width="100" sortable show-overflow-tooltip />
+      <el-table-column label="状态" align="center" prop="status" sortable>
         <template v-slot="scope">
           <dict-tag :options="dict.type.sys_normal_disable" :value="scope.row.status"/>
         </template>
       </el-table-column>
-      <el-table-column label="创建时间" align="center" prop="createTime" min-width="110" sortable show-overflow-tooltip >
+      <el-table-column label="修改时间" align="center" prop="updateTime" min-width="110" sortable show-overflow-tooltip >
         <template v-slot="scope">
-          <span>{{ parseTime(scope.row.createTime, '{m}-{d} {h}:{i}') }}</span>
+          <span>{{ parseTime(scope.row.updateTime, '{m}-{d} {h}:{i}') }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width" min-width="120" fixed="right">
+      <el-table-column label="操作" align="center" class-name="small-padding fixed-width" min-width="70" fixed="right">
         <template v-slot="scope">
           <el-button
             size="mini"
@@ -124,17 +119,10 @@
             @click="handleUpdate(scope.row)"
             v-hasPermi="['merchant:merchantproductroute:edit']"
           >修改</el-button>
-          <el-button
-            size="mini"
-            type="text"
-            icon="el-icon-delete"
-            @click="handleDelete(scope.row)"
-            v-hasPermi="['merchant:merchantproductroute:remove']"
-          >删除</el-button>
         </template>
       </el-table-column>
     </el-table>
-    
+
     <pagination
       v-show="total>0"
       :total="total"
@@ -146,15 +134,6 @@
     <!-- 添加或修改商户产品路由对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-        <el-form-item label="商户ID" prop="merchantId">
-          <el-input v-model="form.merchantId" placeholder="请输入商户ID" />
-        </el-form-item>
-        <el-form-item label="支付编码" prop="wayCode">
-          <el-input v-model="form.wayCode" placeholder="请输入支付编码" />
-        </el-form-item>
-        <el-form-item label="产品ID" prop="productId">
-          <el-input v-model="form.productId" placeholder="请输入产品ID" />
-        </el-form-item>
         <el-form-item label="比重" prop="weight">
           <el-input v-model="form.weight" placeholder="请输入比重" />
         </el-form-item>
@@ -178,6 +157,9 @@
 
 <script>
 import { listMerchantproductroute, getMerchantproductroute, delMerchantproductroute, addMerchantproductroute, updateMerchantproductroute } from "@/api/merchant/merchantproductroute";
+import { listSelectMerchant } from '@/api/merchant/merchant'
+import { listSelectPayproduct } from '@/api/channel/payproduct'
+import { listSelectPayWay } from '@/api/channel/payway'
 
 export default {
   name: "Merchantproductroute",
@@ -200,6 +182,12 @@ export default {
       total: 0,
       // 商户产品路由表格数据
       merchantproductrouteList: [],
+      // 商户选项
+      merchantOptions: [],
+      // 产品选项
+      productOptions: [],
+      // 支付方式选项
+      wayOptions: [],
       // 弹出层标题
       title: "",
       // 是否显示弹出层
@@ -218,15 +206,6 @@ export default {
       form: {},
       // 表单校验
       rules: {
-        merchantId: [
-          { required: true, message: "商户ID不能为空", trigger: "blur" }
-        ],
-        wayCode: [
-          { required: true, message: "支付编码不能为空", trigger: "blur" }
-        ],
-        productId: [
-          { required: true, message: "产品ID不能为空", trigger: "blur" }
-        ],
         weight: [
           { required: true, message: "比重不能为空", trigger: "blur" }
         ],
@@ -238,6 +217,15 @@ export default {
   },
   created() {
     this.getList();
+    listSelectMerchant().then(response => {
+      this.merchantOptions = response.data;
+    });
+    listSelectPayproduct().then(response => {
+      this.productOptions = response.data;
+    });
+    listSelectPayWay().then(response => {
+      this.wayOptions = response.data;
+    });
   },
   methods: {
     /** 查询商户产品路由列表 */

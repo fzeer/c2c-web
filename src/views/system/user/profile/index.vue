@@ -48,8 +48,11 @@
             <el-tab-pane label="基本资料" name="userinfo">
               <userInfo :user="user" />
             </el-tab-pane>
-            <el-tab-pane label="修改密码" name="resetPwd">
+            <el-tab-pane label="修改登录密码" name="resetPwd">
               <resetPwd :user="user" />
+            </el-tab-pane>
+            <el-tab-pane label="修改支付密码" name="resetPayPwd">
+              <resetPayPwd :user="user" />
             </el-tab-pane>
           </el-tabs>
         </el-card>
@@ -62,6 +65,7 @@
 import userAvatar from "./userAvatar";
 import userInfo from "./userInfo";
 import resetPwd from "./resetPwd";
+import resetPayPwd from "./resetPayPwd";
 import { getUserProfile } from "@/api/system/user";
 
 export default {

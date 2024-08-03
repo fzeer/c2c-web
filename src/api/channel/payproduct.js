@@ -42,3 +42,20 @@ export function delPayproduct(productId) {
     method: 'delete'
   })
 }
+
+// 查询支付产品列表
+export function listSelectPayproduct(query) {
+  return request({
+    url: '/channel/payproduct/select',
+    method: 'get',
+    params: query
+  })
+}
+// 查询支付产品列表
+export function listSelectProductMerchantNoConfig(merchantId) {
+  return request({
+    url: '/channel/payproduct/select/merchantNoConfig/' + merchantId,
+    method: 'get',
+    params: null
+  })
+}

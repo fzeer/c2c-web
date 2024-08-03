@@ -162,12 +162,11 @@
           <dict-tag :options="dict.type.order_notify_status" :value="scope.row.notifyStatus"/>
         </template>
       </el-table-column>
-      <el-table-column label="最后一次通知时间" align="center" prop="lastNotifyTime" min-width="110" sortable show-overflow-tooltip >
+      <el-table-column label="最后一次通知时间" align="center" prop="lastNotifyTime" min-width="140" sortable show-overflow-tooltip >
         <template v-slot="scope">
-          <span>{{ parseTime(scope.row.lastNotifyTime, '{m}-{d} {h}:{i}') }}</span>
+          <span>{{ parseTime(scope.row.lastNotifyTime, '{m}-{d} {h}:{i}:{s}') }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="部门ID" align="center" prop="deptId" show-overflow-tooltip />
       <el-table-column label="创建时间" align="center" prop="createTime" min-width="110" sortable show-overflow-tooltip >
         <template v-slot="scope">
           <span>{{ parseTime(scope.row.createTime, '{m}-{d} {h}:{i}') }}</span>
@@ -192,7 +191,7 @@
         </template>
       </el-table-column>
     </el-table>
-    
+
     <pagination
       v-show="total>0"
       :total="total"
@@ -251,17 +250,7 @@
             ></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="最后一次通知时间" prop="lastNotifyTime">
-          <el-date-picker clearable
-            v-model="form.lastNotifyTime"
-            type="date"
-            value-format="yyyy-MM-dd"
-            placeholder="请选择最后一次通知时间">
-          </el-date-picker>
-        </el-form-item>
-        <el-form-item label="部门ID" prop="deptId">
-          <el-input v-model="form.deptId" placeholder="请输入部门ID" />
-        </el-form-item>
+
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="submitForm">确 定</el-button>

@@ -185,7 +185,9 @@
                 </span>
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item command="handleResetPwd" icon="el-icon-key"
-                                v-hasPermi="['system:user:resetPwd']">重置密码</el-dropdown-item>
+                                v-hasPermi="['system:user:resetPwd']">重置登录密码</el-dropdown-item>
+              <el-dropdown-item command="handleResetPayPwd" icon="el-icon-key"
+                                v-hasPermi="['system:user:resetPayPwd']">重置支付密码</el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
         </template>
@@ -282,6 +284,8 @@
         </el-tab-pane>
        </el-tabs>
       </el-form>
+
+
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="submitForm">确 定</el-button>
         <el-button @click="cancel">取 消</el-button>
@@ -295,7 +299,7 @@
 import { listMerchant, getMerchant, delMerchant, addMerchant, updateMerchant } from "@/api/merchant/merchant";
 import { listParentAgent } from '@/api/agent/agent'
 import selectAdmin from '@/views/system/user/selectAdmin.vue'
-import { resetUserPwd } from '@/api/system/user'
+import { resetUserPwd,handleResetPayPwd } from '@/api/system/user'
 
 export default {
   name: "Merchant",
@@ -521,6 +525,9 @@ export default {
         case "handleResetPwd":
           this.handleResetPwd(row);
           break;
+        case "handleResetPayPwd":
+          this.handleResetPayPwd(row);
+          break;
         default:
           break;
       }
@@ -536,6 +543,20 @@ export default {
       }).then(({ value }) => {
         resetUserPwd(row.userId, value).then(response => {
           this.$modal.msgSuccess("修改成功，新密码是：" + value);
+        });
+      }).catch(() => {});
+    },
+    /** 重置密码按钮操作 */
+    handleResetPayPwd(row) {
+      this.$prompt('请输入"' + row.merchantNo + '"的新登录密码', "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        closeOnClickModal: false,
+        inputPattern: /^.{5,20}$/,
+        inputErrorMessage: "用户密码长度必须介于 5 和 20 之间"
+      }).then(({ value }) => {
+        resetUserPayPwd(row.userId, value).then(response => {
+          this.$modal.msgSuccess("修改成功，新支付密码是：" + value);
         });
       }).catch(() => {});
     },

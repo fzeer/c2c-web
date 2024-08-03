@@ -132,12 +132,12 @@
          <span class="text-money">{{ parseMoney(scope.row.frozeMoney) }}</span>
        </template>
      </el-table-column>
-     <el-table-column label="变动前金额" align="right" prop="beforeMoney" min-width="100" sortable show-overflow-tooltip >
+     <el-table-column label="变动前金额" align="right" prop="beforeMoney" min-width="110" sortable show-overflow-tooltip >
        <template v-slot="scope">
          <span class="text-money">{{ parseMoney(scope.row.beforeMoney) }}</span>
        </template>
      </el-table-column>
-     <el-table-column label="变动后金额" align="right" prop="afterMoney" min-width="100" sortable show-overflow-tooltip >
+     <el-table-column label="变动后金额" align="right" prop="afterMoney" min-width="120" sortable show-overflow-tooltip >
        <template v-slot="scope">
          <span class="text-money">{{ parseMoney(scope.row.afterMoney) }}</span>
        </template>
@@ -166,7 +166,7 @@
         </template>
       </el-table-column>
     </el-table>
-    
+
     <pagination
       v-show="total>0"
       :total="total"

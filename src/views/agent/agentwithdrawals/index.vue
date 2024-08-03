@@ -197,17 +197,17 @@
       <el-table-column label="记录ID" align="center" prop="id" />
       <el-table-column label="申请单号" align="center" prop="applyOrderCode" show-overflow-tooltip />
       <el-table-column label="代理商ID" align="center" prop="agentId" show-overflow-tooltip />
-     <el-table-column label="提现金额 " align="right" prop="money" min-width="100" sortable show-overflow-tooltip >
+     <el-table-column label="提现金额 " align="right" prop="money" min-width="110" sortable show-overflow-tooltip >
        <template v-slot="scope">
          <span class="text-money">{{ parseMoney(scope.row.money) }}</span>
        </template>
      </el-table-column>
-     <el-table-column label="提现金额" align="right" prop="realMoney" min-width="100" sortable show-overflow-tooltip >
+     <el-table-column label="提现金额" align="right" prop="realMoney" min-width="110" sortable show-overflow-tooltip >
        <template v-slot="scope">
          <span class="text-money">{{ parseMoney(scope.row.realMoney) }}</span>
        </template>
      </el-table-column>
-      <el-table-column label="单笔手续费" align="center" prop="single" show-overflow-tooltip />
+      <el-table-column label="单笔手续费" align="center" min-width="120"  prop="single" show-overflow-tooltip />
      <el-table-column label="费率" align="right" prop="rate" min-width="100" sortable show-overflow-tooltip >
        <template v-slot="scope">
          <span class="text-money">{{ parseMoney(scope.row.rate) }}</span>
@@ -231,9 +231,8 @@
         </template>
       </el-table-column>
       <el-table-column label="操作员" align="center" prop="operator" show-overflow-tooltip />
-      <el-table-column label="代付订单号" align="center" prop="orderCode" min-width="100" sortable show-overflow-tooltip/>
-      <el-table-column label="提现失败原因" align="center" prop="respDesc" show-overflow-tooltip />
-      <el-table-column label="部门ID" align="center" prop="deptId" show-overflow-tooltip />
+      <el-table-column label="代付订单号" align="center" prop="orderCode" min-width="130" sortable show-overflow-tooltip/>
+      <el-table-column label="失败原因" align="center" min-width="100" prop="respDesc" show-overflow-tooltip />
       <el-table-column label="创建时间" align="center" prop="createTime" min-width="110" sortable show-overflow-tooltip >
         <template v-slot="scope">
           <span>{{ parseTime(scope.row.createTime, '{m}-{d} {h}:{i}') }}</span>
@@ -258,7 +257,7 @@
         </template>
       </el-table-column>
     </el-table>
-    
+
     <pagination
       v-show="total>0"
       :total="total"
@@ -286,7 +285,7 @@
           <el-input v-model="form.single" placeholder="请输入单笔手续费" />
         </el-form-item>
         <el-form-item label="费率" prop="rate">
-          <el-input v-model="form.rate" placeholder="请输入费率" />
+          <el-input-number :disabled="false" v-model="form.rate" :min="0.01" :step="0.01" :max="0.99" placeholder="请输入费率"/>
         </el-form-item>
         <el-form-item label="手续费" prop="fee">
           <el-input v-model="form.fee" placeholder="请输入手续费" />

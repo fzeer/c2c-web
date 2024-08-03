@@ -25,10 +25,10 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="应用版本号" prop="appVersion"  v-if="moreSearch" >
+      <el-form-item label="应用版本" prop="appVersion"  v-if="moreSearch" >
         <el-input
           v-model="queryParams.appVersion"
-          placeholder="请输入应用版本号"
+          placeholder="请输入应用版本"
           clearable
           @keyup.enter.native="handleQuery"
         />
@@ -246,7 +246,7 @@
       <el-table-column label="项目编号" align="center" prop="projectCode" show-overflow-tooltip />
       <el-table-column label="项目名称" align="center" prop="projectName" show-overflow-tooltip />
       <el-table-column label="交易ID" align="center" prop="transactionId" show-overflow-tooltip />
-      <el-table-column label="应用版本号" align="center" prop="appVersion" show-overflow-tooltip />
+      <el-table-column label="应用版本" align="center" prop="appVersion" show-overflow-tooltip />
       <el-table-column label="交易类型" align="center" prop="transactionType">
         <template v-slot="scope">
           <dict-tag :options="dict.type.transaction_type" :value="scope.row.transactionType"/>
@@ -291,7 +291,7 @@
           <dict-tag :options="dict.type.order_type" :value="scope.row.orderType"/>
         </template>
       </el-table-column>
-      <el-table-column label="匹配订单号" align="center" prop="orderCode" min-width="100" sortable show-overflow-tooltip/>
+      <el-table-column label="匹配订单号" align="center" prop="orderCode" min-width="130" sortable show-overflow-tooltip/>
       <el-table-column label="商户号" align="center" prop="merchantNo" min-width="100" sortable show-overflow-tooltip/>
       <el-table-column label="商户名称" align="center" prop="merchantName" show-overflow-tooltip />
       <el-table-column label="部门ID" align="center" prop="deptId" show-overflow-tooltip />
@@ -319,7 +319,7 @@
         </template>
       </el-table-column>
     </el-table>
-    
+
     <pagination
       v-show="total>0"
       :total="total"
@@ -340,8 +340,8 @@
         <el-form-item label="交易ID" prop="transactionId">
           <el-input v-model="form.transactionId" placeholder="请输入交易ID" />
         </el-form-item>
-        <el-form-item label="应用版本号" prop="appVersion">
-          <el-input v-model="form.appVersion" placeholder="请输入应用版本号" />
+        <el-form-item label="应用版本" prop="appVersion">
+          <el-input v-model="form.appVersion" placeholder="请输入应用版本" />
         </el-form-item>
         <el-form-item label="交易类型" prop="transactionType">
           <el-select v-model="form.transactionType" placeholder="请选择交易类型">

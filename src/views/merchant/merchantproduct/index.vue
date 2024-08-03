@@ -1,58 +1,35 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="auto">
-      <el-form-item label="商户ID" prop="merchantId" >
-        <el-input
-          v-model="queryParams.merchantId"
-          placeholder="请输入商户ID"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
+
+      <el-form-item label="商户名称" prop="merchantId">
+        <el-select v-model="queryParams.merchantId" style="width: 100%" placeholder="请选择" clearable>
+          <el-option
+            v-for="item in merchantOptions"
+            :key="item.merchantId"
+            :label="item.merchantShortName"
+            :value="item.merchantId"
+            :disabled="item.status != '0'"
+          ></el-option>
+        </el-select>
       </el-form-item>
-      <el-form-item label="产品ID" prop="productId" >
-        <el-input
-          v-model="queryParams.productId"
-          placeholder="请输入产品ID"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
+
+      <el-form-item label="产品名称" prop="productId">
+        <el-select v-model="queryParams.productId" style="width: 100%" placeholder="请选择" clearable>
+          <el-option
+            v-for="item in productOptions"
+            :key="item.productId"
+            :label="item.productCode + ' - ' + item.productName"
+            :value="item.productId"
+            :disabled="item.status != '0'"
+          ></el-option>
+        </el-select>
       </el-form-item>
+
       <el-form-item label="费率" prop="rate" >
         <el-input
           v-model="queryParams.rate"
           placeholder="请输入费率"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="每笔多少钱" prop="single"  v-if="moreSearch" >
-        <el-input
-          v-model="queryParams.single"
-          placeholder="请输入每笔多少钱"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="单笔最小金额" prop="minMoney"  v-if="moreSearch" >
-        <el-input
-          v-model="queryParams.minMoney"
-          placeholder="请输入单笔最小金额"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="单笔最大金额" prop="maxMoney"  v-if="moreSearch" >
-        <el-input
-          v-model="queryParams.maxMoney"
-          placeholder="请输入单笔最大金额"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="每日最大金额" prop="dayMaxMoney"  v-if="moreSearch" >
-        <el-input
-          v-model="queryParams.dayMaxMoney"
-          placeholder="请输入每日最大金额"
           clearable
           @keyup.enter.native="handleQuery"
         />
@@ -125,27 +102,32 @@
     >
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="ID" align="center" prop="id" />
-      <el-table-column label="商户ID" align="center" prop="merchantId" show-overflow-tooltip />
-      <el-table-column label="产品ID" align="center" prop="productId" show-overflow-tooltip />
+      <el-table-column label="商户" align="center" prop="merchantName" min-width="100"  sortable show-overflow-tooltip />
+      <el-table-column label="产品编号" align="center" prop="productCode" min-width="100"  sortable show-overflow-tooltip />
+      <el-table-column label="产品名称" align="center" prop="productName" min-width="100"  sortable show-overflow-tooltip />
      <el-table-column label="费率" align="right" prop="rate" min-width="100" sortable show-overflow-tooltip >
        <template v-slot="scope">
          <span class="text-money">{{ parseMoney(scope.row.rate) }}</span>
        </template>
      </el-table-column>
-      <el-table-column label="每笔多少钱" align="center" prop="single" show-overflow-tooltip />
-     <el-table-column label="单笔最小金额" align="right" prop="minMoney" min-width="100" sortable show-overflow-tooltip >
+      <el-table-column label="单笔费用" align="right" prop="single" min-width="100" sortable show-overflow-tooltip >
+        <template v-slot="scope">
+          <span class="">{{ parseMoney(scope.row.single) }}</span>
+        </template>
+      </el-table-column>
+     <el-table-column label="单笔最小金额" align="right" prop="minMoney" min-width="130" sortable show-overflow-tooltip >
        <template v-slot="scope">
-         <span class="text-money">{{ parseMoney(scope.row.minMoney) }}</span>
+         <span class="">{{ parseMoney(scope.row.minMoney) }}</span>
        </template>
      </el-table-column>
-     <el-table-column label="单笔最大金额" align="right" prop="maxMoney" min-width="100" sortable show-overflow-tooltip >
+     <el-table-column label="单笔最大金额" align="right" prop="maxMoney" min-width="130" sortable show-overflow-tooltip >
        <template v-slot="scope">
-         <span class="text-money">{{ parseMoney(scope.row.maxMoney) }}</span>
+         <span class="">{{ parseMoney(scope.row.maxMoney) }}</span>
        </template>
      </el-table-column>
-     <el-table-column label="每日最大金额" align="right" prop="dayMaxMoney" min-width="100" sortable show-overflow-tooltip >
+     <el-table-column label="每日最大金额" align="right" prop="dayMaxMoney" min-width="130" sortable show-overflow-tooltip >
        <template v-slot="scope">
-         <span class="text-money">{{ parseMoney(scope.row.dayMaxMoney) }}</span>
+         <span class="">{{ parseMoney(scope.row.dayMaxMoney) }}</span>
        </template>
      </el-table-column>
       <el-table-column label="状态" align="center" prop="status">
@@ -177,7 +159,7 @@
         </template>
       </el-table-column>
     </el-table>
-    
+
     <pagination
       v-show="total>0"
       :total="total"
@@ -188,37 +170,61 @@
 
     <!-- 添加或修改商户支付产品对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
-      <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-        <el-form-item label="商户ID" prop="merchantId">
-          <el-input v-model="form.merchantId" placeholder="请输入商户ID" />
-        </el-form-item>
-        <el-form-item label="产品ID" prop="productId">
-          <el-input v-model="form.productId" placeholder="请输入产品ID" />
-        </el-form-item>
-        <el-form-item label="费率" prop="rate">
-          <el-input v-model="form.rate" placeholder="请输入费率" />
-        </el-form-item>
-        <el-form-item label="每笔多少钱" prop="single">
-          <el-input v-model="form.single" placeholder="请输入每笔多少钱" />
-        </el-form-item>
-        <el-form-item label="单笔最小金额" prop="minMoney">
-          <el-input v-model="form.minMoney" placeholder="请输入单笔最小金额" />
-        </el-form-item>
-        <el-form-item label="单笔最大金额" prop="maxMoney">
-          <el-input v-model="form.maxMoney" placeholder="请输入单笔最大金额" />
-        </el-form-item>
-        <el-form-item label="每日最大金额" prop="dayMaxMoney">
-          <el-input v-model="form.dayMaxMoney" placeholder="请输入每日最大金额" />
-        </el-form-item>
-        <el-form-item label="状态">
-          <el-radio-group v-model="form.status">
-            <el-radio
-              v-for="dict in dict.type.sys_normal_disable"
-              :key="dict.value"
-              :label="dict.value"
-            >{{dict.label}}</el-radio>
-          </el-radio-group>
-        </el-form-item>
+      <el-form ref="form" :model="form" :rules="rules" label-width="auto">
+        <el-tabs v-model="activeName">
+          <el-tab-pane label="基础信息" name="first">
+            <el-form-item label="商户名称" prop="merchantId">
+              <el-select v-model="form.merchantId" style="width: 100%" @change="merchantSelectChange" placeholder="请选择" :disabled="!!form.id">
+                <el-option
+                  v-for="item in merchantOptions"
+                  :key="item.merchantId"
+                  :label="item.merchantShortName"
+                  :value="item.merchantId"
+                  :disabled="item.status != '0'"
+                ></el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item label="产品名称" prop="productId">
+              <el-select v-model="form.productId" style="width: 100%" placeholder="请选择" :disabled="!!form.id">
+                <el-option
+                  v-for="item in (form.id ? productOptions: productNoConfigOptions)"
+                  :key="item.productId"
+                  :label="item.productCode + ' - ' + item.productName"
+                  :value="item.productId"
+                  :disabled="item.status != '0'"
+                ></el-option>
+              </el-select>
+            </el-form-item>
+
+            <el-form-item label="费率" prop="rate">
+              <el-input-number :disabled="false" v-model="form.rate" :min="0.01" :step="0.01" :max="0.99" placeholder="请输入费率"/>
+            </el-form-item>
+
+            <el-form-item label="单笔费用" prop="single">
+              <el-input v-model="form.single" placeholder="请输入单笔费用" />
+            </el-form-item>
+            <el-form-item label="状态">
+              <el-radio-group v-model="form.status">
+                <el-radio
+                  v-for="dict in dict.type.sys_normal_disable"
+                  :key="dict.value"
+                  :label="dict.value"
+                >{{dict.label}}</el-radio>
+              </el-radio-group>
+            </el-form-item>
+          </el-tab-pane>
+          <el-tab-pane label="金额设置" name="second">
+            <el-form-item label="单笔最小金额" prop="minMoney">
+              <el-input v-model="form.minMoney" placeholder="请输入单笔最小金额" />
+            </el-form-item>
+            <el-form-item label="单笔最大金额" prop="maxMoney">
+              <el-input v-model="form.maxMoney" placeholder="请输入单笔最大金额" />
+            </el-form-item>
+            <el-form-item label="每日最大金额" prop="dayMaxMoney">
+              <el-input v-model="form.dayMaxMoney" placeholder="请输入每日最大金额" />
+            </el-form-item>
+          </el-tab-pane>
+        </el-tabs>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="submitForm">确 定</el-button>
@@ -230,6 +236,8 @@
 
 <script>
 import { listMerchantproduct, getMerchantproduct, delMerchantproduct, addMerchantproduct, updateMerchantproduct } from "@/api/merchant/merchantproduct";
+import { listSelectMerchant } from '@/api/merchant/merchant'
+import { listSelectPayproduct, listSelectProductMerchantNoConfig } from '@/api/channel/payproduct'
 
 export default {
   name: "Merchantproduct",
@@ -248,10 +256,18 @@ export default {
       multiple: true,
       // 显示搜索条件
       showSearch: true,
+      // 当前页
+      activeName: 'first',
       // 总条数
       total: 0,
       // 商户支付产品表格数据
       merchantproductList: [],
+      // 商户选项
+      merchantOptions: [],
+      // 产品选项
+      productOptions: [],
+      // 产品选项
+      productNoConfigOptions: [],
       // 弹出层标题
       title: "",
       // 是否显示弹出层
@@ -283,7 +299,7 @@ export default {
           { required: true, message: "费率不能为空", trigger: "blur" }
         ],
         single: [
-          { required: true, message: "每笔多少钱不能为空", trigger: "blur" }
+          { required: true, message: "单笔费用不能为空", trigger: "blur" }
         ],
         minMoney: [
           { required: true, message: "单笔最小金额不能为空", trigger: "blur" }
@@ -302,6 +318,12 @@ export default {
   },
   created() {
     this.getList();
+    listSelectMerchant().then(response => {
+      this.merchantOptions = response.data;
+    });
+    listSelectPayproduct().then(response => {
+      this.productOptions = response.data;
+    })
   },
   methods: {
     /** 查询商户支付产品列表 */
@@ -325,10 +347,10 @@ export default {
         merchantId: null,
         productId: null,
         rate: null,
-        single: null,
-        minMoney: null,
-        maxMoney: null,
-        dayMaxMoney: null,
+        single: 0,
+        minMoney: 0,
+        maxMoney: 0,
+        dayMaxMoney: 0,
         status: "0",
         remark: null,
         createBy: null,
@@ -405,6 +427,12 @@ export default {
       this.download('merchant/merchantproduct/export', {
         ...this.queryParams
       }, `merchantproduct_${new Date().getTime()}.xlsx`)
+    },
+    /** 导出按钮操作 */
+    merchantSelectChange() {
+      listSelectProductMerchantNoConfig(this.form.merchantId).then(response => {
+        this.productNoConfigOptions = response.data;
+      })
     }
   }
 };

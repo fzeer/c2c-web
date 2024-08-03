@@ -140,17 +140,16 @@
          <span class="text-money">{{ parseMoney(scope.row.frozeMoney) }}</span>
        </template>
      </el-table-column>
-     <el-table-column label="变动前金额" align="right" prop="beforeMoney" min-width="100" sortable show-overflow-tooltip >
+     <el-table-column label="变动前金额" align="right" prop="beforeMoney" min-width="110" sortable show-overflow-tooltip >
        <template v-slot="scope">
          <span class="text-money">{{ parseMoney(scope.row.beforeMoney) }}</span>
        </template>
      </el-table-column>
-     <el-table-column label="变动后金额" align="right" prop="afterMoney" min-width="100" sortable show-overflow-tooltip >
+     <el-table-column label="变动后金额" align="right" prop="afterMoney" min-width="110" sortable show-overflow-tooltip >
        <template v-slot="scope">
          <span class="text-money">{{ parseMoney(scope.row.afterMoney) }}</span>
        </template>
      </el-table-column>
-      <el-table-column label="部门ID" align="center" prop="detpId" show-overflow-tooltip />
       <el-table-column label="创建时间" align="center" prop="createTime" min-width="110" sortable show-overflow-tooltip >
         <template v-slot="scope">
           <span>{{ parseTime(scope.row.createTime, '{m}-{d} {h}:{i}') }}</span>
@@ -175,7 +174,7 @@
         </template>
       </el-table-column>
     </el-table>
-    
+
     <pagination
       v-show="total>0"
       :total="total"

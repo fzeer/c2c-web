@@ -42,3 +42,12 @@ export function delMerchant(merchantId) {
     method: 'delete'
   })
 }
+
+// 查询商户列列表
+export function listSelectMerchant(query) {
+  return request({
+    url: '/merchant/merchant/select',
+    method: 'get',
+    params: query
+  })
+}

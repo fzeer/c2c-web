@@ -42,3 +42,12 @@ export function delPaymentchannel(channelId) {
     method: 'delete'
   })
 }
+
+  // 查询渠道列表
+export function listSelectChannel(query) {
+    return request({
+      url: '/channel/paymentchannel/select',
+      method: 'get',
+      params: query
+    })
+}
