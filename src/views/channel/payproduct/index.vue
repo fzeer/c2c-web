@@ -52,10 +52,10 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="银行卡号" prop="bandCode"  v-if="moreSearch" >
+      <el-form-item label="收款账号" prop="bandCode"  v-if="moreSearch" >
         <el-input
           v-model="queryParams.bandCode"
-          placeholder="请输入银行卡号"
+          placeholder="请输入收款账号"
           clearable
           @keyup.enter.native="handleQuery"
         />
@@ -158,7 +158,7 @@
       <el-table-column label="产品编号" align="center" prop="productCode" min-width="100" sortable show-overflow-tooltip />
       <el-table-column label="产品名称" align="center" prop="productName"  min-width="100" show-overflow-tooltip />
       <el-table-column label="内部名称" align="center" prop="productNameInner"  min-width="100" sortable show-overflow-tooltip />
-      <el-table-column label="银行卡号" align="center" prop="bandCode" show-overflow-tooltip />
+      <el-table-column label="收款账号" align="center" prop="bandCode" show-overflow-tooltip />
       <el-table-column label="支付编码" align="center" prop="wayCode" min-width="100" sortable show-overflow-tooltip />
       <el-table-column label="渠道" align="center" prop="channelName" min-width="100" sortable show-overflow-tooltip />
      <el-table-column label="费率" align="right" prop="rate" min-width="100" sortable show-overflow-tooltip >
@@ -249,8 +249,8 @@
               <el-form-item label="内部名称" prop="productNameInner">
                 <el-input v-model="form.productNameInner" placeholder="请输入内部名称" />
               </el-form-item>
-              <el-form-item label="银行卡号" prop="bandCode">
-                <el-input v-model="form.bandCode" placeholder="请输入银行卡号" />
+              <el-form-item label="收款账号" prop="bandCode">
+                <el-input v-model="form.bandCode" placeholder="请输入收款账号" />
               </el-form-item>
 
               <el-form-item label="支付编码">
@@ -395,7 +395,7 @@ export default {
           { required: true, message: "内部名称不能为空", trigger: "blur" }
         ],
         bandCode: [
-          { required: true, message: "银行卡号不能为空", trigger: "blur" }
+          { required: true, message: "收款账号不能为空", trigger: "blur" }
         ],
         wayCode: [
           { required: true, message: "支付编码不能为空", trigger: "blur" }

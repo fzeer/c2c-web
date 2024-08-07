@@ -20,17 +20,17 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="银行卡号" prop="bankCode" >
+      <el-form-item label="收款账号" prop="accountNo" >
         <el-input
-          v-model="queryParams.bankCode"
-          placeholder="请输入银行卡号"
+          v-model="queryParams.accountNo"
+          placeholder="请输入收款账号"
           clearable
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="开户人" prop="bankAccount"  v-if="moreSearch" >
+      <el-form-item label="开户人" prop="accountName"  v-if="moreSearch" >
         <el-input
-          v-model="queryParams.bankAccount"
+          v-model="queryParams.accountName"
           placeholder="请输入开户人"
           clearable
           @keyup.enter.native="handleQuery"
@@ -177,8 +177,8 @@
       <el-table-column label="ID" align="center" prop="bankId" />
       <el-table-column label="码商" align="center" prop="supplierName" show-overflow-tooltip />
       <el-table-column label="银行名称" align="center" prop="bankName" show-overflow-tooltip />
-      <el-table-column label="银行卡号" align="center" prop="bankCode" show-overflow-tooltip />
-      <el-table-column label="开户人" align="center" prop="bankAccount" show-overflow-tooltip />
+      <el-table-column label="收款账号" align="center" prop="accountNo" show-overflow-tooltip />
+      <el-table-column label="开户人" align="center" prop="accountName" show-overflow-tooltip />
       <el-table-column label="用途" align="center" prop="useType">
         <template v-slot="scope">
           <dict-tag :options="dict.type.bank_use_type" :value="scope.row.useType"/>
@@ -282,11 +282,11 @@
             <el-form-item label="银行名称" prop="bankName">
               <el-input v-model="form.bankName" placeholder="请输入银行名称" />
             </el-form-item>
-            <el-form-item label="银行卡号" prop="bankCode">
-              <el-input v-model="form.bankCode" placeholder="请输入银行卡号" />
+            <el-form-item label="收款账号" prop="accountNo">
+              <el-input v-model="form.accountNo" placeholder="请输入收款账号" />
             </el-form-item>
-            <el-form-item label="开户人" prop="bankAccount">
-              <el-input v-model="form.bankAccount" placeholder="请输入开户人" />
+            <el-form-item label="开户人" prop="accountName">
+              <el-input v-model="form.accountName" placeholder="请输入开户人" />
             </el-form-item>
             <el-form-item label="用途" prop="useType">
               <el-select v-model="form.useType" placeholder="请选择用途">
@@ -384,8 +384,8 @@ export default {
         pageSize: 10,
         supplierId: null,
         bankName: null,
-        bankCode: null,
-        bankAccount: null,
+        accountNo: null,
+        accountName: null,
         bankSonName: null,
         useType: null,
         idCard: null,
@@ -417,10 +417,10 @@ export default {
         bankName: [
           { required: true, message: "银行名称不能为空", trigger: "blur" }
         ],
-        bankCode: [
-          { required: true, message: "银行卡号不能为空", trigger: "blur" }
+        accountNo: [
+          { required: true, message: "收款账号不能为空", trigger: "blur" }
         ],
-        bankAccount: [
+        accountName: [
           { required: true, message: "开户人不能为空", trigger: "blur" }
         ],
       }
@@ -451,8 +451,8 @@ export default {
         bankId: null,
         supplierId: null,
         bankName: null,
-        bankCode: null,
-        bankAccount: null,
+        accountNo: null,
+        accountName: null,
         bankSonName: null,
         useType: null,
         idCard: null,

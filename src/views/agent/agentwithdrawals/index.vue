@@ -65,17 +65,17 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="银行卡号" prop="bankCode"  v-if="moreSearch" >
+      <el-form-item label="收款账号" prop="accountNo"  v-if="moreSearch" >
         <el-input
-          v-model="queryParams.bankCode"
-          placeholder="请输入银行卡号"
+          v-model="queryParams.accountNo"
+          placeholder="请输入收款账号"
           clearable
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="开户人" prop="name"  v-if="moreSearch" >
+      <el-form-item label="开户人" prop="accountName"  v-if="moreSearch" >
         <el-input
-          v-model="queryParams.name"
+          v-model="queryParams.accountName"
           placeholder="请输入开户人"
           clearable
           @keyup.enter.native="handleQuery"
@@ -215,8 +215,8 @@
      </el-table-column>
       <el-table-column label="手续费" align="center" prop="fee" show-overflow-tooltip />
       <el-table-column label="银行名称" align="center" prop="bankName" show-overflow-tooltip />
-      <el-table-column label="银行卡号" align="center" prop="bankCode" show-overflow-tooltip />
-      <el-table-column label="开户人" align="center" prop="name" show-overflow-tooltip />
+      <el-table-column label="收款账号" align="center" prop="accountNo" show-overflow-tooltip />
+      <el-table-column label="开户人" align="center" prop="accountName" show-overflow-tooltip />
       <el-table-column label="支行" align="center" prop="bankSonName" show-overflow-tooltip />
       <el-table-column label="提现状态" align="center" prop="status" show-overflow-tooltip />
       <el-table-column label="审核时间" align="center" prop="auditTime" min-width="110" sortable show-overflow-tooltip >
@@ -293,11 +293,11 @@
         <el-form-item label="银行名称" prop="bankName">
           <el-input v-model="form.bankName" placeholder="请输入银行名称" />
         </el-form-item>
-        <el-form-item label="银行卡号" prop="bankCode">
-          <el-input v-model="form.bankCode" placeholder="请输入银行卡号" />
+        <el-form-item label="收款账号" prop="accountNo">
+          <el-input v-model="form.accountNo" placeholder="请输入收款账号" />
         </el-form-item>
-        <el-form-item label="开户人" prop="name">
-          <el-input v-model="form.name" placeholder="请输入开户人" />
+        <el-form-item label="开户人" prop="accountName">
+          <el-input v-model="form.accountName" placeholder="请输入开户人" />
         </el-form-item>
         <el-form-item label="支行" prop="bankSonName">
           <el-input v-model="form.bankSonName" placeholder="请输入支行" />
@@ -384,8 +384,8 @@ export default {
         rate: null,
         fee: null,
         bankName: null,
-        bankCode: null,
-        name: null,
+        accountNo: null,
+        accountName: null,
         bankSonName: null,
         status: null,
         auditTime: null,
@@ -424,10 +424,10 @@ export default {
         bankName: [
           { required: true, message: "银行名称不能为空", trigger: "blur" }
         ],
-        bankCode: [
-          { required: true, message: "银行卡号不能为空", trigger: "blur" }
+        accountNo: [
+          { required: true, message: "收款账号不能为空", trigger: "blur" }
         ],
-        name: [
+        accountName: [
           { required: true, message: "开户人不能为空", trigger: "blur" }
         ],
         bankSonName: [
@@ -475,8 +475,8 @@ export default {
         rate: null,
         fee: null,
         bankName: null,
-        bankCode: null,
-        name: null,
+        accountNo: null,
+        accountName: null,
         bankSonName: null,
         status: null,
         auditTime: null,

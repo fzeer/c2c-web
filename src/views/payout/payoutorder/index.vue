@@ -131,10 +131,10 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="银行卡号" prop="sourceBankCode"  v-if="moreSearch" >
+      <el-form-item label="收款账号" prop="sourceaccountNo"  v-if="moreSearch" >
         <el-input
-          v-model="queryParams.sourceBankCode"
-          placeholder="请输入银行卡号"
+          v-model="queryParams.sourceaccountNo"
+          placeholder="请输入收款账号"
           clearable
           @keyup.enter.native="handleQuery"
         />
@@ -147,10 +147,10 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="银行卡号" prop="targetBankCode"  v-if="moreSearch" >
+      <el-form-item label="收款账号" prop="targetaccountNo"  v-if="moreSearch" >
         <el-input
-          v-model="queryParams.targetBankCode"
-          placeholder="请输入银行卡号"
+          v-model="queryParams.targetaccountNo"
+          placeholder="请输入收款账号"
           clearable
           @keyup.enter.native="handleQuery"
         />
@@ -445,9 +445,9 @@
        </template>
      </el-table-column>
       <el-table-column label="银行名称" align="center" prop="sourceBankName" show-overflow-tooltip />
-      <el-table-column label="银行卡号" align="center" prop="sourceBankCode" show-overflow-tooltip />
+      <el-table-column label="收款账号" align="center" prop="sourceaccountNo" show-overflow-tooltip />
       <el-table-column label="银行名称" align="center" prop="targetBankName" show-overflow-tooltip />
-      <el-table-column label="银行卡号" align="center" prop="targetBankCode" show-overflow-tooltip />
+      <el-table-column label="收款账号" align="center" prop="targetaccountNo" show-overflow-tooltip />
       <el-table-column label="支行" align="center" prop="targetBankSonName" show-overflow-tooltip />
       <el-table-column label="开户人" align="center" prop="targetAccountName" show-overflow-tooltip />
       <el-table-column label="开户人身份证" align="center" prop="targetIdCard" show-overflow-tooltip />
@@ -601,14 +601,14 @@
         <el-form-item label="银行名称" prop="sourceBankName">
           <el-input v-model="form.sourceBankName" placeholder="请输入银行名称" />
         </el-form-item>
-        <el-form-item label="银行卡号" prop="sourceBankCode">
-          <el-input v-model="form.sourceBankCode" placeholder="请输入银行卡号" />
+        <el-form-item label="收款账号" prop="sourceaccountNo">
+          <el-input v-model="form.sourceaccountNo" placeholder="请输入收款账号" />
         </el-form-item>
         <el-form-item label="银行名称" prop="targetBankName">
           <el-input v-model="form.targetBankName" placeholder="请输入银行名称" />
         </el-form-item>
-        <el-form-item label="银行卡号" prop="targetBankCode">
-          <el-input v-model="form.targetBankCode" placeholder="请输入银行卡号" />
+        <el-form-item label="收款账号" prop="targetaccountNo">
+          <el-input v-model="form.targetaccountNo" placeholder="请输入收款账号" />
         </el-form-item>
         <el-form-item label="支行" prop="targetBankSonName">
           <el-input v-model="form.targetBankSonName" placeholder="请输入支行" />
@@ -797,9 +797,9 @@ export default {
         exchangeRate: null,
         originMoney: null,
         sourceBankName: null,
-        sourceBankCode: null,
+        sourceaccountNo: null,
         targetBankName: null,
-        targetBankCode: null,
+        targetaccountNo: null,
         targetBankSonName: null,
         targetAccountName: null,
         targetIdCard: null,
@@ -880,14 +880,14 @@ export default {
         sourceBankName: [
           { required: true, message: "银行名称不能为空", trigger: "blur" }
         ],
-        sourceBankCode: [
-          { required: true, message: "银行卡号不能为空", trigger: "blur" }
+        sourceaccountNo: [
+          { required: true, message: "收款账号不能为空", trigger: "blur" }
         ],
         targetBankName: [
           { required: true, message: "银行名称不能为空", trigger: "blur" }
         ],
-        targetBankCode: [
-          { required: true, message: "银行卡号不能为空", trigger: "blur" }
+        targetaccountNo: [
+          { required: true, message: "收款账号不能为空", trigger: "blur" }
         ],
         targetBankSonName: [
           { required: true, message: "支行不能为空", trigger: "blur" }
@@ -969,9 +969,9 @@ export default {
         exchangeRate: null,
         originMoney: null,
         sourceBankName: null,
-        sourceBankCode: null,
+        sourceaccountNo: null,
         targetBankName: null,
-        targetBankCode: null,
+        targetaccountNo: null,
         targetBankSonName: null,
         targetAccountName: null,
         targetIdCard: null,

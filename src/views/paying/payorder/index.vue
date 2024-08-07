@@ -145,10 +145,10 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="银行卡号" prop="bankCode"  v-if="moreSearch" >
+      <el-form-item label="收款账号" prop="accountNo"  v-if="moreSearch" >
         <el-input
-          v-model="queryParams.bankCode"
-          placeholder="请输入银行卡号"
+          v-model="queryParams.accountNo"
+          placeholder="请输入收款账号"
           clearable
           @keyup.enter.native="handleQuery"
         />
@@ -474,7 +474,7 @@
       <el-table-column label="内部产品名称" align="center" prop="productNameInner" show-overflow-tooltip />
       <el-table-column label="银行卡ID" align="center" prop="bankId" show-overflow-tooltip />
       <el-table-column label="银行名称" align="center" prop="bankName" show-overflow-tooltip />
-      <el-table-column label="银行卡号" align="center" prop="bankCode" show-overflow-tooltip />
+      <el-table-column label="收款账号" align="center" prop="accountNo" show-overflow-tooltip />
       <el-table-column label="支付方式编码" align="center" prop="wayCode" show-overflow-tooltip />
       <el-table-column label="支付方式" align="center" prop="wayName" show-overflow-tooltip />
       <el-table-column label="客户端IP" align="center" prop="clientIp" show-overflow-tooltip />
@@ -571,7 +571,7 @@
         </template>
       </el-table-column>
     </el-table>
-    
+
     <pagination
       v-show="total>0"
       :total="total"
@@ -656,8 +656,8 @@
         <el-form-item label="银行名称" prop="bankName">
           <el-input v-model="form.bankName" placeholder="请输入银行名称" />
         </el-form-item>
-        <el-form-item label="银行卡号" prop="bankCode">
-          <el-input v-model="form.bankCode" placeholder="请输入银行卡号" />
+        <el-form-item label="收款账号" prop="accountNo">
+          <el-input v-model="form.accountNo" placeholder="请输入收款账号" />
         </el-form-item>
         <el-form-item label="支付方式编码" prop="wayCode">
           <el-input v-model="form.wayCode" placeholder="请输入支付方式编码" />
@@ -851,7 +851,7 @@ export default {
         productNameInner: null,
         bankId: null,
         bankName: null,
-        bankCode: null,
+        accountNo: null,
         wayCode: null,
         wayName: null,
         clientIp: null,
@@ -1029,7 +1029,7 @@ export default {
         productNameInner: null,
         bankId: null,
         bankName: null,
-        bankCode: null,
+        accountNo: null,
         wayCode: null,
         wayName: null,
         clientIp: null,

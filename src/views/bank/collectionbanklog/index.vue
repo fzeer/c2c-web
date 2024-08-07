@@ -9,10 +9,10 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="银行卡号" prop="bankCode" >
+      <el-form-item label="收款账号" prop="accountNo" >
         <el-input
-          v-model="queryParams.bankCode"
-          placeholder="请输入银行卡号"
+          v-model="queryParams.accountNo"
+          placeholder="请输入收款账号"
           clearable
           @keyup.enter.native="handleQuery"
         />
@@ -113,7 +113,7 @@
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="记录ID" align="center" prop="id" />
       <el-table-column label="银行ID" align="center" prop="bankId" show-overflow-tooltip />
-      <el-table-column label="银行卡号" align="center" prop="bankCode" show-overflow-tooltip />
+      <el-table-column label="收款账号" align="center" prop="accountNo" show-overflow-tooltip />
       <el-table-column label="银行名称" align="center" prop="bankName" show-overflow-tooltip />
       <el-table-column label="业务类型" align="center" prop="bizType">
         <template v-slot="scope">
@@ -181,8 +181,8 @@
         <el-form-item label="银行ID" prop="bankId">
           <el-input v-model="form.bankId" placeholder="请输入银行ID" />
         </el-form-item>
-        <el-form-item label="银行卡号" prop="bankCode">
-          <el-input v-model="form.bankCode" placeholder="请输入银行卡号" />
+        <el-form-item label="收款账号" prop="accountNo">
+          <el-input v-model="form.accountNo" placeholder="请输入收款账号" />
         </el-form-item>
         <el-form-item label="银行名称" prop="bankName">
           <el-input v-model="form.bankName" placeholder="请输入银行名称" />
@@ -257,7 +257,7 @@ export default {
         pageNum: 1,
         pageSize: 10,
         bankId: null,
-        bankCode: null,
+        accountNo: null,
         bankName: null,
         bizType: null,
         bizDesc: null,
@@ -303,7 +303,7 @@ export default {
       this.form = {
         id: null,
         bankId: null,
-        bankCode: null,
+        accountNo: null,
         bankName: null,
         bizType: null,
         bizDesc: null,

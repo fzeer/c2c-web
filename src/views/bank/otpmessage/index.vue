@@ -57,10 +57,10 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="银行卡号" prop="bankNo"  v-if="moreSearch" >
+      <el-form-item label="收款账号" prop="accountNo"  v-if="moreSearch" >
         <el-input
-          v-model="queryParams.bankNo"
-          placeholder="请输入银行卡号"
+          v-model="queryParams.accountNo"
+          placeholder="请输入收款账号"
           clearable
           @keyup.enter.native="handleQuery"
         />
@@ -182,7 +182,7 @@
       <el-table-column label="应用编号" align="center" prop="appCode" show-overflow-tooltip />
       <el-table-column label="应用版本" align="center" prop="appVersion" show-overflow-tooltip />
       <el-table-column label="银行名称" align="center" prop="bankName" show-overflow-tooltip />
-      <el-table-column label="银行卡号" align="center" prop="bankNo" min-width="100" sortable show-overflow-tooltip/>
+      <el-table-column label="收款账号" align="center" prop="accountNo" min-width="100" sortable show-overflow-tooltip/>
       <el-table-column label="用户名称" align="center" prop="userName" show-overflow-tooltip />
       <el-table-column label="码商ID" align="center" prop="supplierId" show-overflow-tooltip />
       <el-table-column label="码商名称" align="center" prop="supplierName" show-overflow-tooltip />
@@ -255,8 +255,8 @@
         <el-form-item label="银行名称" prop="bankName">
           <el-input v-model="form.bankName" placeholder="请输入银行名称" />
         </el-form-item>
-        <el-form-item label="银行卡号" prop="bankNo">
-          <el-input v-model="form.bankNo" placeholder="请输入银行卡号" />
+        <el-form-item label="收款账号" prop="accountNo">
+          <el-input v-model="form.accountNo" placeholder="请输入收款账号" />
         </el-form-item>
         <el-form-item label="用户名称" prop="userName">
           <el-input v-model="form.userName" placeholder="请输入用户名称" />
@@ -340,7 +340,7 @@ export default {
         appCode: null,
         appVersion: null,
         bankName: null,
-        bankNo: null,
+        accountNo: null,
         userName: null,
         supplierId: null,
         supplierName: null,
@@ -388,7 +388,7 @@ export default {
         appCode: null,
         appVersion: null,
         bankName: null,
-        bankNo: null,
+        accountNo: null,
         userName: null,
         supplierId: null,
         supplierName: null,
