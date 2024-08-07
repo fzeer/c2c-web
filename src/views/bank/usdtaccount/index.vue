@@ -136,7 +136,7 @@
       <el-table-column label="账户ID" align="center" prop="usdtId" />
       <el-table-column label="昵称" align="center" prop="nickName" show-overflow-tooltip />
       <el-table-column label="码商" align="center" prop="supplierName" show-overflow-tooltip />
-      <el-table-column label="USDT地址" align="center" prop="viewAddress" min-width="110" show-overflow-tooltip />
+      <el-table-column label="USDT地址" align="center" prop="viewAddress" min-width="120" show-overflow-tooltip />
       <el-table-column label="用途" align="center" prop="useType">
         <template v-slot="scope">
           <dict-tag :options="dict.type.bank_use_type" :value="scope.row.useType"/>

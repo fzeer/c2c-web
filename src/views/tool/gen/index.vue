@@ -117,9 +117,9 @@
 <!--          <span>{{ parseTime(scope.row.createTime, '{m}-{d} {h}:{i}') }}</span>-->
 <!--        </template>-->
 <!--      </el-table-column>-->
-      <el-table-column label="创建时间" align="center" prop="createTime" width="160" />
-      <el-table-column label="更新时间" align="center" prop="updateTime" width="160" />
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+      <el-table-column label="创建时间" align="center" prop="createTime" width="170" />
+      <el-table-column label="更新时间" align="center" prop="updateTime" width="170" />
+      <el-table-column label="操作" align="center" class-name="small-padding fixed-width" width="300">
         <template slot-scope="scope">
           <el-button
             type="text"

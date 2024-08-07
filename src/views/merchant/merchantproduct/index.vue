@@ -26,15 +26,7 @@
         </el-select>
       </el-form-item>
 
-      <el-form-item label="费率" prop="rate" >
-        <el-input
-          v-model="queryParams.rate"
-          placeholder="请输入费率"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="状态" prop="status"  v-if="moreSearch" >
+      <el-form-item label="状态" prop="status" >
         <el-select v-model="queryParams.status" placeholder="请选择状态" clearable>
           <el-option
             v-for="dict in dict.type.sys_normal_disable"
@@ -44,6 +36,16 @@
           />
         </el-select>
       </el-form-item>
+
+      <el-form-item label="费率" prop="rate"   v-if="moreSearch">
+        <el-input
+          v-model="queryParams.rate"
+          placeholder="请输入费率"
+          clearable
+          @keyup.enter.native="handleQuery"
+        />
+      </el-form-item>
+
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
         <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
@@ -102,9 +104,11 @@
     >
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="ID" align="center" prop="id" />
-      <el-table-column label="商户" align="center" prop="merchantName" min-width="100"  sortable show-overflow-tooltip />
+      <el-table-column label="商户号" align="center" prop="merchantNo" min-width="100"  sortable show-overflow-tooltip />
+      <el-table-column label="商户名" align="center" prop="merchantName" min-width="100"  sortable show-overflow-tooltip />
       <el-table-column label="产品编号" align="center" prop="productCode" min-width="100"  sortable show-overflow-tooltip />
       <el-table-column label="产品名称" align="center" prop="productName" min-width="100"  sortable show-overflow-tooltip />
+      <el-table-column label="支付编码" align="center" prop="wayCode" min-width="100"  sortable show-overflow-tooltip />
      <el-table-column label="费率" align="right" prop="rate" min-width="100" sortable show-overflow-tooltip >
        <template v-slot="scope">
          <span class="text-money">{{ parseMoney(scope.row.rate) }}</span>

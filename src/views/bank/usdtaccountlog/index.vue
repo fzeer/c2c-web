@@ -131,7 +131,7 @@
       <el-table-column label="银行ID" align="center" prop="usdtId" show-overflow-tooltip />
       <el-table-column label="昵称" align="center" prop="nickName" show-overflow-tooltip />
       <el-table-column label="码商ID" align="center" prop="supplierId" show-overflow-tooltip />
-      <el-table-column label="USDT地址" align="center" prop="viewAddress" show-overflow-tooltip />
+      <el-table-column label="USDT地址" align="center" min-width="120" prop="viewAddress" show-overflow-tooltip />
       <el-table-column label="业务类型" align="center" prop="bizType">
         <template v-slot="scope">
           <dict-tag :options="dict.type.agent_biz_type" :value="scope.row.bizType"/>
