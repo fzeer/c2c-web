@@ -52,9 +52,9 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="收款账号" prop="bandCode"  v-if="moreSearch" >
+      <el-form-item label="收款账号" prop="accountNo"  v-if="moreSearch" >
         <el-input
-          v-model="queryParams.bandCode"
+          v-model="queryParams.accountNo"
           placeholder="请输入收款账号"
           clearable
           @keyup.enter.native="handleQuery"
@@ -158,7 +158,7 @@
       <el-table-column label="产品编号" align="center" prop="productCode" min-width="100" sortable show-overflow-tooltip />
       <el-table-column label="产品名称" align="center" prop="productName"  min-width="100" show-overflow-tooltip />
       <el-table-column label="内部名称" align="center" prop="productNameInner"  min-width="100" sortable show-overflow-tooltip />
-      <el-table-column label="收款账号" align="center" prop="bandCode" show-overflow-tooltip />
+      <el-table-column label="收款账号" align="center" prop="accountNo" show-overflow-tooltip />
       <el-table-column label="支付编码" align="center" prop="wayCode" min-width="100" sortable show-overflow-tooltip />
       <el-table-column label="渠道" align="center" prop="channelName" min-width="100" sortable show-overflow-tooltip />
      <el-table-column label="费率" align="right" prop="rate" min-width="100" sortable show-overflow-tooltip >
@@ -190,7 +190,9 @@
         </template>
       </el-table-column>
       <el-table-column label="固定金额" align="center" prop="amountLst" show-overflow-tooltip />
+      <el-table-column label="超时时间(秒)" align="center" prop="timeoutSec" min-width="100" show-overflow-tooltip />
       <el-table-column label="附加参数" align="center" prop="extraParam" show-overflow-tooltip />
+      <el-table-column label="" align="center" prop="extraParam" show-overflow-tooltip />
       <el-table-column label="创建时间" align="center" prop="createTime" min-width="110" sortable show-overflow-tooltip >
         <template v-slot="scope">
           <span>{{ parseTime(scope.row.createTime, '{m}-{d} {h}:{i}') }}</span>
@@ -240,7 +242,20 @@
                   ></el-option>
                 </el-select>
               </el-form-item>
-              <el-form-item label="产品编号" prop="productCode">
+
+            <el-form-item label="支付编码">
+              <el-select v-model="form.wayCode" style="width: 100%" placeholder="请选择">
+                <el-option
+                  v-for="item in wayOptions"
+                  :key="item.wayCode"
+                  :label="item.wayCode + ' - ' + item.wayName"
+                  :value="item.wayCode"
+                  :disabled="item.status != '0'"
+                ></el-option>
+              </el-select>
+            </el-form-item>
+
+            <el-form-item label="产品编号" prop="productCode">
                 <el-input v-model="form.productCode" placeholder="请输入产品编号" />
               </el-form-item>
               <el-form-item label="产品名称" prop="productName">
@@ -249,20 +264,8 @@
               <el-form-item label="内部名称" prop="productNameInner">
                 <el-input v-model="form.productNameInner" placeholder="请输入内部名称" />
               </el-form-item>
-              <el-form-item label="收款账号" prop="bandCode">
-                <el-input v-model="form.bandCode" placeholder="请输入收款账号" />
-              </el-form-item>
-
-              <el-form-item label="支付编码">
-                <el-select v-model="form.wayCode" style="width: 100%" placeholder="请选择">
-                  <el-option
-                    v-for="item in wayOptions"
-                    :key="item.wayCode"
-                    :label="item.wayCode + ' - ' + item.wayName"
-                    :value="item.wayCode"
-                    :disabled="item.status != '0'"
-                  ></el-option>
-                </el-select>
+              <el-form-item label="收款账号" prop="accountNo">
+                <el-input v-model="form.accountNo" placeholder="请输入收款账号" />
               </el-form-item>
 
 <!--              <el-form-item label="结算类型" prop="settleType">-->
@@ -279,7 +282,7 @@
                 </el-radio-group>
               </el-form-item>
           </el-tab-pane>
-          <el-tab-pane label="金额设置" name="second">
+          <el-tab-pane label="支付设置" name="second">
             <el-form-item label="最低金额" prop="minMoney">
               <el-input v-model="form.minMoney" placeholder="请输入最低金额" />
             </el-form-item>
@@ -301,6 +304,11 @@
             </el-form-item>
             <el-form-item label="附加参数" prop="extraParam">
               <el-input v-model="form.extraParam" placeholder="请输入附加参数" />
+            </el-form-item>
+            <el-form-item label="超时时间" prop="timeoutSec">
+              <el-input v-model="form.timeoutSec" placeholder="请输入超时时间">
+                <template slot="append">秒</template>
+              </el-input>
             </el-form-item>
           </el-tab-pane>
           <el-tab-pane label="渠道费率" name="third">
@@ -367,7 +375,7 @@ export default {
         productCode: null,
         productName: null,
         productNameInner: null,
-        bandCode: null,
+        accountNo: null,
         wayCode: null,
         channelId: null,
         rate: null,
@@ -394,7 +402,7 @@ export default {
         productNameInner: [
           { required: true, message: "内部名称不能为空", trigger: "blur" }
         ],
-        bandCode: [
+        accountNo: [
           { required: true, message: "收款账号不能为空", trigger: "blur" }
         ],
         wayCode: [
@@ -469,7 +477,7 @@ export default {
         productCode: null,
         productName: null,
         productNameInner: null,
-        bandCode: null,
+        accountNo: null,
         wayCode: null,
         channelId: null,
         rate: null,
@@ -482,6 +490,7 @@ export default {
         amountType: '0',
         amountLst: null,
         extraParam: null,
+        timeoutSec: 600,
         remark: null,
         createBy: null,
         createTime: null,

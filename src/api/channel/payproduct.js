@@ -59,3 +59,12 @@ export function listSelectProductMerchantNoConfig(merchantId) {
     params: null
   })
 }
+
+// 查询支付产品列表
+export function listSelectProductAgentNoConfig(agentId) {
+  return request({
+    url: '/channel/payproduct/select/agentNoConfig/' + agentId,
+    method: 'get',
+    params: null
+  })
+}
