@@ -1,7 +1,53 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="auto">
-      <el-form-item label="代理商ID" prop="agentId" >
+      <el-form-item label="系统订单号" prop="orderCode" >
+        <el-input
+          v-model="queryParams.orderCode"
+          placeholder="请输入系统订单号"
+          clearable
+          @keyup.enter.native="handleQuery"
+        />
+      </el-form-item>
+      <el-form-item label="商户订单号" prop="mchOrderCode" >
+        <el-input
+          v-model="queryParams.mchOrderCode"
+          placeholder="请输入商户订单号"
+          clearable
+          @keyup.enter.native="handleQuery"
+        />
+      </el-form-item>
+
+      <el-form-item label="订单状态" prop="status">
+        <el-select v-model="queryParams.status" placeholder="请选择订单状态" clearable>
+          <el-option
+            v-for="dict in dict.type.order_status"
+            :key="dict.value"
+            :label="dict.label"
+            :value="dict.value"
+          />
+        </el-select>
+      </el-form-item>
+
+      <el-form-item label="商户编号" prop="merchantNo"    v-if="moreSearch" >
+        <el-input
+          v-model="queryParams.merchantNo"
+          placeholder="请输入商户编号"
+          clearable
+          @keyup.enter.native="handleQuery"
+        />
+      </el-form-item>
+
+      <el-form-item label="渠道订单号" prop="channelOrderCode"  v-if="moreSearch" >
+        <el-input
+          v-model="queryParams.channelOrderCode"
+          placeholder="请输入渠道订单号"
+          clearable
+          @keyup.enter.native="handleQuery"
+        />
+      </el-form-item>
+
+      <el-form-item label="代理商ID" prop="agentId"  v-if="moreSearch" >
         <el-input
           v-model="queryParams.agentId"
           placeholder="请输入代理商ID"
@@ -9,18 +55,10 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="业务员ID" prop="adminId" >
+      <el-form-item label="业务员ID" prop="adminId"  v-if="moreSearch" >
         <el-input
           v-model="queryParams.adminId"
           placeholder="请输入业务员ID"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="商户ID" prop="merchantId" >
-        <el-input
-          v-model="queryParams.merchantId"
-          placeholder="请输入商户ID"
           clearable
           @keyup.enter.native="handleQuery"
         />
@@ -33,66 +71,10 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="商户编号" prop="merchantNo"  v-if="moreSearch" >
-        <el-input
-          v-model="queryParams.merchantNo"
-          placeholder="请输入商户编号"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
       <el-form-item label="商户名称" prop="merchantName"  v-if="moreSearch" >
         <el-input
           v-model="queryParams.merchantName"
           placeholder="请输入商户名称"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="系统订单号" prop="orderCode"  v-if="moreSearch" >
-        <el-input
-          v-model="queryParams.orderCode"
-          placeholder="请输入系统订单号"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="商户订单号" prop="mOrderCode"  v-if="moreSearch" >
-        <el-input
-          v-model="queryParams.mOrderCode"
-          placeholder="请输入商户订单号"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="渠道用户标识,如微信openId,支付宝账号" prop="channelUser"  v-if="moreSearch" >
-        <el-input
-          v-model="queryParams.channelUser"
-          placeholder="请输入渠道用户标识,如微信openId,支付宝账号"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="渠道订单号" prop="channelOrderCode"  v-if="moreSearch" >
-        <el-input
-          v-model="queryParams.channelOrderCode"
-          placeholder="请输入渠道订单号"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="渠道ID" prop="channelId"  v-if="moreSearch" >
-        <el-input
-          v-model="queryParams.channelId"
-          placeholder="请输入渠道ID"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="产品ID" prop="productId"  v-if="moreSearch" >
-        <el-input
-          v-model="queryParams.productId"
-          placeholder="请输入产品ID"
           clearable
           @keyup.enter.native="handleQuery"
         />
@@ -121,30 +103,6 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="内部产品名称" prop="productNameInner"  v-if="moreSearch" >
-        <el-input
-          v-model="queryParams.productNameInner"
-          placeholder="请输入内部产品名称"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="银行卡ID" prop="bankId"  v-if="moreSearch" >
-        <el-input
-          v-model="queryParams.bankId"
-          placeholder="请输入银行卡ID"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="银行名称" prop="bankName"  v-if="moreSearch" >
-        <el-input
-          v-model="queryParams.bankName"
-          placeholder="请输入银行名称"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
       <el-form-item label="收款账号" prop="accountNo"  v-if="moreSearch" >
         <el-input
           v-model="queryParams.accountNo"
@@ -161,14 +119,6 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="支付方式" prop="wayName"  v-if="moreSearch" >
-        <el-input
-          v-model="queryParams.wayName"
-          placeholder="请输入支付方式"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
       <el-form-item label="客户端IP" prop="clientIp"  v-if="moreSearch" >
         <el-input
           v-model="queryParams.clientIp"
@@ -177,38 +127,7 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="商品标题" prop="subject"  v-if="moreSearch" >
-        <el-input
-          v-model="queryParams.subject"
-          placeholder="请输入商品标题"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="商品描述信息" prop="body"  v-if="moreSearch" >
-        <el-input
-          v-model="queryParams.body"
-          placeholder="请输入商品描述信息"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="商户扩展参数" prop="extParam"  v-if="moreSearch" >
-        <el-input
-          v-model="queryParams.extParam"
-          placeholder="请输入商户扩展参数"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="订单状态" prop="status"  v-if="moreSearch" >
-        <el-input
-          v-model="queryParams.status"
-          placeholder="请输入订单状态"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
+
       <el-form-item label="订单金额" prop="totalMoney"  v-if="moreSearch" >
         <el-input
           v-model="queryParams.totalMoney"
@@ -217,55 +136,23 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="实际金额" prop="realMoney"  v-if="moreSearch" >
+      <el-form-item label="商户费率%" prop="ratePercent"  v-if="moreSearch" >
         <el-input
-          v-model="queryParams.realMoney"
-          placeholder="请输入实际金额"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="入账金额" prop="enteredMoney"  v-if="moreSearch" >
-        <el-input
-          v-model="queryParams.enteredMoney"
-          placeholder="请输入入账金额"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="单笔手续费" prop="single"  v-if="moreSearch" >
-        <el-input
-          v-model="queryParams.single"
-          placeholder="请输入单笔手续费"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="商户费率" prop="rate"  v-if="moreSearch" >
-        <el-input
-          v-model="queryParams.rate"
+          v-model="queryParams.ratePercent"
           placeholder="请输入商户费率"
           clearable
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="手续费" prop="poundage"  v-if="moreSearch" >
+      <el-form-item label="代理费率%" prop="agentRatPercent"  v-if="moreSearch" >
         <el-input
-          v-model="queryParams.poundage"
-          placeholder="请输入手续费"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="代理费率" prop="agentRate"  v-if="moreSearch" >
-        <el-input
-          v-model="queryParams.agentRate"
+          v-model="queryParams.agentRatePercent"
           placeholder="请输入代理费率"
           clearable
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="渠道费率" prop="channelRate"  v-if="moreSearch" >
+      <el-form-item label="渠道费率%" prop="channelRatePercent"  v-if="moreSearch" >
         <el-input
           v-model="queryParams.channelRate"
           placeholder="请输入渠道费率"
@@ -273,46 +160,7 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="渠道支付错误码" prop="channelErrCode"  v-if="moreSearch" >
-        <el-input
-          v-model="queryParams.channelErrCode"
-          placeholder="请输入渠道支付错误码"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="渠道支付错误描述" prop="channelErrMsg"  v-if="moreSearch" >
-        <el-input
-          v-model="queryParams.channelErrMsg"
-          placeholder="请输入渠道支付错误描述"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="货币代码" prop="currency"  v-if="moreSearch" >
-        <el-input
-          v-model="queryParams.currency"
-          placeholder="请输入货币代码"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="汇率" prop="exchangeRate"  v-if="moreSearch" >
-        <el-input
-          v-model="queryParams.exchangeRate"
-          placeholder="请输入汇率"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="原币金额" prop="originMoney"  v-if="moreSearch" >
-        <el-input
-          v-model="queryParams.originMoney"
-          placeholder="请输入原币金额"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
+
       <el-form-item label="通知状态" prop="notifyStatus"  v-if="moreSearch" >
         <el-select v-model="queryParams.notifyStatus" placeholder="请选择通知状态" clearable>
           <el-option
@@ -339,54 +187,6 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="补单原因" prop="supplementReason"  v-if="moreSearch" >
-        <el-input
-          v-model="queryParams.supplementReason"
-          placeholder="请输入补单原因"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="补单人员" prop="supplementUser"  v-if="moreSearch" >
-        <el-input
-          v-model="queryParams.supplementUser"
-          placeholder="请输入补单人员"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="退款状态:" prop="refundStatus"  v-if="moreSearch" >
-        <el-input
-          v-model="queryParams.refundStatus"
-          placeholder="请输入退款状态:"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="退款次数" prop="refundTimes"  v-if="moreSearch" >
-        <el-input
-          v-model="queryParams.refundTimes"
-          placeholder="请输入退款次数"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="退款总金额" prop="refundAmount"  v-if="moreSearch" >
-        <el-input
-          v-model="queryParams.refundAmount"
-          placeholder="请输入退款总金额"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="部门ID" prop="deptId"  v-if="moreSearch" >
-        <el-input
-          v-model="queryParams.deptId"
-          placeholder="请输入部门ID"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
         <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
@@ -397,32 +197,23 @@
     <el-row :gutter="10" class="mb8">
       <el-col :span="1.5">
         <el-button
-          type="primary"
-          icon="el-icon-plus"
-          size="mini"
-          @click="handleAdd"
-          v-hasPermi="['paying:payorder:add']"
-        >新增</el-button>
-      </el-col>
-      <el-col :span="1.5">
-        <el-button
           type="success"
           icon="el-icon-edit"
           size="mini"
-          :disabled="single"
-          @click="handleUpdate"
-          v-hasPermi="['paying:payorder:edit']"
-        >修改</el-button>
+          :disabled="multiple"
+          @click="handleNotify"
+          v-hasPermi="['paying:payorder:notify']"
+        >批量通知</el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
           type="danger"
-          icon="el-icon-delete"
+          icon="el-icon-edit"
           size="mini"
-          :disabled="multiple"
-          @click="handleDelete"
-          v-hasPermi="['paying:payorder:remove']"
-        >删除</el-button>
+          :disabled="single"
+          @click="handleSupplement"
+          v-hasPermi="['paying:payorder:supplement']"
+        >补单</el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
@@ -444,21 +235,29 @@
       resizable
     >
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="订单ID" align="center" prop="orderId" />
-      <el-table-column label="代理商ID" align="center" prop="agentId" show-overflow-tooltip />
-      <el-table-column label="业务员ID" align="center" prop="adminId" show-overflow-tooltip />
-      <el-table-column label="商户ID" align="center" prop="merchantId" show-overflow-tooltip />
-      <el-table-column label="代理商" align="center" prop="agentName" show-overflow-tooltip />
+<!--      <el-table-column label="订单ID" align="center" prop="orderId" />-->
+      <el-table-column label="系统订单号" align="center" prop="orderCode" min-width="180" sortable show-overflow-tooltip/>
       <el-table-column label="商户编号" align="center" prop="merchantNo" min-width="100" sortable show-overflow-tooltip/>
       <el-table-column label="商户名称" align="center" prop="merchantName" show-overflow-tooltip />
-      <el-table-column label="系统订单号" align="center" prop="orderCode" min-width="100" sortable show-overflow-tooltip/>
-      <el-table-column label="商户订单号" align="center" prop="mOrderCode" show-overflow-tooltip />
-      <el-table-column label="特定渠道发起额外参数" align="center" prop="channelExtra" show-overflow-tooltip />
-      <el-table-column label="渠道用户标识,如微信openId,支付宝账号" align="center" prop="channelUser" show-overflow-tooltip />
-      <el-table-column label="渠道订单号" align="center" prop="channelOrderCode" show-overflow-tooltip />
+      <el-table-column label="商户订单号" align="center" prop="mchOrderCode" min-width="130" show-overflow-tooltip />
+      <el-table-column label="订单金额" align="right" prop="totalMoney" min-width="100" sortable show-overflow-tooltip >
+        <template v-slot="scope">
+          <span class="text-money">{{ parseMoney(scope.row.totalMoney) }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="折扣金额" align="right" prop="realMoney" min-width="100" sortable show-overflow-tooltip >
+        <template v-slot="scope">
+          <span class="text-money">{{ parseMoney(scope.row.realMoney) }}</span>
+        </template>
+      </el-table-column>
       <el-table-column label="过期时间" align="center" prop="expiryTime" min-width="110" sortable show-overflow-tooltip >
         <template v-slot="scope">
           <span>{{ parseTime(scope.row.expiryTime, '{m}-{d} {h}:{i}') }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="订单状态" align="center" prop="订单状态">
+        <template v-slot="scope">
+          <dict-tag :options="dict.type.order_status" :value="scope.row.status"/>
         </template>
       </el-table-column>
       <el-table-column label="支付时间" align="center" prop="payTime" min-width="110" sortable show-overflow-tooltip >
@@ -466,63 +265,48 @@
           <span>{{ parseTime(scope.row.payTime, '{m}-{d} {h}:{i}') }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="渠道ID" align="center" prop="channelId" show-overflow-tooltip />
-      <el-table-column label="产品ID" align="center" prop="productId" show-overflow-tooltip />
-      <el-table-column label="渠道名称" align="center" prop="channelName" show-overflow-tooltip />
       <el-table-column label="产品编号" align="center" prop="productCode" show-overflow-tooltip />
       <el-table-column label="产品名称" align="center" prop="productName" show-overflow-tooltip />
-      <el-table-column label="内部产品名称" align="center" prop="productNameInner" show-overflow-tooltip />
-      <el-table-column label="银行卡ID" align="center" prop="bankId" show-overflow-tooltip />
-      <el-table-column label="银行名称" align="center" prop="bankName" show-overflow-tooltip />
-      <el-table-column label="收款账号" align="center" prop="accountNo" show-overflow-tooltip />
-      <el-table-column label="支付方式编码" align="center" prop="wayCode" show-overflow-tooltip />
+      <el-table-column label="内部名称" align="center" prop="productNameInner" v-has-role="['admin']" show-overflow-tooltip />
+      <el-table-column label="银行名称" align="center" prop="bankName" v-has-role="['admin']" show-overflow-tooltip />
+      <el-table-column label="收款账号" align="center" prop="accountNo" v-has-role="['admin']" show-overflow-tooltip />
+      <el-table-column label="支付编码" align="center" prop="wayCode" show-overflow-tooltip />
       <el-table-column label="支付方式" align="center" prop="wayName" show-overflow-tooltip />
       <el-table-column label="客户端IP" align="center" prop="clientIp" show-overflow-tooltip />
-      <el-table-column label="商品标题" align="center" prop="subject" show-overflow-tooltip />
-      <el-table-column label="商品描述信息" align="center" prop="body" show-overflow-tooltip />
-      <el-table-column label="商户扩展参数" align="center" prop="extParam" show-overflow-tooltip />
-      <el-table-column label="订单状态" align="center" prop="status" show-overflow-tooltip />
-     <el-table-column label="订单金额" align="right" prop="totalMoney" min-width="100" sortable show-overflow-tooltip >
-       <template v-slot="scope">
-         <span class="text-money">{{ parseMoney(scope.row.totalMoney) }}</span>
-       </template>
-     </el-table-column>
-     <el-table-column label="实际金额" align="right" prop="realMoney" min-width="100" sortable show-overflow-tooltip >
-       <template v-slot="scope">
-         <span class="text-money">{{ parseMoney(scope.row.realMoney) }}</span>
-       </template>
-     </el-table-column>
-     <el-table-column label="入账金额" align="right" prop="enteredMoney" min-width="100" sortable show-overflow-tooltip >
-       <template v-slot="scope">
-         <span class="text-money">{{ parseMoney(scope.row.enteredMoney) }}</span>
-       </template>
-     </el-table-column>
-      <el-table-column label="单笔手续费" align="center" prop="single" show-overflow-tooltip />
-     <el-table-column label="商户费率" align="right" prop="rate" min-width="100" sortable show-overflow-tooltip >
-       <template v-slot="scope">
-         <span class="text-money">{{ parseMoney(scope.row.rate) }}</span>
-       </template>
-     </el-table-column>
-      <el-table-column label="手续费" align="center" prop="poundage" show-overflow-tooltip />
-      <el-table-column label="代理费率" align="center" prop="agentRate" show-overflow-tooltip />
-      <el-table-column label="渠道费率" align="center" prop="channelRate" show-overflow-tooltip />
-      <el-table-column label="渠道支付链接" align="center" prop="channelPayUrl" show-overflow-tooltip />
-      <el-table-column label="渠道支付错误码" align="center" prop="channelErrCode" show-overflow-tooltip />
-      <el-table-column label="渠道支付错误描述" align="center" prop="channelErrMsg" show-overflow-tooltip />
-      <el-table-column label="收银台链接" align="center" prop="payUrl" show-overflow-tooltip />
-      <el-table-column label="货币代码" align="center" prop="currency" show-overflow-tooltip />
-      <el-table-column label="汇率" align="center" prop="exchangeRate" show-overflow-tooltip />
-     <el-table-column label="原币金额" align="right" prop="originMoney" min-width="100" sortable show-overflow-tooltip >
-       <template v-slot="scope">
-         <span class="text-money">{{ parseMoney(scope.row.originMoney) }}</span>
-       </template>
-     </el-table-column>
-      <el-table-column label="订单失效时间" align="center" prop="expiredTime" min-width="110" sortable show-overflow-tooltip >
+      <el-table-column label="渠道名称" align="center" prop="channelName" v-has-role="['admin']" show-overflow-tooltip />
+      <el-table-column label="渠道费率%" align="right" prop="channelRate" min-width="110" v-has-role="['admin']" show-overflow-tooltip >
         <template v-slot="scope">
-          <span>{{ parseTime(scope.row.expiredTime, '{m}-{d} {h}:{i}') }}</span>
+          <span class="text-money">{{ parseDecimal(scope.row.channelRate * 100, 2)}}</span>
         </template>
       </el-table-column>
-      <el-table-column label="订单支付成功时间" align="center" prop="successTime" min-width="110" sortable show-overflow-tooltip >
+      <el-table-column label="渠道订单号" align="center" prop="channelOrderCode" min-width="110" v-has-role="['admin']" show-overflow-tooltip />
+      <el-table-column label="代理商" align="center" prop="agentName" v-has-role="['agent','admin']" show-overflow-tooltip />
+      <el-table-column label="代理费率%" align="right" prop="agentRate" min-width="110" v-has-role="['agent','admin']" show-overflow-tooltip >
+        <template v-slot="scope">
+          <span class="text-money">{{ parseDecimal(scope.row.agentRate * 100, 2)}}</span>
+        </template>
+      </el-table-column>
+     <el-table-column label="商户费率%" align="right" prop="rate" min-width="110" sortable show-overflow-tooltip >
+       <template v-slot="scope">
+         <span class="text-money">{{ parseDecimal(scope.row.rate * 100, 2)}}</span>
+       </template>
+     </el-table-column>
+      <el-table-column label="单笔手续费" align="right" prop="single" min-width="110" show-overflow-tooltip />
+      <el-table-column label="总手续费" align="right" prop="fee" show-overflow-tooltip />
+      <el-table-column label="入账金额" align="right" prop="enteredMoney" min-width="100" sortable show-overflow-tooltip >
+        <template v-slot="scope">
+          <span class="text-money">{{ parseMoney(scope.row.enteredMoney) }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="渠道错误" align="center" prop="channelErrMsg" v-has-role="['admin']" show-overflow-tooltip />
+<!--      <el-table-column label="货币代码" align="center" prop="currency" show-overflow-tooltip />-->
+<!--      <el-table-column label="汇率" align="right" prop="exchangeRate" show-overflow-tooltip />-->
+<!--     <el-table-column label="原币金额" align="right" prop="originMoney" min-width="100" sortable show-overflow-tooltip >-->
+<!--       <template v-slot="scope">-->
+<!--         <span class="text-money">{{ parseMoney(scope.row.originMoney) }}</span>-->
+<!--       </template>-->
+<!--     </el-table-column>-->
+      <el-table-column label="成功时间" align="center" prop="successTime" min-width="110" sortable show-overflow-tooltip >
         <template v-slot="scope">
           <span>{{ parseTime(scope.row.successTime, '{m}-{d} {h}:{i}') }}</span>
         </template>
@@ -532,42 +316,55 @@
           <dict-tag :options="dict.type.order_notify_status" :value="scope.row.notifyStatus"/>
         </template>
       </el-table-column>
-      <el-table-column label="通知URL" align="center" prop="notifyUrl" show-overflow-tooltip />
-      <el-table-column label="跳转链接" align="center" prop="returnUrl" show-overflow-tooltip />
-      <el-table-column label="是否为补单" align="center" prop="supplementYn" show-overflow-tooltip />
-      <el-table-column label="补单时间" align="center" prop="supplementTime" min-width="110" sortable show-overflow-tooltip >
+      <el-table-column label="是否补单" align="center" prop="supplementYn" v-has-role="['admin']" show-overflow-tooltip />
+      <el-table-column label="补单时间" align="center" prop="supplementTime" min-width="110" v-has-role="['admin']" sortable show-overflow-tooltip >
         <template v-slot="scope">
           <span>{{ parseTime(scope.row.supplementTime, '{m}-{d} {h}:{i}') }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="补单流水号" align="center" prop="supplementRefNo" min-width="100" sortable show-overflow-tooltip/>
-      <el-table-column label="补单原因" align="center" prop="supplementReason" show-overflow-tooltip />
-      <el-table-column label="补单人员" align="center" prop="supplementUser" show-overflow-tooltip />
-      <el-table-column label="退款状态:" align="center" prop="refundStatus" show-overflow-tooltip />
-      <el-table-column label="退款次数" align="center" prop="refundTimes" show-overflow-tooltip />
-      <el-table-column label="退款总金额" align="center" prop="refundAmount" show-overflow-tooltip />
-      <el-table-column label="部门ID" align="center" prop="deptId" show-overflow-tooltip />
+      <el-table-column label="补单流水号" align="center" prop="supplementRefNo" min-width="110" v-has-role="['admin']" sortable show-overflow-tooltip/>
+      <el-table-column label="补单原因" align="center" prop="supplementReason" v-has-role="['admin']" show-overflow-tooltip />
+      <el-table-column label="补单人员" align="center" prop="supplementUser" v-has-role="['admin']" show-overflow-tooltip />
+      <el-table-column label="关闭时间" align="center" prop="expiredTime" min-width="110" sortable show-overflow-tooltip >
+        <template v-slot="scope">
+          <span>{{ parseTime(scope.row.expiredTime, '{m}-{d} {h}:{i}') }}</span>
+        </template>
+      </el-table-column>
       <el-table-column label="创建时间" align="center" prop="createTime" min-width="110" sortable show-overflow-tooltip >
         <template v-slot="scope">
           <span>{{ parseTime(scope.row.createTime, '{m}-{d} {h}:{i}') }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width" min-width="120" fixed="right">
+      <el-table-column label="操作" align="center" class-name="small-padding fixed-width" min-width="170" fixed="right">
         <template v-slot="scope">
           <el-button
             size="mini"
             type="text"
-            icon="el-icon-edit"
-            @click="handleUpdate(scope.row)"
-            v-hasPermi="['paying:payorder:edit']"
-          >修改</el-button>
+            icon="el-icon-view"
+            @click="handleView(scope.row)"
+          >查看</el-button>
           <el-button
             size="mini"
             type="text"
-            icon="el-icon-delete"
-            @click="handleDelete(scope.row)"
-            v-hasPermi="['paying:payorder:remove']"
-          >删除</el-button>
+            icon="el-icon-bell"
+            @click="handleNotify(scope.row)"
+            v-hasPermi="['paying:payorder:notify']"
+          >通知</el-button>
+          <el-dropdown size="mini" @command="(command) => handleCommand(command, scope.row)" v-hasPermi="['paying:payorder:supplement', 'paying:payorder:noifylog',  'paying:payorder:requestlog', 'paying:payorder:delete']">
+                <span class="el-dropdown-link">
+                  <i class="el-icon-d-arrow-right el-icon--right"></i>更多
+                </span>
+            <el-dropdown-menu slot="dropdown">
+              <el-dropdown-item command="handleResetPwd" icon="el-icon-edit"
+                                v-hasPermi="['paying:payorder:supplement']" v-has-role="['admin']">补单</el-dropdown-item>
+              <el-dropdown-item command="handleSupplement" icon="el-icon-info"
+                                v-hasPermi="['paying:payorder:noifylog']" v-has-role="['admin']">回调报文</el-dropdown-item>
+              <el-dropdown-item command="handleNotifyLog" icon="el-icon-s-operation"
+                                v-hasPermi="['paying:payorder:channellog']" v-has-role="['admin']">渠道请求记录</el-dropdown-item>
+              <el-dropdown-item command="handleChannelLog" icon="el-icon-delete"
+                                v-hasPermi="['paying:payorder:delete']" v-has-role="['admin']">删除订单</el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
         </template>
       </el-table-column>
     </el-table>
@@ -582,212 +379,12 @@
 
     <!-- 添加或修改商户支付订单对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
-      <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-        <el-form-item label="代理商ID" prop="agentId">
-          <el-input v-model="form.agentId" placeholder="请输入代理商ID" />
-        </el-form-item>
-        <el-form-item label="业务员ID" prop="adminId">
-          <el-input v-model="form.adminId" placeholder="请输入业务员ID" />
-        </el-form-item>
-        <el-form-item label="商户ID" prop="merchantId">
-          <el-input v-model="form.merchantId" placeholder="请输入商户ID" />
-        </el-form-item>
-        <el-form-item label="代理商" prop="agentName">
-          <el-input v-model="form.agentName" placeholder="请输入代理商" />
-        </el-form-item>
-        <el-form-item label="商户编号" prop="merchantNo">
-          <el-input v-model="form.merchantNo" placeholder="请输入商户编号" />
-        </el-form-item>
-        <el-form-item label="商户名称" prop="merchantName">
-          <el-input v-model="form.merchantName" placeholder="请输入商户名称" />
-        </el-form-item>
-        <el-form-item label="系统订单号" prop="orderCode">
-          <el-input v-model="form.orderCode" placeholder="请输入系统订单号" />
-        </el-form-item>
-        <el-form-item label="商户订单号" prop="mOrderCode">
-          <el-input v-model="form.mOrderCode" placeholder="请输入商户订单号" />
-        </el-form-item>
-        <el-form-item label="特定渠道发起额外参数" prop="channelExtra">
-          <el-input v-model="form.channelExtra" type="textarea" placeholder="请输入内容" />
-        </el-form-item>
-        <el-form-item label="渠道用户标识,如微信openId,支付宝账号" prop="channelUser">
-          <el-input v-model="form.channelUser" placeholder="请输入渠道用户标识,如微信openId,支付宝账号" />
-        </el-form-item>
-        <el-form-item label="渠道订单号" prop="channelOrderCode">
-          <el-input v-model="form.channelOrderCode" placeholder="请输入渠道订单号" />
-        </el-form-item>
-        <el-form-item label="过期时间" prop="expiryTime">
-          <el-date-picker clearable
-            v-model="form.expiryTime"
-            type="date"
-            value-format="yyyy-MM-dd"
-            placeholder="请选择过期时间">
-          </el-date-picker>
-        </el-form-item>
-        <el-form-item label="支付时间" prop="payTime">
-          <el-date-picker clearable
-            v-model="form.payTime"
-            type="date"
-            value-format="yyyy-MM-dd"
-            placeholder="请选择支付时间">
-          </el-date-picker>
-        </el-form-item>
-        <el-form-item label="渠道ID" prop="channelId">
-          <el-input v-model="form.channelId" placeholder="请输入渠道ID" />
-        </el-form-item>
-        <el-form-item label="产品ID" prop="productId">
-          <el-input v-model="form.productId" placeholder="请输入产品ID" />
-        </el-form-item>
-        <el-form-item label="渠道名称" prop="channelName">
-          <el-input v-model="form.channelName" placeholder="请输入渠道名称" />
-        </el-form-item>
-        <el-form-item label="产品编号" prop="productCode">
-          <el-input v-model="form.productCode" placeholder="请输入产品编号" />
-        </el-form-item>
-        <el-form-item label="产品名称" prop="productName">
-          <el-input v-model="form.productName" placeholder="请输入产品名称" />
-        </el-form-item>
-        <el-form-item label="内部产品名称" prop="productNameInner">
-          <el-input v-model="form.productNameInner" placeholder="请输入内部产品名称" />
-        </el-form-item>
-        <el-form-item label="银行卡ID" prop="bankId">
-          <el-input v-model="form.bankId" placeholder="请输入银行卡ID" />
-        </el-form-item>
-        <el-form-item label="银行名称" prop="bankName">
-          <el-input v-model="form.bankName" placeholder="请输入银行名称" />
-        </el-form-item>
-        <el-form-item label="收款账号" prop="accountNo">
-          <el-input v-model="form.accountNo" placeholder="请输入收款账号" />
-        </el-form-item>
-        <el-form-item label="支付方式编码" prop="wayCode">
-          <el-input v-model="form.wayCode" placeholder="请输入支付方式编码" />
-        </el-form-item>
-        <el-form-item label="支付方式" prop="wayName">
-          <el-input v-model="form.wayName" placeholder="请输入支付方式" />
-        </el-form-item>
-        <el-form-item label="客户端IP" prop="clientIp">
-          <el-input v-model="form.clientIp" placeholder="请输入客户端IP" />
-        </el-form-item>
-        <el-form-item label="商品标题" prop="subject">
-          <el-input v-model="form.subject" placeholder="请输入商品标题" />
-        </el-form-item>
-        <el-form-item label="商品描述信息" prop="body">
-          <el-input v-model="form.body" placeholder="请输入商品描述信息" />
-        </el-form-item>
-        <el-form-item label="商户扩展参数" prop="extParam">
-          <el-input v-model="form.extParam" placeholder="请输入商户扩展参数" />
-        </el-form-item>
-        <el-form-item label="订单状态" prop="status">
-          <el-input v-model="form.status" placeholder="请输入订单状态" />
-        </el-form-item>
-        <el-form-item label="订单金额" prop="totalMoney">
-          <el-input v-model="form.totalMoney" placeholder="请输入订单金额" />
-        </el-form-item>
-        <el-form-item label="实际金额" prop="realMoney">
-          <el-input v-model="form.realMoney" placeholder="请输入实际金额" />
-        </el-form-item>
-        <el-form-item label="入账金额" prop="enteredMoney">
-          <el-input v-model="form.enteredMoney" placeholder="请输入入账金额" />
-        </el-form-item>
-        <el-form-item label="单笔手续费" prop="single">
-          <el-input v-model="form.single" placeholder="请输入单笔手续费" />
-        </el-form-item>
-        <el-form-item label="商户费率" prop="rate">
-          <el-input v-model="form.rate" placeholder="请输入商户费率" />
-        </el-form-item>
-        <el-form-item label="手续费" prop="poundage">
-          <el-input v-model="form.poundage" placeholder="请输入手续费" />
-        </el-form-item>
-        <el-form-item label="代理费率" prop="agentRate">
-          <el-input v-model="form.agentRate" placeholder="请输入代理费率" />
-        </el-form-item>
-        <el-form-item label="渠道费率" prop="channelRate">
-          <el-input v-model="form.channelRate" placeholder="请输入渠道费率" />
-        </el-form-item>
-        <el-form-item label="渠道支付链接" prop="channelPayUrl">
-          <el-input v-model="form.channelPayUrl" type="textarea" placeholder="请输入内容" />
-        </el-form-item>
-        <el-form-item label="渠道支付错误码" prop="channelErrCode">
-          <el-input v-model="form.channelErrCode" placeholder="请输入渠道支付错误码" />
-        </el-form-item>
-        <el-form-item label="渠道支付错误描述" prop="channelErrMsg">
-          <el-input v-model="form.channelErrMsg" placeholder="请输入渠道支付错误描述" />
-        </el-form-item>
-        <el-form-item label="收银台链接" prop="payUrl">
-          <el-input v-model="form.payUrl" type="textarea" placeholder="请输入内容" />
-        </el-form-item>
-        <el-form-item label="货币代码" prop="currency">
-          <el-input v-model="form.currency" placeholder="请输入货币代码" />
-        </el-form-item>
-        <el-form-item label="汇率" prop="exchangeRate">
-          <el-input v-model="form.exchangeRate" placeholder="请输入汇率" />
-        </el-form-item>
-        <el-form-item label="原币金额" prop="originMoney">
-          <el-input v-model="form.originMoney" placeholder="请输入原币金额" />
-        </el-form-item>
-        <el-form-item label="订单失效时间" prop="expiredTime">
-          <el-date-picker clearable
-            v-model="form.expiredTime"
-            type="date"
-            value-format="yyyy-MM-dd"
-            placeholder="请选择订单失效时间">
-          </el-date-picker>
-        </el-form-item>
-        <el-form-item label="订单支付成功时间" prop="successTime">
-          <el-date-picker clearable
-            v-model="form.successTime"
-            type="date"
-            value-format="yyyy-MM-dd"
-            placeholder="请选择订单支付成功时间">
-          </el-date-picker>
-        </el-form-item>
-        <el-form-item label="通知状态" prop="notifyStatus">
-          <el-select v-model="form.notifyStatus" placeholder="请选择通知状态">
-            <el-option
-              v-for="dict in dict.type.order_notify_status"
-              :key="dict.value"
-              :label="dict.label"
-              :value="dict.value"
-            ></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="通知URL" prop="notifyUrl">
-          <el-input v-model="form.notifyUrl" type="textarea" placeholder="请输入内容" />
-        </el-form-item>
-        <el-form-item label="跳转链接" prop="returnUrl">
-          <el-input v-model="form.returnUrl" type="textarea" placeholder="请输入内容" />
-        </el-form-item>
-        <el-form-item label="是否为补单" prop="supplementYn">
-          <el-input v-model="form.supplementYn" placeholder="请输入是否为补单" />
-        </el-form-item>
-        <el-form-item label="补单时间" prop="supplementTime">
-          <el-date-picker clearable
-            v-model="form.supplementTime"
-            type="date"
-            value-format="yyyy-MM-dd"
-            placeholder="请选择补单时间">
-          </el-date-picker>
-        </el-form-item>
-        <el-form-item label="补单流水号" prop="supplementRefNo">
+      <el-form ref="form" :model="form" :rules="rules" label-width="auto">
+        <el-form-item label="Ref.NO." prop="supplementRefNo">
           <el-input v-model="form.supplementRefNo" placeholder="请输入补单流水号" />
         </el-form-item>
         <el-form-item label="补单原因" prop="supplementReason">
           <el-input v-model="form.supplementReason" placeholder="请输入补单原因" />
-        </el-form-item>
-        <el-form-item label="补单人员" prop="supplementUser">
-          <el-input v-model="form.supplementUser" placeholder="请输入补单人员" />
-        </el-form-item>
-        <el-form-item label="退款状态:" prop="refundStatus">
-          <el-input v-model="form.refundStatus" placeholder="请输入退款状态:" />
-        </el-form-item>
-        <el-form-item label="退款次数" prop="refundTimes">
-          <el-input v-model="form.refundTimes" placeholder="请输入退款次数" />
-        </el-form-item>
-        <el-form-item label="退款总金额" prop="refundAmount">
-          <el-input v-model="form.refundAmount" placeholder="请输入退款总金额" />
-        </el-form-item>
-        <el-form-item label="部门ID" prop="deptId">
-          <el-input v-model="form.deptId" placeholder="请输入部门ID" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -795,21 +392,98 @@
         <el-button @click="cancel">取 消</el-button>
       </div>
     </el-dialog>
+
+<!--    详情页面-->
+    <el-drawer
+      title="详情页面"
+      :with-header="false"
+      :visible.sync="drawerDetailShow"
+      direction="rtl">
+      <template>
+        <el-descriptions class="mt5 ml10" title="订单详情" :column="1" size="medium">
+<!--          <template slot="extra">-->
+<!--            <el-button type="primary" size="small">操作</el-button>-->
+<!--          </template>-->
+          <el-descriptions-item label="订单状态" label-class-name="text-muted">
+            <dict-tag :options="dict.type.order_status" :value="detailForm.status"/>
+          </el-descriptions-item>
+          <el-descriptions-item label="通知状态" label-class-name="text-muted">
+            <span>
+              <el-col :span="12">
+                <dict-tag :options="dict.type.order_notify_status" :value="detailForm.notifyStatus"/>
+              </el-col>
+<!--              订单状态：0=订单生成, 1=支付中, 2=支付成功, 3=支付失败, 4=已撤销, 5=已退款, 6=订单关闭-->
+              <el-col :span="12">
+                <el-button
+                  size="mini"
+                  icon="el-icon-bell"
+                  @click="handleNotify(detailForm)"
+                  v-hasPermi="['paying:payorder:notify']"
+                  :disabled="detailForm.status != '2'"
+                >重发通知</el-button>
+              </el-col>
+            </span>
+          </el-descriptions-item>
+          <el-descriptions-item label="系统订单号" label-class-name="text-muted">{{detailForm.orderCode}}</el-descriptions-item>
+          <el-descriptions-item label="商户订单号" label-class-name="text-muted">{{detailForm.mchOrderCode}}</el-descriptions-item>
+          <el-descriptions-item label="商户号" label-class-name="text-muted">{{detailForm.merchantNo}}</el-descriptions-item>
+          <el-descriptions-item label="商户名称" label-class-name="text-muted">{{detailForm.merchantName}}</el-descriptions-item>
+          <el-descriptions-item label="订单金额" label-class-name="text-muted" content-class-name="text-money">{{parseMoney(detailForm.totalMoney)}}</el-descriptions-item>
+          <el-descriptions-item label="折扣金额" label-class-name="text-muted">{{parseMoney(detailForm.realMoney)}}</el-descriptions-item>
+          <el-descriptions-item label="过期时间" label-class-name="text-muted">{{parseTime(detailForm.expiryTime, '{y}-{m}-{d} {h}:{i}:{s}') }}</el-descriptions-item>
+          <el-descriptions-item label="支付时间" label-class-name="text-muted">{{parseTime(detailForm.payTime, '{y}-{m}-{d} {h}:{i}:{s}') }}</el-descriptions-item>
+          <el-descriptions-item label="产品编号" label-class-name="text-muted">{{detailForm.productCode}}</el-descriptions-item>
+          <el-descriptions-item label="产品名称" label-class-name="text-muted">{{detailForm.productName}}</el-descriptions-item>
+          <el-descriptions-item label="内部名称" label-class-name="text-muted" v-has-role="['admin']">{{detailForm.productNameInner}}</el-descriptions-item>
+          <el-descriptions-item label="银行名称" label-class-name="text-muted" v-has-role="['admin']">{{detailForm.bankName}}</el-descriptions-item>
+          <el-descriptions-item label="收款账号" label-class-name="text-muted" v-has-role="['admin']">{{detailForm.accountNo}}</el-descriptions-item>
+          <el-descriptions-item label="支付编码" label-class-name="text-muted">{{detailForm.wayCode}}</el-descriptions-item>
+          <el-descriptions-item label="支付方式" label-class-name="text-muted">{{detailForm.wayName}}</el-descriptions-item>
+          <el-descriptions-item label="支付连接" label-class-name="text-muted">{{detailForm.payUrl}}</el-descriptions-item>
+          <el-descriptions-item label="客户端IP" label-class-name="text-muted">{{detailForm.clientIp}}</el-descriptions-item>
+          <el-descriptions-item label="渠道名称" label-class-name="text-muted" v-has-role="['admin']">{{detailForm.channelName}}</el-descriptions-item>
+          <el-descriptions-item label="渠道费率%" label-class-name="text-muted" v-has-role="['admin']">{{parseDecimal(detailForm.channelRate * 100, 2)}}</el-descriptions-item>
+          <el-descriptions-item label="渠道订单号" label-class-name="text-muted" v-has-role="['admin']">{{detailForm.channelOrderCode}}</el-descriptions-item>
+          <el-descriptions-item label="代理商" label-class-name="text-muted" v-has-role="['agent', 'admin']">{{detailForm.agentName}}</el-descriptions-item>
+          <el-descriptions-item label="代理费率%" label-class-name="text-muted" v-has-role="['agent', 'admin']">{{parseDecimal(detailForm.agentRate * 100, 2)}}</el-descriptions-item>
+          <el-descriptions-item label="商户费率%" label-class-name="text-muted">{{parseDecimal(detailForm.rate * 100, 2)}}</el-descriptions-item>
+          <el-descriptions-item label="单笔手续费" label-class-name="text-muted">{{detailForm.single}}</el-descriptions-item>
+          <el-descriptions-item label="总手续费" label-class-name="text-muted">{{detailForm.fee}}</el-descriptions-item>
+          <el-descriptions-item label="入账金额" label-class-name="text-muted" content-class-name="text-money">{{parseMoney(detailForm.enteredMoney)}}</el-descriptions-item>
+          <el-descriptions-item label="渠道错误代码" label-class-name="text-muted" v-has-role="['admin']">{{detailForm.channelErrCode}}</el-descriptions-item>
+          <el-descriptions-item label="渠道错误" label-class-name="text-muted" v-has-role="['admin']">{{detailForm.channelErrMsg}}</el-descriptions-item>
+          <el-descriptions-item label="成功时间" label-class-name="text-muted">{{parseTime(detailForm.successTime, '{y}-{m}-{d} {h}:{i}:{s}') }}</el-descriptions-item>
+          <el-descriptions-item label="通知地址" label-class-name="text-muted">{{detailForm.notifyUrl}}</el-descriptions-item>
+          <el-descriptions-item label="通知内容" label-class-name="text-muted">{{detailForm.notifyData}}</el-descriptions-item>
+          <el-descriptions-item label="商户返回" label-class-name="text-muted">{{detailForm.notifyResult}}</el-descriptions-item>
+          <el-descriptions-item label="渠道地址" label-class-name="text-muted" v-has-role="['admin']">{{detailForm.returnUrl}}</el-descriptions-item>
+          <el-descriptions-item label="是否补单" label-class-name="text-muted" v-has-role="['admin']">{{detailForm.supplementYn}}</el-descriptions-item>
+          <el-descriptions-item label="补单时间" label-class-name="text-muted" v-has-role="['admin']">{{parseTime(detailForm.supplementTime, '{y}-{m}-{d} {h}:{i}:{s}') }}</el-descriptions-item>
+          <el-descriptions-item label="补单流水号" label-class-name="text-muted" v-has-role="['admin']">{{detailForm.supplementRefNo}}</el-descriptions-item>
+          <el-descriptions-item label="补单原因" label-class-name="text-muted" v-has-role="['admin']">{{detailForm.supplementReason}}</el-descriptions-item>
+          <el-descriptions-item label="补单人员" label-class-name="text-muted" v-has-role="['admin']">{{detailForm.supplementUser}}</el-descriptions-item>
+        </el-descriptions>
+      </template>
+    </el-drawer>
+
   </div>
 </template>
 
 <script>
-import { listPayorder, getPayorder, delPayorder, addPayorder, updatePayorder } from "@/api/paying/payorder";
+import { listPayorder, getPayorder, delPayorder, addPayorder, updatePayorder, notifyPayorder } from "@/api/paying/payorder";
+import { parseDecimal } from '../../../utils/ruoyi'
 
 export default {
   name: "Payorder",
-  dicts: ['order_notify_status'],
+  dicts: ['order_status', 'order_notify_status'],
   data() {
     return {
       // 遮罩层
       loading: true,
       // 显示更多筛选项
       moreSearch: false,
+      // 显示更多筛选项
+      drawerDetailShow: false,
       // 选中数组
       ids: [],
       // 非单个禁用
@@ -837,7 +511,7 @@ export default {
         merchantNo: null,
         merchantName: null,
         orderCode: null,
-        mOrderCode: null,
+        mchOrderCode: null,
         channelExtra: null,
         channelUser: null,
         channelOrderCode: null,
@@ -849,7 +523,7 @@ export default {
         productCode: null,
         productName: null,
         productNameInner: null,
-        bankId: null,
+        accountId: null,
         bankName: null,
         accountNo: null,
         wayCode: null,
@@ -864,7 +538,8 @@ export default {
         enteredMoney: null,
         single: null,
         rate: null,
-        poundage: null,
+        ratePercent: null,
+        fee: null,
         agentRate: null,
         channelRate: null,
         channelPayUrl: null,
@@ -891,95 +566,9 @@ export default {
       },
       // 表单参数
       form: {},
+      detailForm: {},
       // 表单校验
       rules: {
-        agentId: [
-          { required: true, message: "代理商ID不能为空", trigger: "blur" }
-        ],
-        merchantNo: [
-          { required: true, message: "商户编号不能为空", trigger: "blur" }
-        ],
-        merchantName: [
-          { required: true, message: "商户名称不能为空", trigger: "blur" }
-        ],
-        orderCode: [
-          { required: true, message: "系统订单号不能为空", trigger: "blur" }
-        ],
-        mOrderCode: [
-          { required: true, message: "商户订单号不能为空", trigger: "blur" }
-        ],
-        channelOrderCode: [
-          { required: true, message: "渠道订单号不能为空", trigger: "blur" }
-        ],
-        expiryTime: [
-          { required: true, message: "过期时间不能为空", trigger: "blur" }
-        ],
-        payTime: [
-          { required: true, message: "支付时间不能为空", trigger: "blur" }
-        ],
-        channelId: [
-          { required: true, message: "渠道ID不能为空", trigger: "blur" }
-        ],
-        productId: [
-          { required: true, message: "产品ID不能为空", trigger: "blur" }
-        ],
-        channelName: [
-          { required: true, message: "渠道名称不能为空", trigger: "blur" }
-        ],
-        productCode: [
-          { required: true, message: "产品编号不能为空", trigger: "blur" }
-        ],
-        productNameInner: [
-          { required: true, message: "内部产品名称不能为空", trigger: "blur" }
-        ],
-        wayCode: [
-          { required: true, message: "支付方式编码不能为空", trigger: "blur" }
-        ],
-        wayName: [
-          { required: true, message: "支付方式不能为空", trigger: "blur" }
-        ],
-        subject: [
-          { required: true, message: "商品标题不能为空", trigger: "blur" }
-        ],
-        body: [
-          { required: true, message: "商品描述信息不能为空", trigger: "blur" }
-        ],
-        status: [
-          { required: true, message: "订单状态(0-订单生成, 1-支付中, 2-支付成功, 3-支付失败, 4-已撤销, 5-已退款, 6-订单关闭)不能为空", trigger: "blur" }
-        ],
-        totalMoney: [
-          { required: true, message: "订单金额不能为空", trigger: "blur" }
-        ],
-        realMoney: [
-          { required: true, message: "实际金额不能为空", trigger: "blur" }
-        ],
-        enteredMoney: [
-          { required: true, message: "入账金额不能为空", trigger: "blur" }
-        ],
-        single: [
-          { required: true, message: "单笔手续费不能为空", trigger: "blur" }
-        ],
-        rate: [
-          { required: true, message: "商户费率不能为空", trigger: "blur" }
-        ],
-        poundage: [
-          { required: true, message: "手续费不能为空", trigger: "blur" }
-        ],
-        currency: [
-          { required: true, message: "货币代码(CNY=人民币元,INR=印度卢比,PHP=菲律宾比索,UST=波场币(USDT),TRX=波场币(TRX),VND=越南盾,USD=美元)不能为空", trigger: "blur" }
-        ],
-        exchangeRate: [
-          { required: true, message: "汇率不能为空", trigger: "blur" }
-        ],
-        originMoney: [
-          { required: true, message: "原币金额不能为空", trigger: "blur" }
-        ],
-        refundStatus: [
-          { required: true, message: "退款状态:(0-未发生实际退款, 1-部分退款, 2-全额退款)不能为空", trigger: "blur" }
-        ],
-        refundTimes: [
-          { required: true, message: "退款次数不能为空", trigger: "blur" }
-        ],
         refundAmount: [
           { required: true, message: "退款总金额不能为空", trigger: "blur" }
         ],
@@ -990,9 +579,11 @@ export default {
     this.getList();
   },
   methods: {
+    parseDecimal,
     /** 查询商户支付订单列表 */
     getList() {
       this.loading = true;
+      this.queryParams.rate = this.queryParams.ratePercent ?  Number(parseDecimal(this.queryParams.ratePercent / 100, 4)) : null
       listPayorder(this.queryParams).then(response => {
         this.payorderList = response.rows;
         this.total = response.total;
@@ -1015,7 +606,7 @@ export default {
         merchantNo: null,
         merchantName: null,
         orderCode: null,
-        mOrderCode: null,
+        mchOrderCode: null,
         channelExtra: null,
         channelUser: null,
         channelOrderCode: null,
@@ -1027,7 +618,7 @@ export default {
         productCode: null,
         productName: null,
         productNameInner: null,
-        bankId: null,
+        accountId: null,
         bankName: null,
         accountNo: null,
         wayCode: null,
@@ -1042,7 +633,7 @@ export default {
         enteredMoney: null,
         single: null,
         rate: null,
-        poundage: null,
+        fee: null,
         agentRate: null,
         channelRate: null,
         channelPayUrl: null,
@@ -1106,6 +697,56 @@ export default {
         this.title = "修改商户支付订单";
       });
     },
+
+    // 更多操作触发
+    handleCommand(command, row) {
+      switch (command) {
+        case "handleSupplement":
+          this.handleSupplement(row);
+          break;
+        case "handleNotifyLog":
+          this.handleNotifyLog(row);
+          break;
+        case "handleChannelLog":
+          this.handleChannelLog(row);
+          break;
+        default:
+          break;
+      }
+    },
+
+    /** 查看 */
+    handleView(row) {
+      // this.$router.push("/pay/payorder/details/" + row.orderCode);
+      this.detailForm = row
+      this.drawerDetailShow = true
+    },
+
+
+    /** 通知 */
+    handleNotify(row) {
+      const orderIds = row.orderId || this.ids;
+      this.$modal.confirm('是否确认对勾选的"' + orderIds.length + '笔订单重发通知"？').then(function() {
+        return notifyPayorder(orderIds);
+      }).then(() => {
+        this.getList();
+        this.$modal.msgSuccess("删除成功");
+      }).catch(() => {});
+    },
+    /** 补单 */
+    handleSupplement(row) {
+      this.reset();
+      const orderId = row.orderId || this.ids
+      getPayorder(orderId).then(response => {
+        this.form = response.data;
+        this.open = true;
+        this.title = "补单";
+      });
+    },
+
+    handleNotifyLog(row) {},
+    handleChannelLog(row) {},
+
     /** 提交按钮 */
     submitForm() {
       this.$refs["form"].validate(valid => {
@@ -1141,7 +782,8 @@ export default {
       this.download('paying/payorder/export', {
         ...this.queryParams
       }, `payorder_${new Date().getTime()}.xlsx`)
-    }
+    },
+
   }
 };
 </script>

@@ -9,9 +9,9 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="商户订单号" prop="mOrderCode" >
+      <el-form-item label="商户订单号" prop="mchOrderCode" >
         <el-input
-          v-model="queryParams.mOrderCode"
+          v-model="queryParams.mchOrderCode"
           placeholder="请输入商户订单号"
           clearable
           @keyup.enter.native="handleQuery"
@@ -412,7 +412,7 @@
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="订单ID" align="center" prop="orderId" />
       <el-table-column label="代付订单号" align="center" prop="orderCode" min-width="130" sortable show-overflow-tooltip/>
-      <el-table-column label="商户订单号" align="center" prop="mOrderCode" show-overflow-tooltip />
+      <el-table-column label="商户订单号" align="center" prop="mchOrderCode" show-overflow-tooltip />
       <el-table-column label="代理商" align="center" prop="agentName" show-overflow-tooltip />
       <el-table-column label="商户编号" align="center" prop="merchantNo" min-width="100" sortable show-overflow-tooltip/>
       <el-table-column label="商户名称" align="center" prop="merchantName" min-width="120"  show-overflow-tooltip />
@@ -549,8 +549,8 @@
         <el-form-item label="代付订单号" prop="orderCode">
           <el-input v-model="form.orderCode" placeholder="请输入代付订单号" />
         </el-form-item>
-        <el-form-item label="商户订单号" prop="mOrderCode">
-          <el-input v-model="form.mOrderCode" placeholder="请输入商户订单号" />
+        <el-form-item label="商户订单号" prop="mchOrderCode">
+          <el-input v-model="form.mchOrderCode" placeholder="请输入商户订单号" />
         </el-form-item>
         <el-form-item label="商户ID" prop="merchantId">
           <el-input v-model="form.merchantId" placeholder="请输入商户ID" />
@@ -782,7 +782,7 @@ export default {
         pageNum: 1,
         pageSize: 10,
         orderCode: null,
-        mOrderCode: null,
+        mchOrderCode: null,
         merchantId: null,
         agentId: null,
         agentName: null,
@@ -838,7 +838,7 @@ export default {
         orderCode: [
           { required: true, message: "代付订单号不能为空", trigger: "blur" }
         ],
-        mOrderCode: [
+        mchOrderCode: [
           { required: true, message: "商户订单号不能为空", trigger: "blur" }
         ],
         merchantId: [
@@ -954,7 +954,7 @@ export default {
       this.form = {
         orderId: null,
         orderCode: null,
-        mOrderCode: null,
+        mchOrderCode: null,
         merchantId: null,
         agentId: null,
         agentName: null,

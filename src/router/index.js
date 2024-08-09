@@ -161,7 +161,21 @@ export const dynamicRoutes = [
         meta: { title: '修改生成配置', activeMenu: '/tool/gen' }
       }
     ]
-  }
+  },
+  {
+    path: '/pay/payorder/details',
+    component: Layout,
+    hidden: true,
+    permissions: ['paying:payorder:query'],
+    children: [
+      {
+        path: ':orderCode(\\w+)',
+        component: () => import('@/views/paying/payorder/details'),
+        name: 'PayorderDetails',
+        meta: { title: '订单详情', activeMenu: '/pay/payorder' }
+      }
+    ]
+  },
 ]
 
 // 防止连续点击多次路由报错

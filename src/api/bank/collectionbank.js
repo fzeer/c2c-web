@@ -10,9 +10,9 @@ export function listCollectionbank(query) {
 }
 
 // 查询收款账户详细
-export function getCollectionbank(bankId) {
+export function getCollectionbank(accountId) {
   return request({
-    url: '/bank/collectionbank/' + bankId,
+    url: '/bank/collectionbank/' + accountId,
     method: 'get'
   })
 }
@@ -36,9 +36,9 @@ export function updateCollectionbank(data) {
 }
 
 // 删除收款账户
-export function delCollectionbank(bankId) {
+export function delCollectionbank(accountId) {
   return request({
-    url: '/bank/collectionbank/' + bankId,
+    url: '/bank/collectionbank/' + accountId,
     method: 'delete'
   })
 }

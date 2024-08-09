@@ -37,10 +37,10 @@
         </el-select>
       </el-form-item>
 
-      <el-form-item label="费率" prop="rate"   v-if="moreSearch">
+      <el-form-item label="费率%" prop="ratePercent"   v-if="moreSearch">
         <el-input
-          v-model="queryParams.rate"
-          placeholder="请输入费率"
+          v-model="queryParams.ratePercent"
+          placeholder="请输入费率%"
           clearable
           @keyup.enter.native="handleQuery"
         />
@@ -109,9 +109,9 @@
       <el-table-column label="产品编号" align="center" prop="productCode" min-width="100"  sortable show-overflow-tooltip />
       <el-table-column label="产品名称" align="center" prop="productName" min-width="100"  sortable show-overflow-tooltip />
       <el-table-column label="支付编码" align="center" prop="wayCode" min-width="100"  sortable show-overflow-tooltip />
-      <el-table-column label="费率" align="right" prop="rate" min-width="100" sortable show-overflow-tooltip >
+      <el-table-column label="费率%" align="right" prop="rate" min-width="100" sortable show-overflow-tooltip >
         <template v-slot="scope">
-          <span class="text-money">{{ parseMoney(scope.row.rate) }}</span>
+          <span class="text-money">{{ parseDecimal(scope.row.rate * 100, 2) }}</span>
         </template>
       </el-table-column>
       <el-table-column label="单笔费用" align="right" prop="single" min-width="100" sortable show-overflow-tooltip >
@@ -200,8 +200,8 @@
               </el-select>
             </el-form-item>
 
-            <el-form-item label="费率" prop="rate">
-              <el-input-number :disabled="false" v-model="form.rate" :min="0.01" :step="0.01" :max="0.99" placeholder="请输入费率"/>
+            <el-form-item label="费率%" prop="ratePercent">
+              <el-input-number v-model="form.ratePercent" :min="0" :step="0.1" :max="30" placeholder="请输入费率"/>
             </el-form-item>
 
             <el-form-item label="单笔费用" prop="single">
@@ -242,6 +242,7 @@
 import { listAgentproduct, getAgentproduct, delAgentproduct, addAgentproduct, updateAgentproduct } from "@/api/agent/agentproduct";
 import { listParentAgent } from '@/api/agent/agent'
 import { listSelectPayproduct, listSelectProductAgentNoConfig } from '@/api/channel/payproduct'
+import { parseDecimal } from '@/utils/ruoyi'
 
 export default {
   name: "Agentproduct",
@@ -283,6 +284,7 @@ export default {
         agentId: null,
         productId: null,
         rate: null,
+        ratePercent: null,
         single: null,
         minMoney: null,
         maxMoney: null,
@@ -299,7 +301,7 @@ export default {
         productId: [
           { required: true, message: "产品ID不能为空", trigger: "blur" }
         ],
-        rate: [
+        ratePercent: [
           { required: true, message: "费率不能为空", trigger: "blur" }
         ],
         single: [
@@ -333,6 +335,7 @@ export default {
     /** 查询代理支付产品列表 */
     getList() {
       this.loading = true;
+      this.queryParams.rate = this.queryParams.ratePercent ?  Number(parseDecimal(this.queryParams.ratePercent / 100, 4)) : null
       listAgentproduct(this.queryParams).then(response => {
         this.agentproductList = response.rows;
         this.total = response.total;
@@ -351,6 +354,7 @@ export default {
         agentId: null,
         productId: null,
         rate: null,
+        ratePercent: null,
         single: 0,
         minMoney: 0,
         maxMoney: 0,
@@ -399,6 +403,7 @@ export default {
     /** 提交按钮 */
     submitForm() {
       this.$refs["form"].validate(valid => {
+        this.form.rate = Number(parseDecimal(this.form.ratePercent / 100, 4));
         if (valid) {
           if (this.form.id != null) {
             updateAgentproduct(this.form).then(response => {

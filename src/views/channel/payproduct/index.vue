@@ -161,9 +161,9 @@
       <el-table-column label="收款账号" align="center" prop="accountNo" show-overflow-tooltip />
       <el-table-column label="支付编码" align="center" prop="wayCode" min-width="100" sortable show-overflow-tooltip />
       <el-table-column label="渠道" align="center" prop="channelName" min-width="100" sortable show-overflow-tooltip />
-     <el-table-column label="费率" align="right" prop="rate" min-width="100" sortable show-overflow-tooltip >
+     <el-table-column label="费率%" align="right" prop="rate" min-width="100" sortable show-overflow-tooltip >
        <template v-slot="scope">
-         <span class="text-money">{{ parseMoney(scope.row.rate) }}</span>
+         <span class="text-money">{{ parseDecimal(scope.row.rate * 100, 2) }}</span>
        </template>
      </el-table-column>
       <el-table-column label="单笔金额" align="center" prop="single" show-overflow-tooltip />
@@ -312,8 +312,8 @@
             </el-form-item>
           </el-tab-pane>
           <el-tab-pane label="渠道费率" name="third">
-            <el-form-item label="费率" prop="rate">
-              <el-input-number :disabled="false" v-model="form.rate" :min="0.01" :step="0.01" :max="0.99" placeholder="请输入费率"/>
+            <el-form-item label="费率%" prop="ratePercent">
+              <el-input-number :disabled="false" v-model="form.ratePercent" :min="0.00" :step="0.10" :max="50.00" placeholder="请输入费率"/>
             </el-form-item>
             <el-form-item label="单笔金额" prop="single">
               <el-input v-model="form.single" placeholder="请输入单笔金额" />
@@ -336,6 +336,7 @@
 import { listPayproduct, getPayproduct, delPayproduct, addPayproduct, updatePayproduct } from "@/api/channel/payproduct";
 import { listSelectChannel } from '@/api/channel/paymentchannel'
 import { listSelectPayWay } from '@/api/channel/payway'
+import { parseDecimal } from '../../../utils/ruoyi'
 
 export default {
   name: "Payproduct",
@@ -379,6 +380,7 @@ export default {
         wayCode: null,
         channelId: null,
         rate: null,
+        ratePercent: null,
         single: null,
         minFee: null,
         minMoney: null,
@@ -411,7 +413,7 @@ export default {
         channelId: [
           { required: true, message: "渠道不能为空", trigger: "blur" }
         ],
-        rate: [
+        ratePercent: [
           { required: true, message: "费率不能为空", trigger: "blur" }
         ],
         single: [
@@ -444,6 +446,7 @@ export default {
     this.getWayOptions();
   },
   methods: {
+    parseDecimal,
     /** 查询支付产品列表 */
     getList() {
       this.loading = true;
@@ -481,6 +484,7 @@ export default {
         wayCode: null,
         channelId: null,
         rate: null,
+        ratePercent: null,
         single: 0,
         minFee: 0,
         minMoney: 0,
@@ -534,6 +538,7 @@ export default {
     /** 提交按钮 */
     submitForm() {
       this.$refs["form"].validate(valid => {
+        this.form.rate = Number(parseDecimal(this.form.ratePercent / 100, 4));
         if (valid) {
           if (this.form.productId != null) {
             updatePayproduct(this.form).then(response => {

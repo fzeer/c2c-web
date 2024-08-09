@@ -42,3 +42,20 @@ export function delPayorder(orderId) {
     method: 'delete'
   })
 }
+
+// 商户支付订单重发通知
+export function notifyPayorder(orderId) {
+  return request({
+    url: '/paying/payorder/notify/' + orderId,
+    method: 'delete'
+  })
+}
+
+// 商户支付订单补单
+export function supplementPayorder(data) {
+  return request({
+    url: '/paying/payorder/supplement',
+    method: 'put',
+    data: data
+  })
+}

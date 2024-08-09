@@ -1,9 +1,9 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="auto">
-      <el-form-item label="银行ID" prop="bankId" >
+      <el-form-item label="银行ID" prop="accountId" >
         <el-input
-          v-model="queryParams.bankId"
+          v-model="queryParams.accountId"
           placeholder="请输入银行ID"
           clearable
           @keyup.enter.native="handleQuery"
@@ -112,7 +112,7 @@
     >
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="记录ID" align="center" prop="id" />
-      <el-table-column label="银行ID" align="center" prop="bankId" show-overflow-tooltip />
+      <el-table-column label="账号ID" align="center" prop="accountId" show-overflow-tooltip />
       <el-table-column label="收款账号" align="center" prop="accountNo" show-overflow-tooltip />
       <el-table-column label="银行名称" align="center" prop="bankName" show-overflow-tooltip />
       <el-table-column label="业务类型" align="center" prop="bizType">
@@ -178,8 +178,8 @@
     <!-- 添加或修改银行流水对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-        <el-form-item label="银行ID" prop="bankId">
-          <el-input v-model="form.bankId" placeholder="请输入银行ID" />
+        <el-form-item label="账号ID" prop="accountId">
+          <el-input v-model="form.accountId" placeholder="请输入账号ID" />
         </el-form-item>
         <el-form-item label="收款账号" prop="accountNo">
           <el-input v-model="form.accountNo" placeholder="请输入收款账号" />
@@ -256,7 +256,7 @@ export default {
       queryParams: {
         pageNum: 1,
         pageSize: 10,
-        bankId: null,
+        accountId: null,
         accountNo: null,
         bankName: null,
         bizType: null,
@@ -271,7 +271,7 @@ export default {
       form: {},
       // 表单校验
       rules: {
-        bankId: [
+        accountId: [
           { required: true, message: "银行ID不能为空", trigger: "blur" }
         ],
         orderCode: [
@@ -302,7 +302,7 @@ export default {
     reset() {
       this.form = {
         id: null,
-        bankId: null,
+        accountId: null,
         accountNo: null,
         bankName: null,
         bizType: null,

@@ -19,9 +19,9 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="商户订单号" prop="mOrderCode" >
+      <el-form-item label="商户订单号" prop="mchOrderCode" >
         <el-input
-          v-model="queryParams.mOrderCode"
+          v-model="queryParams.mchOrderCode"
           placeholder="请输入商户订单号"
           clearable
           @keyup.enter.native="handleQuery"
@@ -149,7 +149,7 @@
           <dict-tag :options="dict.type.order_type" :value="scope.row.orderType"/>
         </template>
       </el-table-column>
-      <el-table-column label="商户订单号" align="center" prop="mOrderCode" show-overflow-tooltip />
+      <el-table-column label="商户订单号" align="center" prop="mchOrderCode" show-overflow-tooltip />
       <el-table-column label="商户号" align="center" prop="merchantNo" min-width="100" sortable show-overflow-tooltip/>
       <el-table-column label="商户名称" align="center" prop="merchantName" show-overflow-tooltip />
       <el-table-column label="应用ID" align="center" prop="appId" show-overflow-tooltip />
@@ -216,8 +216,8 @@
             ></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="商户订单号" prop="mOrderCode">
-          <el-input v-model="form.mOrderCode" placeholder="请输入商户订单号" />
+        <el-form-item label="商户订单号" prop="mchOrderCode">
+          <el-input v-model="form.mchOrderCode" placeholder="请输入商户订单号" />
         </el-form-item>
         <el-form-item label="商户号" prop="merchantNo">
           <el-input v-model="form.merchantNo" placeholder="请输入商户号" />
@@ -294,7 +294,7 @@ export default {
         pageSize: 10,
         orderCode: null,
         orderType: null,
-        mOrderCode: null,
+        mchOrderCode: null,
         merchantNo: null,
         merchantName: null,
         appId: null,
@@ -316,7 +316,7 @@ export default {
         orderType: [
           { required: true, message: "订单类型(0=代收,1=代付)不能为空", trigger: "change" }
         ],
-        mOrderCode: [
+        mchOrderCode: [
           { required: true, message: "商户订单号不能为空", trigger: "blur" }
         ],
         merchantNo: [
@@ -367,7 +367,7 @@ export default {
         notifyId: null,
         orderCode: null,
         orderType: null,
-        mOrderCode: null,
+        mchOrderCode: null,
         merchantNo: null,
         merchantName: null,
         appId: null,

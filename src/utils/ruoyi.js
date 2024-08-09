@@ -236,8 +236,16 @@ export async function blobValidate(data) {
   }
 }
 
-export function parseDecimal(data) {
-  return data;
+export function parseDecimal(amount, pos=2) {
+  // 验证输入是否为有效数字
+  if (amount === null || amount === undefined || isNaN(amount)) {
+    return parseFloat('0.00').toFixed(pos);; // 返回默认值
+  }
+
+  // 将输入转换为浮点数并保留两位小数
+  let formattedAmount = parseFloat(amount).toFixed(pos);
+
+  return formattedAmount;
 }
 
 export function parseMoney(amount) {

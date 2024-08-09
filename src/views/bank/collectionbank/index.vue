@@ -174,7 +174,7 @@
       resizable
     >
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="ID" align="center" prop="bankId" />
+      <el-table-column label="ID" align="center" prop="accountId" />
       <el-table-column label="码商" align="center" prop="supplierName" show-overflow-tooltip />
       <el-table-column label="银行名称" align="center" prop="bankName" show-overflow-tooltip />
       <el-table-column label="收款账号" align="center" prop="accountNo" show-overflow-tooltip />
@@ -448,7 +448,7 @@ export default {
     // 表单重置
     reset() {
       this.form = {
-        bankId: null,
+        accountId: null,
         supplierId: null,
         bankName: null,
         accountNo: null,
@@ -496,7 +496,7 @@ export default {
     },
     // 多选框选中数据
     handleSelectionChange(selection) {
-      this.ids = selection.map(item => item.bankId)
+      this.ids = selection.map(item => item.accountId)
       this.single = selection.length!==1
       this.multiple = !selection.length
     },
@@ -509,8 +509,8 @@ export default {
     /** 修改按钮操作 */
     handleUpdate(row) {
       this.reset();
-      const bankId = row.bankId || this.ids
-      getCollectionbank(bankId).then(response => {
+      const accountId = row.accountId || this.ids
+      getCollectionbank(accountId).then(response => {
         this.form = response.data;
         this.open = true;
         this.title = "修改收款账户";
@@ -520,7 +520,7 @@ export default {
     submitForm() {
       this.$refs["form"].validate(valid => {
         if (valid) {
-          if (this.form.bankId != null) {
+          if (this.form.accountId != null) {
             updateCollectionbank(this.form).then(response => {
               this.$modal.msgSuccess("修改成功");
               this.open = false;
@@ -538,9 +538,9 @@ export default {
     },
     /** 删除按钮操作 */
     handleDelete(row) {
-      const bankIds = row.bankId || this.ids;
-      this.$modal.confirm('是否确认删除收款账户编号为"' + bankIds + '"的数据项？').then(function() {
-        return delCollectionbank(bankIds);
+      const accountIds = row.accountId || this.ids;
+      this.$modal.confirm('是否确认删除收款账户编号为"' + accountIds + '"的数据项？').then(function() {
+        return delCollectionbank(accountIds);
       }).then(() => {
         this.getList();
         this.$modal.msgSuccess("删除成功");
