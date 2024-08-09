@@ -334,7 +334,7 @@
 
 <script>
 import { listPayproduct, getPayproduct, delPayproduct, addPayproduct, updatePayproduct } from "@/api/channel/payproduct";
-import { listSelectChannel } from '@/api/channel/paymentchannel'
+import { listSelectChannel } from '@/api/channel/channel'
 import { listSelectPayWay } from '@/api/channel/payway'
 import { parseDecimal } from '../../../utils/ruoyi'
 

@@ -1,6 +1,14 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="auto">
+      <el-form-item label="渠道编号" prop="channelNo" >
+        <el-input
+          v-model="queryParams.channelName"
+          placeholder="请输入渠道编号"
+          clearable
+          @keyup.enter.native="handleQuery"
+        />
+      </el-form-item>
       <el-form-item label="渠道名称" prop="channelName" >
         <el-input
           v-model="queryParams.channelName"
@@ -9,7 +17,7 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="渠道类型" prop="channelType" >
+      <el-form-item label="渠道类型" prop="channelType" v-if="moreSearch" >
         <el-select v-model="queryParams.channelType" placeholder="请选择渠道类型" clearable>
           <el-option
             v-for="dict in dict.type.channel_type"
@@ -70,7 +78,7 @@
           icon="el-icon-plus"
           size="mini"
           @click="handleAdd"
-          v-hasPermi="['channel:paymentchannel:add']"
+          v-hasPermi="['channel:channel:add']"
         >新增</el-button>
       </el-col>
       <el-col :span="1.5">
@@ -80,7 +88,7 @@
           size="mini"
           :disabled="single"
           @click="handleUpdate"
-          v-hasPermi="['channel:paymentchannel:edit']"
+          v-hasPermi="['channel:channel:edit']"
         >修改</el-button>
       </el-col>
       <el-col :span="1.5">
@@ -90,7 +98,7 @@
           size="mini"
           :disabled="multiple"
           @click="handleDelete"
-          v-hasPermi="['channel:paymentchannel:remove']"
+          v-hasPermi="['channel:channel:remove']"
         >删除</el-button>
       </el-col>
       <el-col :span="1.5">
@@ -99,14 +107,14 @@
           icon="el-icon-download"
           size="mini"
           @click="handleExport"
-          v-hasPermi="['channel:paymentchannel:export']"
+          v-hasPermi="['channel:channel:export']"
         >导出</el-button>
       </el-col>
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
     <el-table v-loading="loading"
-      :data="paymentchannelList"
+      :data="channelList"
       @selection-change="handleSelectionChange"
       border
       stripe
@@ -114,6 +122,7 @@
     >
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="渠道ID" align="center" prop="channelId" />
+      <el-table-column label="渠道编号" align="center" prop="channelNo" min-width="100" show-overflow-tooltip />
       <el-table-column label="渠道名称" align="center" prop="channelName" min-width="120" show-overflow-tooltip />
       <el-table-column label="渠道类型" align="center" prop="channelType">
         <template v-slot="scope">
@@ -143,14 +152,14 @@
             type="text"
             icon="el-icon-edit"
             @click="handleUpdate(scope.row)"
-            v-hasPermi="['channel:paymentchannel:edit']"
+            v-hasPermi="['channel:channel:edit']"
           >修改</el-button>
           <el-button
             size="mini"
             type="text"
             icon="el-icon-delete"
             @click="handleDelete(scope.row)"
-            v-hasPermi="['channel:paymentchannel:remove']"
+            v-hasPermi="['channel:channel:remove']"
           >删除</el-button>
         </template>
       </el-table-column>
@@ -170,7 +179,9 @@
 
         <el-tabs v-model="activeName">
           <el-tab-pane label="基础信息" name="first">
-
+            <el-form-item label="渠道编码" prop="channelNo">
+              <el-input v-model="form.channelNo" placeholder="请输入渠道编码" />
+            </el-form-item>
             <el-form-item label="渠道名称" prop="channelName">
               <el-input v-model="form.channelName" placeholder="请输入渠道名称" />
             </el-form-item>
@@ -249,11 +260,11 @@
 </template>
 
 <script>
-import { listPaymentchannel, getPaymentchannel, delPaymentchannel, addPaymentchannel, updatePaymentchannel } from "@/api/channel/paymentchannel";
+import { listChannel, getChannel, delChannel, addChannel, updateChannel } from "@/api/channel/channel";
 import { listSelectSupplier } from '@/api/supplier/supplier'
 
 export default {
-  name: "Paymentchannel",
+  name: "Channel",
   dicts: ['channel_type', 'sys_normal_disable'],
   data() {
     return {
@@ -274,7 +285,7 @@ export default {
       // 总条数
       total: 0,
       // 支付渠道表格数据
-      paymentchannelList: [],
+      channelList: [],
       // 码商下拉数据
       supplierOptions: [],
       // 弹出层标题
@@ -285,6 +296,7 @@ export default {
       queryParams: {
         pageNum: 1,
         pageSize: 10,
+        channelNo: null,
         channelName: null,
         channelType: null,
         interfaceCode: null,
@@ -302,6 +314,9 @@ export default {
       form: {},
       // 表单校验
       rules: {
+        channelNo: [
+          { required: true, message: "渠道编号不能为空", trigger: "blur" }
+        ],
         channelName: [
           { required: true, message: "渠道名称不能为空", trigger: "blur" }
         ],
@@ -334,8 +349,8 @@ export default {
     /** 查询支付渠道列表 */
     getList() {
       this.loading = true;
-      listPaymentchannel(this.queryParams).then(response => {
-        this.paymentchannelList = response.rows;
+      listChannel(this.queryParams).then(response => {
+        this.channelList = response.rows;
         this.total = response.total;
         this.loading = false;
       });
@@ -349,6 +364,7 @@ export default {
     reset() {
       this.form = {
         channelId: null,
+        channelNo: null,
         channelName: null,
         channelType: '0',
         interfaceCode: null,
@@ -395,7 +411,7 @@ export default {
     handleUpdate(row) {
       this.reset();
       const channelId = row.channelId || this.ids
-      getPaymentchannel(channelId).then(response => {
+      getChannel(channelId).then(response => {
         this.form = response.data;
         this.open = true;
         this.title = "修改支付渠道";
@@ -406,13 +422,13 @@ export default {
       this.$refs["form"].validate(valid => {
         if (valid) {
           if (this.form.channelId != null) {
-            updatePaymentchannel(this.form).then(response => {
+            updateChannel(this.form).then(response => {
               this.$modal.msgSuccess("修改成功");
               this.open = false;
               this.getList();
             });
           } else {
-            addPaymentchannel(this.form).then(response => {
+            addChannel(this.form).then(response => {
               this.$modal.msgSuccess("新增成功");
               this.open = false;
               this.getList();
@@ -425,7 +441,7 @@ export default {
     handleDelete(row) {
       const channelIds = row.channelId || this.ids;
       this.$modal.confirm('是否确认删除支付渠道编号为"' + channelIds + '"的数据项？').then(function() {
-        return delPaymentchannel(channelIds);
+        return delChannel(channelIds);
       }).then(() => {
         this.getList();
         this.$modal.msgSuccess("删除成功");
@@ -433,9 +449,9 @@ export default {
     },
     /** 导出按钮操作 */
     handleExport() {
-      this.download('channel/paymentchannel/export', {
+      this.download('channel/channel/export', {
         ...this.queryParams
-      }, `paymentchannel_${new Date().getTime()}.xlsx`)
+      }, `channel_${new Date().getTime()}.xlsx`)
     },
     getSupplierOptions() {
       listSelectSupplier().then(response => {
